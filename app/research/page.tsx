@@ -4,7 +4,7 @@ import { PublicationsGrid } from "@/components/sections/research/PublicationsGri
 import { CommissionCTA } from "@/components/sections/research/CommissionCTA";
 
 export const metadata = {
-  title: "Research & Publications | The Black Policy Institute",
+  title: "Research & Publications",
   description:
     "Evidence-based analysis driving systemic change. Explore our research publications on education, employment, health, media, AI and criminal justice.",
 };

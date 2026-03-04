@@ -3,7 +3,7 @@ import { PolicyAreasGrid } from "@/components/sections/policy-areas/PolicyAreasG
 import { PolicyAreasCTA } from "@/components/sections/policy-areas/PolicyAreasCTA";
 
 export const metadata = {
-  title: "Our Policy Areas | The Black Policy Institute",
+  title: "Our Policy Areas",
   description:
     "Six thematic areas of focus — education, employment, health, media, AI and criminal justice — each grounded in evidence, community voice and the imperative for systemic change.",
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { CookieBanner } from "@/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -21,7 +22,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | The Black Policy Institute",
+    template: "The Black Policy Institute | %s",
     default: "The Black Policy Institute — Evidence-Based Policy, Community-Powered Change",
   },
   description:
@@ -57,6 +58,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <CookieBanner />
         <Analytics />
         <SpeedInsights />
       </body>
