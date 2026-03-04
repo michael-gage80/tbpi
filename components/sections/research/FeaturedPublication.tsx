@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { TOPIC_COLOURS } from "@/components/sections/research/PublicationsGrid";
 
 export function FeaturedPublication() {
   return (
@@ -33,7 +33,10 @@ export function FeaturedPublication() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             <div className="max-w-2xl">
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Badge className="bg-[#E8581A] text-white hover:bg-[#C44A13]">
+                <Badge
+                  className="text-white"
+                  style={{ backgroundColor: TOPIC_COLOURS["AI & Tech"] }}
+                >
                   AI &amp; Tech
                 </Badge>
                 <Badge variant="outline" className="border-zinc-300 text-zinc-600">
@@ -73,13 +76,14 @@ export function FeaturedPublication() {
             </div>
 
             <div className="flex-shrink-0">
-              <Link
-                href="#"
+              <a
+                href="/publications/Countering%20Misinformation%20in%20Africa%3A%20Local%20Approaches%20to%20AI-Powered%20Challenges.pdf"
+                download
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium text-white transition-all hover:brightness-90"
                 style={{ backgroundColor: "#E8581A", fontFamily: "var(--font-inter)" }}
               >
-                Read White Paper <ArrowRight className="size-4" />
-              </Link>
+                Download White Paper <ArrowRight className="size-4" />
+              </a>
             </div>
           </div>
         </motion.div>

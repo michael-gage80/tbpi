@@ -12,36 +12,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { publications as allPublications, TOPIC_COLOURS } from "@/components/sections/research/PublicationsGrid";
 
-const publications = [
-  {
-    tag: "Media",
-    type: "Report",
-    title: "CoCo Collective Kitemark 2024",
-    authors: "TBPI Research Team",
-    date: "2024",
-    description:
-      "An evaluation framework for media representation, assessing diversity and inclusion standards across UK broadcasting.",
-  },
-  {
-    tag: "Education",
-    type: "Policy Brief",
-    title: "Future Global Leaders: A Policy Framework",
-    authors: "Brian Channer",
-    date: "2024",
-    description:
-      "A comprehensive policy framework for nurturing the next generation of global leaders from underrepresented communities.",
-  },
-  {
-    tag: "AI & Tech",
-    type: "White Paper",
-    title: "AI & Africa: Shaping the Digital Future",
-    authors: "Ethan Ward",
-    date: "2024",
-    description:
-      "Examining the intersection of artificial intelligence and African development, with policy recommendations for equitable digital futures.",
-  },
-];
+const publications = allPublications.slice(0, 3);
 
 export function FeaturedPublications() {
   return (
@@ -70,10 +43,16 @@ export function FeaturedPublications() {
             >
               <Card className="h-full border-zinc-200 hover:shadow-md transition-shadow">
                 <CardHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge className="bg-[#E8581A] text-white hover:bg-[#C44A13]">
-                      {pub.tag}
-                    </Badge>
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    {pub.topics.map((t) => (
+                      <Badge
+                        key={t}
+                        className="text-white"
+                        style={{ backgroundColor: TOPIC_COLOURS[t] || "#E8581A" }}
+                      >
+                        {t}
+                      </Badge>
+                    ))}
                     <span
                       className="text-xs text-zinc-500"
                       style={{ fontFamily: "var(--font-inter)" }}
@@ -87,7 +66,7 @@ export function FeaturedPublications() {
                   <CardDescription
                     style={{ fontFamily: "var(--font-inter)" }}
                   >
-                    {pub.authors} &middot; {pub.date}
+                    {pub.author} &middot; {pub.date}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -95,7 +74,7 @@ export function FeaturedPublications() {
                     className="text-sm text-zinc-600 line-clamp-2"
                     style={{ fontFamily: "var(--font-inter)" }}
                   >
-                    {pub.description}
+                    {pub.abstract}
                   </p>
                 </CardContent>
                 <CardFooter>

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-const TOPIC_COLOURS: Record<string, string> = {
+export const TOPIC_COLOURS: Record<string, string> = {
   "AI & Tech": "#0891B2",
   Media: "#7C3AED",
   Education: "#2563EB",
@@ -29,6 +29,7 @@ interface Publication {
   date: string;
   author: string;
   abstract: string;
+  file?: string;
 }
 
 export const publications: Publication[] = [
@@ -40,6 +41,7 @@ export const publications: Publication[] = [
     author: "Ethan Ward & Chimdi Igwe",
     abstract:
       "Examining how African communities and institutions are developing locally-grounded strategies to counter AI-powered misinformation, with policy recommendations for platform accountability and digital resilience.",
+    file: "/publications/Countering%20Misinformation%20in%20Africa%3A%20Local%20Approaches%20to%20AI-Powered%20Challenges.pdf",
   },
   {
     title: "USC Policy Lab 2025: They Do Things Differently There",
@@ -49,6 +51,7 @@ export const publications: Publication[] = [
     author: "The Black Policy Institute",
     abstract:
       "A presentation delivered at the USC Policy Lab exploring divergent approaches to racial equity policy and what the UK can learn from international models of institutional change.",
+    file: "/publications/Workshop%20Plan_%20%22They%20Do%20Things%20Differently%20There%22.docx",
   },
   {
     title: "USC Policy Lab 2024: Touching the Chair",
@@ -58,6 +61,7 @@ export const publications: Publication[] = [
     author: "The Black Policy Institute",
     abstract:
       "A presentation delivered at the USC Policy Lab examining proximity to power — how Black-led organisations access, influence and sustain presence within policymaking institutions.",
+    file: "/publications/TBPI%20Annenberg%20School%20for%20Communication%20Presentation%20notes%2018052024.docx",
   },
   {
     title: "Kitemark",
@@ -67,6 +71,7 @@ export const publications: Publication[] = [
     author: "The Black Policy Institute",
     abstract:
       "In collaboration with CoCo Collective, this report establishes a kitemark framework for evaluating authentic representation and inclusion practices within creative and cultural organisations.",
+    file: "/publications/TBPI%20CoCo%20Collective%20Kitemark%20Research%20Report%202024%20(1).pdf",
   },
   {
     title: "The Hidden Million",
@@ -85,6 +90,7 @@ export const publications: Publication[] = [
     author: "Mike Gage",
     abstract:
       "An examination of the frameworks and mechanisms needed to design and implement policies that deliver equitable and just outcomes for Black and minoritised communities in the UK.",
+    file: "/publications/Shaping%20Equitable%20and%20Just%20Policies.pdf",
   },
 ];
 
@@ -233,18 +239,21 @@ export function PublicationsGrid() {
                       {pub.abstract}
                     </p>
                   </CardContent>
-                  <CardFooter>
-                    <Link
-                      href="#"
-                      className="inline-flex items-center gap-1 text-sm font-medium transition-colors"
-                      style={{
-                        color: "#E8581A",
-                        fontFamily: "var(--font-inter)",
-                      }}
-                    >
-                      Download / Read <ArrowRight className="size-4" />
-                    </Link>
-                  </CardFooter>
+                  {pub.file && (
+                    <CardFooter>
+                      <a
+                        href={pub.file}
+                        download
+                        className="inline-flex items-center gap-1 text-sm font-medium transition-colors"
+                        style={{
+                          color: "#E8581A",
+                          fontFamily: "var(--font-inter)",
+                        }}
+                      >
+                        Download / Read <ArrowRight className="size-4" />
+                      </a>
+                    </CardFooter>
+                  )}
                 </Card>
               </motion.div>
             ))}
