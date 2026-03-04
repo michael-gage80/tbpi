@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
+import Image from "next/image";
 
 const team = [
   {
     name: "Brian Channer",
     initials: "BC",
+    photo: "/images/team/brianchanner.jpeg",
     title: "CEO & Founder",
     bio: "Brian is a policy strategist and community advocate with 15+ years experience in racial equity, public sector reform and civic leadership.",
     linkedin: "https://linkedin.com/in/brianchanner/",
@@ -14,6 +16,7 @@ const team = [
   {
     name: "Michael Gage",
     initials: "MG",
+    photo: "/images/team/mikegage.jpeg",
     title: "Chief Operating Officer",
     bio: "Michael oversees TBPI's operational strategy, partnerships and programme delivery, ensuring the organisation's work achieves maximum impact.",
     linkedin: "https://linkedin.com/in/michaelvgage/",
@@ -21,6 +24,7 @@ const team = [
   {
     name: "Valerie Bossman-Quarshie",
     initials: "VB",
+    photo: "/images/team/valeriebossmanquarshie.jpeg",
     title: "Executive Director",
     bio: "Valerie brings extensive experience in governance, public leadership and community advocacy, driving TBPI's strategic direction and organisational growth.",
     linkedin: "https://linkedin.com/in/councillor-valerie-owura-ama-wirekvau-bossman-quarshie-66baa560/",
@@ -28,6 +32,7 @@ const team = [
   {
     name: "Mashhuda Kazi",
     initials: "MK",
+    photo: "/images/team/mashhudakazi.jpeg",
     title: "Director of Strategy & Policy",
     bio: "Mashhuda leads TBPI's policy research agenda and strategic partnerships, translating evidence into actionable recommendations for institutional and governmental change.",
     linkedin: "https://linkedin.com/in/mashhuda-k-1226a48b/",
@@ -61,13 +66,14 @@ export function TeamBios() {
               className="bg-white rounded-xl p-8 flex gap-6"
             >
               {/* Avatar */}
-              <div className="flex-shrink-0 size-16 rounded-full bg-zinc-200 flex items-center justify-center">
-                <span
-                  className="text-lg font-semibold text-zinc-600"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                >
-                  {member.initials}
-                </span>
+              <div className="flex-shrink-0 size-16 rounded-full overflow-hidden bg-zinc-200">
+                <Image
+                  src={member.photo}
+                  alt={member.name}
+                  width={64}
+                  height={64}
+                  className="size-full object-cover"
+                />
               </div>
 
               <div className="flex-1 min-w-0">
