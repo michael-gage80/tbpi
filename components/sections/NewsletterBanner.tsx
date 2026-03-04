@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 export function NewsletterBanner() {
   return (
@@ -26,24 +25,7 @@ export function NewsletterBanner() {
             receiving our research updates.
           </p>
 
-          <form
-            action="#"
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-          >
-            <Input
-              type="email"
-              placeholder="Your email address"
-              className="h-12 bg-white/10 border-white/20 text-white placeholder:text-zinc-500 flex-1"
-              style={{ fontFamily: "var(--font-inter)" }}
-            />
-            <Button
-              type="submit"
-              className="h-12 px-8 bg-[#E8581A] text-white hover:bg-[#C44A13] font-medium"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              Subscribe
-            </Button>
-          </form>
+          <NewsletterForm variant="banner" />
         </motion.div>
       </div>
     </section>

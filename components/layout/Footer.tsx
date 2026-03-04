@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Twitter, Linkedin, Instagram, Youtube, Mail } from "lucide-react";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 const footerLinks = {
   Organisation: [
@@ -47,19 +48,7 @@ export function Footer() {
                 Policy analysis, research updates and programme news — straight to your inbox.
               </p>
             </div>
-            <form className="flex gap-2 w-full md:w-auto" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 md:w-64 px-4 py-2.5 bg-white/5 border border-white/20 rounded-md text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#E8581A] transition-colors"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-[#E8581A] hover:bg-[#C44A13] text-white text-sm font-medium rounded-md transition-colors whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm variant="footer" />
           </div>
         </div>
       </div>
