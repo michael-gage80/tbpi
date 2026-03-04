@@ -34,16 +34,16 @@ export function FeaturedPublication() {
             <div className="max-w-2xl">
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Badge className="bg-[#E8581A] text-white hover:bg-[#C44A13]">
-                  Media
+                  AI &amp; Tech
                 </Badge>
                 <Badge variant="outline" className="border-zinc-300 text-zinc-600">
-                  Report
+                  White Paper
                 </Badge>
                 <span
                   className="text-xs text-zinc-500"
                   style={{ fontFamily: "var(--font-inter)" }}
                 >
-                  2024
+                  2025
                 </span>
               </div>
 
@@ -51,15 +51,24 @@ export function FeaturedPublication() {
                 className="text-2xl sm:text-3xl lg:text-4xl text-[#0A0A0A] mb-4"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
-                CoCo Collective Kitemark 2024
+                Countering Misinformation in Africa: Local Approaches to AI-Powered Challenges
               </h2>
+
+              <p
+                className="text-zinc-500 text-sm mb-3"
+                style={{ fontFamily: "var(--font-inter)" }}
+              >
+                Ethan Ward &amp; Chimdi Igwe
+              </p>
 
               <p
                 className="text-zinc-600 text-base sm:text-lg leading-relaxed"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
-                A comprehensive framework for evaluating authentic representation
-                and inclusion practices within creative and cultural organisations.
+                Examining how African communities and institutions are developing
+                locally-grounded strategies to counter AI-powered misinformation,
+                with policy recommendations for platform accountability and
+                digital resilience.
               </p>
             </div>
 
@@ -69,7 +78,7 @@ export function FeaturedPublication() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium text-white transition-all hover:brightness-90"
                 style={{ backgroundColor: "#E8581A", fontFamily: "var(--font-inter)" }}
               >
-                Download Report <ArrowRight className="size-4" />
+                Read White Paper <ArrowRight className="size-4" />
               </Link>
             </div>
           </div>

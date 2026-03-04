@@ -15,109 +15,82 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const TOPIC_COLOURS: Record<string, string> = {
-  Education: "#2563EB",
-  Employment: "#059669",
-  Health: "#DC2626",
-  Media: "#7C3AED",
   "AI & Tech": "#0891B2",
-  "Criminal Justice": "#CA8A04",
+  Media: "#7C3AED",
+  Education: "#2563EB",
+  Policy: "#059669",
+  "Equity & Economics": "#CA8A04",
 };
 
 interface Publication {
   title: string;
-  topic: string;
+  topics: string[];
   type: string;
   date: string;
   author: string;
   abstract: string;
 }
 
-const publications: Publication[] = [
+export const publications: Publication[] = [
   {
-    title: "CoCo Collective Kitemark 2024",
-    topic: "Media",
-    type: "Report",
-    date: "Dec 2024",
-    author: "TBPI Research Team",
-    abstract:
-      "A comprehensive framework for evaluating authentic representation and inclusion practices within creative and cultural organisations.",
-  },
-  {
-    title: "Future Global Leaders: A Policy Framework",
-    topic: "Education",
-    type: "Policy Brief",
-    date: "Oct 2024",
-    author: "Brian Channer",
-    abstract:
-      "A comprehensive policy framework for nurturing the next generation of global leaders from underrepresented communities.",
-  },
-  {
-    title: "AI & Africa: Shaping the Digital Future",
-    topic: "AI & Tech",
+    title: "Countering Misinformation in Africa: Local Approaches to AI-Powered Challenges",
+    topics: ["AI & Tech"],
     type: "White Paper",
-    date: "Sep 2024",
-    author: "Ethan Ward",
+    date: "2025",
+    author: "Ethan Ward & Chimdi Igwe",
     abstract:
-      "Examining the intersection of artificial intelligence and African development, with policy recommendations for equitable digital futures.",
+      "Examining how African communities and institutions are developing locally-grounded strategies to counter AI-powered misinformation, with policy recommendations for platform accountability and digital resilience.",
   },
   {
-    title: "Black Youth Employment: Barriers & Pathways",
-    topic: "Employment",
+    title: "USC Policy Lab 2025: They Do Things Differently There",
+    topics: ["Education"],
+    type: "Presentation",
+    date: "2025",
+    author: "The Black Policy Institute",
+    abstract:
+      "A presentation delivered at the USC Policy Lab exploring divergent approaches to racial equity policy and what the UK can learn from international models of institutional change.",
+  },
+  {
+    title: "USC Policy Lab 2024: Touching the Chair",
+    topics: ["Education"],
+    type: "Presentation",
+    date: "2024",
+    author: "The Black Policy Institute",
+    abstract:
+      "A presentation delivered at the USC Policy Lab examining proximity to power — how Black-led organisations access, influence and sustain presence within policymaking institutions.",
+  },
+  {
+    title: "Kitemark",
+    topics: ["Equity & Economics"],
     type: "Report",
-    date: "Jul 2024",
-    author: "TBPI Research Team",
+    date: "2024",
+    author: "The Black Policy Institute",
     abstract:
-      "Analysing structural barriers to youth employment in Black communities and proposing practical pathways to meaningful work.",
+      "In collaboration with CoCo Collective, this report establishes a kitemark framework for evaluating authentic representation and inclusion practices within creative and cultural organisations.",
   },
   {
-    title: "Criminal Justice Reform: A Community-Centred Approach",
-    topic: "Criminal Justice",
+    title: "The Hidden Million",
+    topics: ["Policy"],
     type: "Policy Brief",
-    date: "May 2024",
-    author: "Michael Gage",
+    date: "2024",
+    author: "Mike Gage",
     abstract:
-      "An evidence-based policy brief advocating for community-centred reforms to address disproportionality in the criminal justice system.",
+      "A policy brief surfacing the one million Black British citizens whose experiences and needs remain systematically absent from national policy frameworks, with recommendations to close the gap.",
   },
   {
-    title: "Health Inequalities in Black Communities",
-    topic: "Health",
+    title: "Shaping Equitable and Just Policies",
+    topics: ["Media", "Policy"],
     type: "Report",
-    date: "Mar 2024",
-    author: "TBPI Research Team",
+    date: "2024",
+    author: "Mike Gage",
     abstract:
-      "Investigating racial health disparities across the NHS, with actionable recommendations for culturally competent healthcare delivery.",
-  },
-  {
-    title: "Decolonising the Curriculum: A Practical Guide",
-    topic: "Education",
-    type: "White Paper",
-    date: "Jan 2024",
-    author: "Brian Channer",
-    abstract:
-      "A practical guide for educators and institutions seeking to decolonise curricula and embed diverse perspectives across disciplines.",
-  },
-  {
-    title: "Misogynoir in British Media",
-    topic: "Media",
-    type: "Policy Brief",
-    date: "Nov 2023",
-    author: "Nathaniel Adeleye",
-    abstract:
-      "Examining the intersection of anti-Black racism and sexism in British media, with recommendations for editorial accountability.",
+      "An examination of the frameworks and mechanisms needed to design and implement policies that deliver equitable and just outcomes for Black and minoritised communities in the UK.",
   },
 ];
 
-const TOPICS = [
-  "All",
-  "Education",
-  "Employment",
-  "Health",
-  "Media",
-  "AI & Tech",
-  "Criminal Justice",
-];
+const TOPICS = ["All", "AI & Tech", "Education", "Equity & Economics", "Media", "Policy"];
 
-const TYPES = ["All", "Report", "Policy Brief", "White Paper"];
+const TYPES = ["All", "White Paper", "Presentation", "Report", "Policy Brief"];
 
 export function PublicationsGrid() {
   const [activeTopic, setActiveTopic] = useState("All");
@@ -125,7 +98,7 @@ export function PublicationsGrid() {
 
   const filtered = useMemo(() => {
     return publications.filter((p) => {
-      const topicMatch = activeTopic === "All" || p.topic === activeTopic;
+      const topicMatch = activeTopic === "All" || p.topics.includes(activeTopic);
       const typeMatch = activeType === "All" || p.type === activeType;
       return topicMatch && typeMatch;
     });
@@ -224,16 +197,18 @@ export function PublicationsGrid() {
               >
                 <Card className="h-full border-zinc-200 hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge
-                        className="text-white"
-                        style={{
-                          backgroundColor:
-                            TOPIC_COLOURS[pub.topic] || "#E8581A",
-                        }}
-                      >
-                        {pub.topic}
-                      </Badge>
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      {pub.topics.map((topic) => (
+                        <Badge
+                          key={topic}
+                          className="text-white"
+                          style={{
+                            backgroundColor: TOPIC_COLOURS[topic] || "#E8581A",
+                          }}
+                        >
+                          {topic}
+                        </Badge>
+                      ))}
                       <Badge
                         variant="outline"
                         className="border-zinc-300 text-zinc-500"

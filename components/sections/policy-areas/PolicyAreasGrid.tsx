@@ -17,7 +17,7 @@ interface PolicyArea {
 const policyAreas: PolicyArea[] = [
   {
     number: "01",
-    title: "Education & Decolonisation",
+    title: "Education",
     description:
       "We examine how educational systems perpetuate racial inequality and advocate for curricula that reflect the full breadth of human history and achievement.",
     stat: "1.5%",
@@ -44,18 +44,18 @@ const policyAreas: PolicyArea[] = [
   },
   {
     number: "04",
-    title: "Media Representation & Misogynoir",
+    title: "Media Representation",
     description:
-      "We challenge harmful stereotypes and advocate for authentic, dignified representation of Black people — especially Black women — across British media.",
+      "We challenge harmful stereotypes and advocate for authentic, dignified representation of Black people across British media.",
     stat: "8%",
     statLabel: "of primetime drama leading roles feature Black characters",
     related: ["CoCo Collective Kitemark", "Misogynoir Brief"],
   },
   {
     number: "05",
-    title: "AI, Technology & Africa",
+    title: "AI & Technology",
     description:
-      "We explore how artificial intelligence intersects with race, and advocate for AI governance that is equitable, transparent and includes African perspectives.",
+      "We explore how artificial intelligence intersects with race, and advocate for AI governance that is equitable, transparent and includes minority perspectives.",
     stat: "35%",
     statLabel: "more AI bias incidents affecting Black faces than white",
     related: ["AI & Africa White Paper"],

@@ -1,39 +1,60 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play, ExternalLink, Mail, Mic, Newspaper, Video, BookOpen } from "lucide-react";
+import { Play, ExternalLink, Mail, Mic, Newspaper, Video, BookOpen, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const episodes = [
   {
-    ep: "E24",
-    title: "The Politics of Black Health: NHS, Data and Disparity",
-    guest: "Dr. Yemi Oduya, NHS England",
-    date: "Feb 2026",
-    duration: "52 min",
+    ep: "E01",
+    title: "Journey of a Policy Advisor",
+    guest: "Elijah Amoako",
+    date: "Oct 2024",
+    duration: "34 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_18_12_31_03_5e4acdb3-8d2e-45ed-a762-6721b87ec971.mp3",
   },
   {
-    ep: "E23",
-    title: "AI Governance and the African Diaspora",
-    guest: "Ethan Ward, TBPI",
-    date: "Jan 2026",
-    duration: "44 min",
+    ep: "E02",
+    title: "Journey of a Legal Associate",
+    guest: "Blaise Nsenguwera, Freshfields",
+    date: "Oct 2024",
+    duration: "29 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_21_13_05_49_386e3a98-9c49-42aa-a597-69b35c9a0c06.mp3",
   },
   {
-    ep: "E22",
-    title: "Criminal Justice Reform: A Community Perspective",
-    guest: "Baroness Doreen Lawrence OBE",
-    date: "Dec 2025",
-    duration: "61 min",
+    ep: "E03",
+    title: "Journey of a Senior Analyst",
+    guest: "Ra-Venne Scholar",
+    date: "Oct 2024",
+    duration: "34 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_25_13_22_19_21e6d2fe-30ef-4074-a308-0e6c26a5b82d.mp3",
   },
   {
-    ep: "E21",
-    title: "Black Women in Leadership: Barriers and Breakthroughs",
-    guest: "Nadjah Osman, YPAG Co-Lead",
-    date: "Nov 2025",
-    duration: "48 min",
+    ep: "E04",
+    title: "Journey of a President",
+    guest: "I. Stephanie Boyce",
+    date: "Oct 2024",
+    duration: "26 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_28_16_57_59_5bef43e1-c087-46aa-9c61-d865645acec0.mp3",
+  },
+  {
+    ep: "E05",
+    title: "Journey of a Barristeress",
+    guest: "Jennifer Olley",
+    date: "Oct 2024",
+    duration: "19 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_31_17_41_37_c7ffa709-0451-44e3-9c5d-99b28b4b7540.mp3",
+  },
+  {
+    ep: "E06",
+    title: "Journey of a Barrister",
+    guest: "Stephen Akinsanya",
+    date: "Oct 2024",
+    duration: "32 min",
+    audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_31_18_39_02_0ed3ba49-365f-4a59-9dbd-f8ad5435148b.mp3",
   },
 ];
 
@@ -118,6 +139,60 @@ const FadeUp = ({
   </motion.div>
 );
 
+function EpisodeList() {
+  const [openEp, setOpenEp] = useState<string | null>(null);
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-4">
+      {episodes.map((ep, i) => (
+        <FadeUp key={ep.ep} delay={i * 0.1}>
+          <Card className="border border-[#E5E2DF] hover:shadow-md transition-shadow">
+            <CardContent className="p-5">
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setOpenEp(openEp === ep.ep ? null : ep.ep)}
+                  className="w-10 h-10 rounded-lg bg-[#E8581A]/10 hover:bg-[#E8581A] flex items-center justify-center shrink-0 transition-colors group"
+                  aria-label={openEp === ep.ep ? "Close player" : "Play episode"}
+                >
+                  {openEp === ep.ep ? (
+                    <ChevronDown className="h-4 w-4 text-[#E8581A] group-hover:text-white transition-colors" />
+                  ) : (
+                    <Play className="h-4 w-4 text-[#E8581A] group-hover:text-white transition-colors" />
+                  )}
+                </button>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-[#E8581A]">{ep.ep}</span>
+                    <span className="text-xs text-[#6B6B6B]">{ep.date} · {ep.duration}</span>
+                  </div>
+                  <h4
+                    className="text-sm font-medium text-[#0A0A0A] leading-snug mb-1"
+                    style={{ fontFamily: "var(--font-inter)" }}
+                  >
+                    {ep.title}
+                  </h4>
+                  <p className="text-xs text-[#6B6B6B]">{ep.guest}</p>
+                </div>
+              </div>
+              {openEp === ep.ep && (
+                <audio
+                  controls
+                  autoPlay
+                  className="w-full mt-4"
+                  src={ep.audio}
+                  preload="auto"
+                >
+                  Your browser does not support the audio element.
+                </audio>
+              )}
+            </CardContent>
+          </Card>
+        </FadeUp>
+      ))}
+    </div>
+  );
+}
+
 export default function MediaPage() {
   return (
     <>
@@ -158,7 +233,7 @@ export default function MediaPage() {
                 className="text-3xl font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
-                People, Power & Policy Podcast
+                Trailblazing Leaders Of Tomorrow
               </h2>
             </div>
           </FadeUp>
@@ -171,26 +246,23 @@ export default function MediaPage() {
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <p className="text-white font-semibold text-lg mb-1">
-                  People, Power & Policy
+                  Trailblazing Leaders Of Tomorrow
                 </p>
-                <p className="text-white/60 text-sm mb-4">
-                  By The Black Policy Institute · 24 episodes · Available on
-                  Spotify and Apple Podcasts
+                <p className="text-white/60 text-sm mb-2">
+                  By Young People&apos;s Advisory Board · {episodes.length} episodes
+                </p>
+                <p className="text-white/40 text-xs mb-4 max-w-md">
+                  Conversations with innovative professionals shaping future leadership across civil service, law, finance and beyond.
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
                   <a
-                    href="#"
-                    className="flex items-center gap-2 px-4 py-2 bg-[#1DB954] text-white text-sm rounded-full font-medium hover:bg-[#1aa34a] transition-colors"
+                    href="https://media.rss.com/trailblazing-leaders-of-tomorrow"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#E8581A] text-white text-sm rounded-full font-medium hover:bg-[#C44A13] transition-colors"
                   >
                     <Play className="h-4 w-4" />
-                    Listen on Spotify
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center gap-2 px-4 py-2 bg-[#872EC4] text-white text-sm rounded-full font-medium hover:opacity-90 transition-opacity"
-                  >
-                    <Play className="h-4 w-4" />
-                    Apple Podcasts
+                    Listen Now
                   </a>
                 </div>
               </div>
@@ -198,36 +270,33 @@ export default function MediaPage() {
           </FadeUp>
 
           {/* Episode list */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {episodes.map((ep, i) => (
-              <FadeUp key={ep.ep} delay={i * 0.1}>
-                <Card className="border border-[#E5E2DF] hover:shadow-md transition-shadow cursor-pointer group">
-                  <CardContent className="p-5 flex gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-[#E8581A]/10 flex items-center justify-center shrink-0 group-hover:bg-[#E8581A] transition-colors">
-                      <Play className="h-4 w-4 text-[#E8581A] group-hover:text-white transition-colors" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-bold text-[#E8581A]">
-                          {ep.ep}
-                        </span>
-                        <span className="text-xs text-[#6B6B6B]">
-                          {ep.date} · {ep.duration}
-                        </span>
-                      </div>
-                      <h4
-                        className="text-sm font-medium text-[#0A0A0A] leading-snug mb-1 truncate"
-                        style={{ fontFamily: "var(--font-inter)" }}
-                      >
-                        {ep.title}
-                      </h4>
-                      <p className="text-xs text-[#6B6B6B]">{ep.guest}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeUp>
-            ))}
-          </div>
+          <EpisodeList />
+        </div>
+      </section>
+
+      {/* People, Power & Policy — Coming Soon */}
+      <section className="bg-[#F7F5F2] py-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <FadeUp>
+            <div className="bg-[#0A0A0A] rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6 opacity-70">
+              <div className="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                <Mic className="h-7 w-7 text-white/50" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex flex-wrap items-center gap-3 justify-center sm:justify-start mb-2">
+                  <p className="text-white font-semibold text-lg">
+                    People, Power &amp; Policy
+                  </p>
+                  <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-[#E8581A]/20 text-[#E8581A] border border-[#E8581A]/30">
+                    Coming Soon
+                  </span>
+                </div>
+                <p className="text-white/50 text-sm">
+                  Our flagship podcast — conversations on race, equity and policy with leading voices across politics, academia and civil society.
+                </p>
+              </div>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
@@ -378,7 +447,7 @@ export default function MediaPage() {
                     Communications Director
                   </p>
                   <a
-                    href="mailto:press@tbpi.co.uk"
+                    href="mailto:press@theblackpolicyinstitute.org"
                     className="text-[#E8581A] text-sm flex items-center gap-1.5 mt-1 hover:underline"
                   >
                     <Mail className="h-3.5 w-3.5" />

@@ -14,7 +14,7 @@ const team = [
     linkedin: "https://linkedin.com/in/brianchanner/",
   },
   {
-    name: "Michael Gage",
+    name: "Mike Gage",
     initials: "MG",
     photo: "/images/team/mikegage.jpeg",
     title: "Chief Operating Officer",

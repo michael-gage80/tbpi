@@ -28,10 +28,10 @@ const footerLinks = {
 
 const socials = [
   { href: "https://twitter.com/TBPI_CIC", icon: Twitter, label: "Twitter" },
-  { href: "https://linkedin.com/company/tbpi", icon: Linkedin, label: "LinkedIn" },
-  { href: "https://instagram.com/tbpi_cic", icon: Instagram, label: "Instagram" },
-  { href: "https://youtube.com/@tbpi", icon: Youtube, label: "YouTube" },
-  { href: "mailto:info@tbpi.co.uk", icon: Mail, label: "Email" },
+  { href: "https://www.linkedin.com/company/theblackpolicyinstitute", icon: Linkedin, label: "LinkedIn" },
+  { href: "https://instagram.com/theblackpolicyinstitute", icon: Instagram, label: "Instagram" },
+  { href: "https://www.youtube.com/@TheBlackPolicyInstitute", icon: Youtube, label: "YouTube" },
+  { href: "mailto:info@theblackpolicyinstitute.org", icon: Mail, label: "Email" },
 ];
 
 export function Footer() {
@@ -82,9 +82,6 @@ export function Footer() {
               A non-partisan racial equity think tank driving evidence-based policy,
               community empowerment and systemic change across the UK.
             </p>
-            <p className="text-white/40 text-xs mt-4">
-              Registered as a Community Interest Company (CIC)
-            </p>
             {/* Socials */}
             <div className="flex gap-3 mt-5">
               {socials.map((s) => (
@@ -126,7 +123,7 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-white/40 text-xs">
-          <p>© {new Date().getFullYear()} The Black Policy Institute CIC. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} TBPI CIC. All rights reserved. TBPI CIC is a Community Interest Company registered in England and Wales (Company No. 16768346), operating under the working name The Black Policy Institute. Registered office: 61 Bridge Street, Kington, HR5 3DJ, United Kingdom.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>

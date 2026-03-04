@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Twitter, Linkedin, Instagram, Youtube, Send, CheckCircle } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,39 +19,39 @@ import {
 const teamContacts = [
   {
     initials: "BC",
+    photo: "/images/team/brianchanner.jpeg",
     name: "Brian Channer",
     role: "CEO & Founder",
-    email: "brian@tbpi.co.uk",
-    note: "Partnerships, commissions, speaking",
+    email: "brian.channer@theblackpolicyinstitute.org",
   },
   {
     initials: "MG",
-    name: "Michael Gage",
-    role: "Chief Operating Officer",
-    email: "michael@tbpi.co.uk",
-    note: "Operations, programmes, general enquiries",
+    photo: "/images/team/mikegage.jpeg",
+    name: "Mike Gage",
+    role: "COO",
+    email: "michael.gage@theblackpolicyinstitute.org",
   },
   {
-    initials: "NA",
-    name: "Nathaniel Adeleye",
-    role: "Communications Director",
-    email: "press@tbpi.co.uk",
-    note: "Media, press, interviews",
+    initials: "PO",
+    photo: null,
+    name: "Press Office",
+    role: "Media & Communications",
+    email: "press@theblackpolicyinstitute.org",
   },
   {
     initials: "GE",
+    photo: null,
     name: "General Enquiries",
     role: "TBPI",
-    email: "info@tbpi.co.uk",
-    note: "All other enquiries",
+    email: "info@theblackpolicyinstitute.org",
   },
 ];
 
 const socials = [
   { icon: Twitter, label: "Twitter / X", href: "https://twitter.com/TBPI_CIC", handle: "@TBPI_CIC" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/tbpi", handle: "The Black Policy Institute" },
-  { icon: Instagram, label: "Instagram", href: "https://instagram.com/tbpi_cic", handle: "@tbpi_cic" },
-  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@tbpi", handle: "TBPI Official" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/theblackpolicyinstitute", handle: "The Black Policy Institute" },
+  { icon: Instagram, label: "Instagram", href: "https://instagram.com/theblackpolicyinstitute", handle: "@theblackpolicyinstitute" },
+  { icon: Youtube, label: "YouTube", href: "https://www.youtube.com/@TheBlackPolicyInstitute", handle: "@TheBlackPolicyInstitute" },
 ];
 
 const FadeUp = ({
@@ -266,8 +267,18 @@ export default function ContactPage() {
                         className="bg-white rounded-xl p-4 border border-[#E5E2DF]"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-[#0A0A0A] flex items-center justify-center text-white text-xs font-bold shrink-0">
-                            {c.initials}
+                          <div className="w-9 h-9 rounded-full overflow-hidden bg-[#0A0A0A] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                            {c.photo ? (
+                              <Image
+                                src={c.photo}
+                                alt={c.name}
+                                width={36}
+                                height={36}
+                                className="size-full object-cover"
+                              />
+                            ) : (
+                              c.initials
+                            )}
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-semibold text-[#0A0A0A] truncate">
@@ -284,9 +295,6 @@ export default function ContactPage() {
                             <Mail className="h-3 w-3" />
                             {c.email}
                           </a>
-                          <p className="text-xs text-[#6B6B6B] mt-0.5">
-                            {c.note}
-                          </p>
                         </div>
                       </div>
                     ))}
@@ -304,11 +312,13 @@ export default function ContactPage() {
                         Location
                       </h4>
                       <p className="text-sm text-[#6B6B6B] leading-relaxed">
-                        The Black Policy Institute CIC
+                        TBPI CIC
                         <br />
-                        Catford, London
+                        61 Bridge Street
                         <br />
-                        SE6
+                        Kington, HR5 3DJ
+                        <br />
+                        United Kingdom
                       </p>
                     </div>
                   </div>

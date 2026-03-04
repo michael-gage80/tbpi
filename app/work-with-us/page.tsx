@@ -114,21 +114,21 @@ const steps = [
 const testimonials = [
   {
     quote:
-      "TBPI's research gave us the evidence base we needed to make the case internally. The team were genuinely collaborative — not just consultants, but partners.",
-    name: "Director of Inclusion",
-    org: "Major UK Financial Institution",
+      "Thank you so much for delivering such impactful and thought-provoking sessions. We thoroughly enjoyed having the space to do some self-reflection and many of us created action plans based on the tools and techniques shared, to help us better prepare for future circumstance.",
+    name: "Ethnanda Manley-Browne",
+    org: "Senior Engagement and Equalities Manager (Tri-Borough), Co-Chair, North West London BAME Staff Network — NW London Integrated Care System",
   },
   {
     quote:
-      "The Pioneers of Change programme transformed how our leadership team thinks about race equity. It wasn't tick-box training — it was real, uncomfortable and necessary.",
-    name: "Chief People Officer",
-    org: "National NHS Trust",
+      "This was the best presentation I've participated in for a very long time! It was truly insightful and thought-provoking, offering a powerful exploration of social change and its critical importance.",
+    name: "Jasmine Martins",
+    org: "Labour Group Support Officer / Race Equality Network Co-Chair",
   },
   {
     quote:
-      "Brian's keynote at our conference set the tone for the whole day. Authoritative, challenging and deeply practical.",
-    name: "Programme Director",
-    org: "Public Sector Leadership Forum",
+      "The Future Global Leadership Programme opened my eyes to the power of community-led activism and the importance of leadership in shaping our future.",
+    name: "Sharif Mussa Mtunia",
+    org: "Future Global Leadership Programme Fellow",
   },
 ];
 
