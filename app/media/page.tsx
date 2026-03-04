@@ -97,20 +97,6 @@ const pressHits = [
   },
 ];
 
-const videos = [
-  {
-    title: "What is the Black Policy Institute? | Explainer",
-    channel: "TBPI Official",
-    duration: "4:32",
-    views: "12K views",
-  },
-  {
-    title: "Future Global Leadership Programme 2025 — Highlights",
-    channel: "TBPI Official",
-    duration: "8:17",
-    views: "5.4K views",
-  },
-];
 
 const newsletters = [
   { title: "Policy Pulse — February 2026", date: "Feb 2026", href: "#" },
@@ -355,32 +341,17 @@ export default function MediaPage() {
               </h2>
             </div>
           </FadeUp>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {videos.map((v, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <div className="group cursor-pointer">
-                  <div className="relative bg-[#0A0A0A] rounded-xl overflow-hidden aspect-video mb-3 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#E8581A]/20 to-transparent" />
-                    <div className="w-16 h-16 rounded-full bg-white/10 group-hover:bg-[#E8581A] flex items-center justify-center transition-colors">
-                      <Play className="h-6 w-6 text-white ml-1" />
-                    </div>
-                    <span className="absolute bottom-3 right-3 text-xs bg-black/70 text-white px-2 py-0.5 rounded">
-                      {v.duration}
-                    </span>
-                  </div>
-                  <h4
-                    className="text-sm font-medium text-[#0A0A0A] group-hover:text-[#E8581A] transition-colors"
-                    style={{ fontFamily: "var(--font-inter)" }}
-                  >
-                    {v.title}
-                  </h4>
-                  <p className="text-xs text-[#6B6B6B] mt-1">
-                    {v.channel} · {v.views}
-                  </p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
+          <FadeUp delay={0.1}>
+            <div className="rounded-xl overflow-hidden aspect-video">
+              <iframe
+                src="https://www.youtube.com/embed/486PUMsI90s"
+                title="TBPI Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          </FadeUp>
         </div>
       </section>
 
