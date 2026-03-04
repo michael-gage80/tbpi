@@ -1,26 +1,141 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-dm-serif);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* TBPI Brand Colors */
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-dark: var(--brand-orange-dark);
+  --color-brand-black: var(--brand-black);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-white: var(--brand-white);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+
+  /* TBPI Brand Tokens */
+  --brand-orange: #E8581A;
+  --brand-orange-dark: #C44A13;
+  --brand-black: #0A0A0A;
+  --brand-surface: #F7F5F2;
+  --brand-white: #FFFFFF;
+
+  /* Light mode - content sections */
+  --background: #FFFFFF;
+  --foreground: #0A0A0A;
+  --card: #FFFFFF;
+  --card-foreground: #0A0A0A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0A0A0A;
+  --primary: #E8581A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F7F5F2;
+  --secondary-foreground: #0A0A0A;
+  --muted: #F7F5F2;
+  --muted-foreground: #6B6B6B;
+  --accent: #E8581A;
+  --accent-foreground: #FFFFFF;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #E5E2DF;
+  --input: #E5E2DF;
+  --ring: #E8581A;
+  --sidebar: #F7F5F2;
+  --sidebar-foreground: #0A0A0A;
+  --sidebar-primary: #E8581A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F7F5F2;
+  --sidebar-accent-foreground: #0A0A0A;
+  --sidebar-border: #E5E2DF;
+  --sidebar-ring: #E8581A;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-dm-serif), serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Utility classes for brand */
+.font-heading {
+  font-family: var(--font-dm-serif), serif;
+}
+
+.text-brand-orange {
+  color: var(--brand-orange);
+}
+
+.bg-brand-orange {
+  background-color: var(--brand-orange);
+}
+
+.bg-brand-black {
+  background-color: var(--brand-black);
+}
+
+.bg-brand-surface {
+  background-color: var(--brand-surface);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--brand-orange);
+  color: white;
 }
