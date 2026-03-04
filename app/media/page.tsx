@@ -71,6 +71,12 @@ const pressHits = [
     date: "Dec 2021",
     href: "https://www.politicshome.com/thehouse/article/young-black-voices-must-be-heard-when-policies-are-being-developed",
   },
+  {
+    outlet: "The House Live",
+    headline: "The UK's Black History Month: From Reflection to Change",
+    date: "Oct 2021",
+    href: "https://bhm.politicshome.com/blog/the-uks-black-history-month-from-reflection-to-change",
+  },
 ];
 
 
