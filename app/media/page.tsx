@@ -60,40 +60,10 @@ const episodes = [
 
 const pressHits = [
   {
-    outlet: "The Guardian",
-    headline: "Think tank calls for overhaul of stop-and-search practices",
-    date: "Jan 2026",
-    href: "#",
-  },
-  {
-    outlet: "BBC News",
-    headline: "TBPI report reveals Black health disparities in NHS maternity care",
-    date: "Dec 2025",
-    href: "#",
-  },
-  {
-    outlet: "The Voice",
-    headline: "Policy institute launches pioneering DEI programme for corporates",
-    date: "Nov 2025",
-    href: "#",
-  },
-  {
-    outlet: "Times Higher Education",
-    headline: "Decolonising the curriculum: new framework published by TBPI",
-    date: "Oct 2025",
-    href: "#",
-  },
-  {
-    outlet: "ITV News",
-    headline: "Youth advisory group amplifies Black voices in Westminster",
-    date: "Sep 2025",
-    href: "#",
-  },
-  {
-    outlet: "Financial Times",
-    headline: "AI and race: why Britain's tech sector must act now",
-    date: "Aug 2025",
-    href: "#",
+    outlet: "PoliticsHome — The House",
+    headline: "Young Black voices must be heard when policies are being developed",
+    date: "Dec 2021",
+    href: "https://www.politicshome.com/thehouse/article/young-black-voices-must-be-heard-when-policies-are-being-developed",
   },
 ];
 
