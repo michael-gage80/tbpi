@@ -60,6 +60,12 @@ const episodes = [
 
 const pressHits = [
   {
+    outlet: "Islington Tribune",
+    headline: "'Black communities feel left out of policy making'",
+    date: "Apr 2023",
+    href: "https://www.islingtontribune.co.uk/article/black-communities-feel-left-out-of-policy-making",
+  },
+  {
     outlet: "PoliticsHome — The House",
     headline: "Young Black voices must be heard when policies are being developed",
     date: "Dec 2021",
