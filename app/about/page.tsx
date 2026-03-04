@@ -8,7 +8,7 @@ import { Advisory } from "@/components/sections/about/Advisory";
 import { Governance } from "@/components/sections/about/Governance";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Us",
   description:
     "Learn about The Black Policy Institute — a non-partisan racial equity think tank built on evidence, community and change.",
 };

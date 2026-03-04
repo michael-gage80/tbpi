@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 
 const advisors = [
   {
-    name: "Diontre Davis",
-    initials: "DD",
-    title: "YPAG Co-lead",
-    bio: "Diontre brings a background in youth advocacy and community organising, co-leading TBPI's Young People's Advisory Group to ensure young voices are centred in policy development.",
+    name: "Ruth-Simone Lee",
+    initials: "RL",
+    title: "International Chair",
+    bio: "Ruth-Simone brings a distinguished record of international leadership and cross-sector collaboration, chairing TBPI's advisory work with a focus on global racial equity and policy innovation.",
   },
   {
-    name: "Nadjah Osman",
-    initials: "NO",
-    title: "YPAG Co-lead",
-    bio: "Nadjah is a civic engagement specialist and education advocate, co-leading the YPAG to bridge the gap between young people and the policy processes that shape their futures.",
+    name: "Nathaniel Adeleye",
+    initials: "NA",
+    title: "Deputy Chair",
+    bio: "Nathaniel supports the advisory board's strategic direction, drawing on his expertise in communications and civic engagement to strengthen TBPI's voice and institutional partnerships.",
   },
 ];
 

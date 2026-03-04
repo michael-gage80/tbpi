@@ -9,24 +9,28 @@ const team = [
     initials: "BC",
     title: "CEO & Founder",
     bio: "Brian is a policy strategist and community advocate with 15+ years experience in racial equity, public sector reform and civic leadership.",
+    linkedin: "https://linkedin.com/in/brianchanner/",
   },
   {
     name: "Michael Gage",
     initials: "MG",
     title: "Chief Operating Officer",
     bio: "Michael oversees TBPI's operational strategy, partnerships and programme delivery, ensuring the organisation's work achieves maximum impact.",
+    linkedin: "https://linkedin.com/in/michaelvgage/",
   },
   {
-    name: "Nathaniel Adeleye",
-    initials: "NA",
-    title: "Communications Director",
-    bio: "Nathaniel leads TBPI's communications strategy, media relations and public engagement, amplifying the institute's voice across platforms.",
+    name: "Valerie Bossman-Quarshie",
+    initials: "VB",
+    title: "Executive Director",
+    bio: "Valerie brings extensive experience in governance, public leadership and community advocacy, driving TBPI's strategic direction and organisational growth.",
+    linkedin: "https://linkedin.com/in/councillor-valerie-owura-ama-wirekvau-bossman-quarshie-66baa560/",
   },
   {
-    name: "Ethan Ward",
-    initials: "EW",
-    title: "AI Solutions Lead",
-    bio: "Ethan explores the intersection of artificial intelligence, technology policy and African futures, leading TBPI's work on AI ethics and digital equity.",
+    name: "Mashhuda Kazi",
+    initials: "MK",
+    title: "Director of Strategy & Policy",
+    bio: "Mashhuda leads TBPI's policy research agenda and strategic partnerships, translating evidence into actionable recommendations for institutional and governmental change.",
+    linkedin: "https://linkedin.com/in/mashhuda-k-1226a48b/",
   },
 ];
 
@@ -78,7 +82,9 @@ export function TeamBios() {
                     </p>
                   </div>
                   <a
-                    href="#"
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-zinc-400 hover:text-[#0A66C2] transition-colors flex-shrink-0"
                     aria-label={`${member.name} LinkedIn`}
                   >

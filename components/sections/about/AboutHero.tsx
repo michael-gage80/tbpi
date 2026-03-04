@@ -13,9 +13,7 @@ export function AboutHero() {
           className="max-w-3xl"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
-            About The Black
-            <br />
-            Policy Institute
+            About Us
             <span className="block mt-2 h-1 w-24 bg-[#E8581A] rounded-full" />
           </h1>
           <p

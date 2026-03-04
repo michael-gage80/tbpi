@@ -77,7 +77,7 @@ export function OurStory() {
               className="text-sm font-medium text-[#0A0A0A]"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              2022 — CIC Registered
+              2025 — CIC Registered
             </span>
           </div>
           <div className="h-px flex-1 bg-zinc-300" />
@@ -87,7 +87,7 @@ export function OurStory() {
               className="text-sm font-medium text-[#0A0A0A]"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              2024 — Growing Impact
+              2026 — Growing Impact
             </span>
           </div>
         </motion.div>
