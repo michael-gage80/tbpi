@@ -406,23 +406,23 @@ export default function MediaPage() {
               </h2>
               <p className="text-white/60 mb-6">
                 For media requests, interviews and press accreditation, please
-                contact our Communications Director.
+                contact our Press Office.
               </p>
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl p-5">
                 <div className="w-12 h-12 rounded-full bg-[#E8581A] flex items-center justify-center text-white font-bold text-lg shrink-0">
-                  NA
+                  PO
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Nathaniel Adeleye</p>
+                  <p className="text-white font-semibold">Press Office</p>
                   <p className="text-white/60 text-sm">
-                    Communications Director
+                    Media &amp; Communications
                   </p>
                   <a
                     href="mailto:press@theblackpolicyinstitute.org"
                     className="text-[#E8581A] text-sm flex items-center gap-1.5 mt-1 hover:underline"
                   >
                     <Mail className="h-3.5 w-3.5" />
-                    press@tbpi.co.uk
+                    press@theblackpolicyinstitute.org
                   </a>
                 </div>
               </div>
