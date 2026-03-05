@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Twitter, Linkedin, Instagram, Youtube, Mail } from "lucide-react";
 import { NewsletterForm } from "@/components/NewsletterForm";
 
@@ -17,7 +18,6 @@ const footerLinks = {
     { href: "/programmes", label: "Programmes" },
     { href: "/programmes/ypag", label: "YPAG" },
     { href: "/programmes/fglp", label: "FGLP" },
-    { href: "/programmes/pioneers-of-change", label: "Pioneers of Change" },
   ],
   Engage: [
     { href: "/events", label: "Events" },
@@ -36,22 +36,27 @@ const socials = [
 ];
 
 export function Footer() {
+  const pathname = usePathname();
+  const showNewsletterBanner = pathname !== "/";
+
   return (
     <footer className="bg-[#0A0A0A] text-white border-t border-white/10">
       {/* Newsletter Banner */}
-      <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="font-heading text-2xl mb-1">Stay Informed</h3>
-              <p className="text-white/60 text-sm">
-                Policy analysis, research updates and programme news — straight to your inbox.
-              </p>
+      {showNewsletterBanner && (
+        <div className="border-b border-white/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <h3 className="font-heading text-2xl mb-1">Stay Informed</h3>
+                <p className="text-white/60 text-sm">
+                  Policy analysis, research updates and programme news — straight to your inbox.
+                </p>
+              </div>
+              <NewsletterForm variant="footer" />
             </div>
-            <NewsletterForm variant="footer" />
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

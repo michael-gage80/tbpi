@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Users, GraduationCap, Handshake } from "lucide-react";
+import { ArrowRight, Users, GraduationCap } from "lucide-react";
 
 const programmes = [
   {
@@ -10,7 +10,7 @@ const programmes = [
     title: "YPAG",
     subtitle: "Young People's Advisory Group",
     description:
-      "A civic leadership programme for young people aged 18-28, building the next generation of policy advocates and community leaders.",
+      "YPAG unites exceptional young people across the UK to tackle real policy challenges and keep Black communities' priorities in national debates.",
     href: "/programmes",
   },
   {
@@ -19,14 +19,6 @@ const programmes = [
     subtitle: "Future Global Leadership Programme",
     description:
       "A 3-day immersive seminar equipping emerging leaders with the skills, networks and knowledge to drive change on a global stage.",
-    href: "/programmes",
-  },
-  {
-    icon: Handshake,
-    title: "Pioneers of Change",
-    subtitle: "DEI Consultancy",
-    description:
-      "A comprehensive 22-session package supporting organisations to embed diversity, equity and inclusion across their operations and culture.",
     href: "/programmes",
   },
 ];
@@ -47,7 +39,7 @@ export function ProgrammesOverview() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {programmes.map((prog, i) => (
             <motion.div
               key={prog.title}

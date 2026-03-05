@@ -47,7 +47,7 @@ export default function YPAGPage() {
               className="mt-8 text-xl text-zinc-400 leading-relaxed max-w-2xl"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              Developing the next generation of civic leaders aged 18-28.
+              Engaging challenges to inspire the next generation.
             </p>
           </motion.div>
         </div>
@@ -73,10 +73,10 @@ export default function YPAGPage() {
               className="text-lg text-zinc-600 leading-relaxed"
               style={{ fontFamily: "var(--font-inter)" }}
             >
-              The YPAG brings together exceptional young people aged 18-28 from
-              across the UK to develop their civic leadership skills, engage with
-              real policy challenges and amplify the voices of Black communities
-              in national conversations.
+              The YPAG brings together exceptional young people from across the
+              UK to engage in real policy challenges and offer a young
+              perspective on the work we do to amplify the voices of Black
+              communities in national conversations.
             </p>
           </motion.div>
         </div>

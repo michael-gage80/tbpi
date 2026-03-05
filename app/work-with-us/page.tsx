@@ -27,15 +27,15 @@ const services = [
   },
   {
     icon: Users,
-    title: "DEI Training (Pioneers of Change)",
+    title: "Campus Keynotes",
     description:
-      "Our 22-session DEI transformation programme for organisations ready to build genuinely equitable workplaces.",
+      "High-impact lectures and fireside conversations for universities and colleges, drawing on sessions with partners like USC to inspire future public leaders.",
   },
   {
     icon: BarChart3,
     title: "Strategy & Policy Review",
     description:
-      "Independent audit of your equality, diversity and inclusion strategies with actionable recommendations.",
+      "Independent audit of your equality, diversity and inclusion strategies with benchmarking data and prioritised actions for your next phase of delivery.",
   },
   {
     icon: UserCheck,
@@ -53,7 +53,7 @@ const services = [
     icon: HeartHandshake,
     title: "Community Engagement",
     description:
-      "Facilitated community consultation, co-design processes and participatory research with Black communities.",
+      "Facilitated consultation, co-design processes and participatory research with Black communities.",
   },
 ];
 
@@ -196,15 +196,6 @@ export default function WorkWithUsPage() {
               >
                 <Link href="/contact">Commission Us</Link>
               </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="border-white/30 text-white bg-transparent hover:bg-white/5 px-8 py-3 h-12"
-              >
-                <Link href="/programmes/pioneers-of-change">
-                  Pioneers of Change
-                </Link>
-              </Button>
             </div>
           </motion.div>
         </div>
@@ -221,8 +212,8 @@ export default function WorkWithUsPage() {
               Our Services
             </h2>
             <p className="text-[#6B6B6B] mb-10 max-w-xl">
-              From bespoke research commissions to immersive DEI programmes — we
-              offer a suite of services tailored to your challenge.
+              From bespoke research commissions to immersive equity programmes —
+              we offer a suite of services tailored to your challenge.
             </p>
           </FadeUp>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

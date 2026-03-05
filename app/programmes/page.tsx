@@ -3,16 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Users, Globe, Lightbulb } from "lucide-react";
+import { Users, Globe } from "lucide-react";
 
 const programmes = [
   {
     icon: Users,
     name: "Young People's Advisory Group",
     tag: "YPAG",
-    descriptor: "Civic leadership for ages 18-28",
+    descriptor: "Engaging challenges to inspire the next generation",
     description:
-      "The YPAG brings together exceptional young people from across the UK to develop civic leadership skills, engage with real policy challenges and amplify the voices of Black communities in national conversations.",
+      "The YPAG brings together exceptional young people from across the UK to engage in real policy challenges and offer a young perspective on the work we do to amplify the voices of Black communities in national conversations.",
     href: "/programmes/ypag",
     cta: "Learn More",
   },
@@ -25,16 +25,6 @@ const programmes = [
       "A transformative immersive seminar designed to develop the next generation of Black global policy leaders through world-class speakers, policy workshops and peer learning.",
     href: "/programmes/fglp",
     cta: "Apply Now",
-  },
-  {
-    icon: Lightbulb,
-    name: "Pioneers of Change",
-    tag: "DEI Consultancy",
-    descriptor: "22-session transformation programme",
-    description:
-      "A comprehensive DEI transformation programme for organisations serious about building equitable, inclusive workplaces. We partner with you to diagnose, design and deliver lasting change.",
-    href: "/programmes/pioneers-of-change",
-    cta: "Learn More",
   },
 ];
 

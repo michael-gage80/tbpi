@@ -37,9 +37,8 @@ export function HeroSection() {
             className="mt-8 max-w-2xl text-lg sm:text-xl text-zinc-400 leading-relaxed"
             style={{ fontFamily: "var(--font-inter)" }}
           >
-            The Black Policy Institute drives racial equity through rigorous
-            research, community empowerment and transformative policy development
-            across the UK.
+            We drive racial equity through rigorous research, community
+            empowerment and transformative policy development across the UK.
           </motion.p>
 
           <motion.div
