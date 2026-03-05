@@ -5,13 +5,19 @@ import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+interface RelatedPublication {
+  title: string;
+  href: string;
+  download?: boolean;
+}
+
 interface PolicyArea {
   number: string;
   title: string;
   description: string;
   stat: string;
   statLabel: string;
-  related: string[];
+  related: RelatedPublication[];
 }
 
 const policyAreas: PolicyArea[] = [
@@ -22,7 +28,20 @@ const policyAreas: PolicyArea[] = [
       "We examine how educational systems perpetuate racial inequality and advocate for curricula that reflect the full breadth of human history and achievement.",
     stat: "1.5%",
     statLabel: "of UK university professors are Black",
-    related: ["Decolonising the Curriculum", "Future Global Leaders Programme"],
+    related: [
+      {
+        title: "USC Policy Lab 2024: Touching the Chair",
+        href:
+          "/publications/TBPI%20Annenberg%20School%20for%20Communication%20Presentation%20notes%2018052024.docx",
+        download: true,
+      },
+      {
+        title: "USC Policy Lab 2025: They Do Things Differently There",
+        href:
+          "/publications/Workshop%20Plan_%20%22They%20Do%20Things%20Differently%20There%22.docx",
+        download: true,
+      },
+    ],
   },
   {
     number: "02",
@@ -31,7 +50,13 @@ const policyAreas: PolicyArea[] = [
       "We analyse structural barriers to Black economic advancement — from hiring discrimination to wealth gaps — and develop evidence-based policy solutions.",
     stat: "20%",
     statLabel: "less earned by Black workers than white counterparts",
-    related: ["Black Youth Employment Report"],
+    related: [
+      {
+        title: "Shaping Equitable and Just Policies",
+        href: "/publications/Shaping%20Equitable%20and%20Just%20Policies.pdf",
+        download: true,
+      },
+    ],
   },
   {
     number: "03",
@@ -40,7 +65,7 @@ const policyAreas: PolicyArea[] = [
       "We investigate racial health disparities across the NHS and broader health system, advocating for culturally competent care and equitable health outcomes.",
     stat: "4x",
     statLabel: "more likely for Black women to die in childbirth in the UK",
-    related: ["Health Inequalities Report"],
+    related: [],
   },
   {
     number: "04",
@@ -49,7 +74,18 @@ const policyAreas: PolicyArea[] = [
       "We challenge harmful stereotypes and advocate for authentic, dignified representation of Black people across British media.",
     stat: "8%",
     statLabel: "of primetime drama leading roles feature Black characters",
-    related: ["CoCo Collective Kitemark", "Misogynoir Brief"],
+    related: [
+      {
+        title: "TBPI × CoCo Collective Kitemark Report",
+        href: "/publications/TBPI%20CoCo%20Collective%20Kitemark%20Research%20Report%202024%20(1).pdf",
+        download: true,
+      },
+      {
+        title: "Shaping Equitable and Just Policies",
+        href: "/publications/Shaping%20Equitable%20and%20Just%20Policies.pdf",
+        download: true,
+      },
+    ],
   },
   {
     number: "05",
@@ -58,7 +94,14 @@ const policyAreas: PolicyArea[] = [
       "We explore how artificial intelligence intersects with race, and advocate for AI governance that is equitable, transparent and includes minority perspectives.",
     stat: "35%",
     statLabel: "more AI bias incidents affecting Black faces than white",
-    related: ["AI & Africa White Paper"],
+    related: [
+      {
+        title: "Countering Misinformation in Africa",
+        href:
+          "/publications/Countering%20Misinformation%20in%20Africa%3A%20Local%20Approaches%20to%20AI-Powered%20Challenges.pdf",
+        download: true,
+      },
+    ],
   },
   {
     number: "06",
@@ -67,7 +110,7 @@ const policyAreas: PolicyArea[] = [
       "We examine disproportionality in the criminal justice system — from stop and search to sentencing — and drive reform through community engagement and policy advocacy.",
     stat: "8x",
     statLabel: "more likely for Black people to be stopped and searched",
-    related: ["Criminal Justice Reform Brief"],
+    related: [],
   },
 ];
 
@@ -155,17 +198,31 @@ function PolicyAreaCard({
         >
           Related Publications
         </p>
-        <ul className="space-y-1">
-          {area.related.map((pub) => (
-            <li
-              key={pub}
-              className="text-sm text-zinc-600"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              {pub}
-            </li>
-          ))}
-        </ul>
+        {area.related.length > 0 ? (
+          <ul className="space-y-1">
+            {area.related.map((pub) => (
+              <li key={pub.title}>
+                <a
+                  href={pub.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...(pub.download ? { download: true } : {})}
+                  className="text-sm text-[#E8581A] hover:text-[#C44A13] transition-colors underline-offset-2 hover:underline"
+                  style={{ fontFamily: "var(--font-inter)" }}
+                >
+                  {pub.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p
+            className="text-sm text-zinc-500"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            New publications coming soon.
+          </p>
+        )}
       </div>
 
       <Link
