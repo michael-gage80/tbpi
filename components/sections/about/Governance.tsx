@@ -38,13 +38,16 @@ export function Governance() {
           </div>
 
           <div className="mt-8">
-            <Button
-              variant="outline"
-              disabled
-              className="gap-2"
-            >
-              <FileDown className="size-4" />
-              Articles of Association (Coming Soon)
+            <Button asChild variant="outline" className="gap-2">
+              <a
+                href="/publications/TBPI%20Articles%20of%20Association.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FileDown className="size-4" />
+                Download Articles of Association (PDF)
+              </a>
             </Button>
           </div>
         </motion.div>
