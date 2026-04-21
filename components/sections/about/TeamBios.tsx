@@ -25,7 +25,7 @@ const team = [
     name: "Valerie Bossman-Quarshie",
     initials: "VB",
     photo: "/images/team/valeriebossmanquarshie.jpeg",
-    title: "Executive Director",
+    title: "Co-Founder",
     bio: "Valerie brings extensive experience in governance, public leadership and community advocacy, driving TBPI's strategic direction and organisational growth.",
     linkedin: "https://linkedin.com/in/councillor-valerie-owura-ama-wirekvau-bossman-quarshie-66baa560/",
   },
