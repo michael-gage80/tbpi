@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { DM_Serif_Display, Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -54,6 +55,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-LHXMQ2RF68"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-LHXMQ2RF68');
+          `}
+        </Script>
+      </head>
       <body className="antialiased min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>
