@@ -46,6 +46,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@TBPI_CIC",
   },
+  // Google Search Console ownership — keep even after verification succeeds.
+  verification: {
+    google: "GQg1UFItemwZ7GJoKanGoKPOvj_IMULCVkl3JVyb5U0",
+  },
 };
 
 export default function RootLayout({
