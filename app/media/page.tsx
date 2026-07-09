@@ -7,7 +7,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const episodes = [
+type Episode = {
+  ep: string;
+  title: string;
+  guest: string;
+  date: string;
+  duration: string;
+  audio: string;
+};
+
+const episodes: Episode[] = [
   {
     ep: "E01",
     title: "Journey of a Policy Advisor",
@@ -55,6 +64,25 @@ const episodes = [
     date: "Oct 2024",
     duration: "32 min",
     audio: "https://media.rss.com/trailblazing-leaders-of-tomorrow/2024_10_31_18_39_02_0ed3ba49-365f-4a59-9dbd-f8ad5435148b.mp3",
+  },
+];
+
+const peoplePowerPolicyEpisodes: Episode[] = [
+  {
+    ep: "E01",
+    title: "Windrush, COVID-19 and the Fight for Racial Justice in Britain",
+    guest: "Patrick Vernon OBE",
+    date: "Jul 2026",
+    duration: "22 min",
+    audio: "https://content.rss.com/episodes/393741/2974341/people-power-policy/2026_07_09_13_57_50_08f0c5eb-9f59-41b0-9975-a56e82b0fdcd.mp3",
+  },
+  {
+    ep: "E02",
+    title: "Reflections on COVID-19 and the Human Cost",
+    guest: "Margaret Duku",
+    date: "Jul 2026",
+    duration: "24 min",
+    audio: "https://content.rss.com/episodes/393741/2974399/people-power-policy/2026_07_09_14_21_31_6ef70e41-119d-4ad8-80f2-7848e23c668e.mp3",
   },
 ];
 
@@ -107,7 +135,7 @@ const FadeUp = ({
   </motion.div>
 );
 
-function EpisodeList() {
+function EpisodeList({ episodes }: { episodes: Episode[] }) {
   const [openEp, setOpenEp] = useState<string | null>(null);
 
   return (
@@ -238,33 +266,58 @@ export default function MediaPage() {
           </FadeUp>
 
           {/* Episode list */}
-          <EpisodeList />
+          <EpisodeList episodes={episodes} />
         </div>
       </section>
 
-      {/* People, Power & Policy — Coming Soon */}
-      <section className="bg-[#F7F5F2] py-14 px-4 sm:px-6 lg:px-8">
+      {/* People, Power & Policy */}
+      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
-            <div className="bg-[#0A0A0A] rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6 opacity-70">
-              <div className="w-16 h-16 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                <Mic className="h-7 w-7 text-white/50" />
+            <div className="flex items-center gap-3 mb-8">
+              <Mic className="h-6 w-6 text-[#E8581A]" />
+              <h2
+                className="text-3xl font-normal text-[#0A0A0A]"
+                style={{ fontFamily: "var(--font-dm-serif)" }}
+              >
+                People, Power &amp; Policy
+              </h2>
+            </div>
+          </FadeUp>
+
+          {/* Embedded player placeholder */}
+          <FadeUp delay={0.1}>
+            <div className="bg-[#0A0A0A] rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-6">
+              <div className="w-20 h-20 rounded-xl bg-[#E8581A] flex items-center justify-center shrink-0">
+                <Mic className="h-8 w-8 text-white" />
               </div>
               <div className="flex-1 text-center sm:text-left">
-                <div className="flex flex-wrap items-center gap-3 justify-center sm:justify-start mb-2">
-                  <p className="text-white font-semibold text-lg">
-                    People, Power &amp; Policy
-                  </p>
-                  <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-[#E8581A]/20 text-[#E8581A] border border-[#E8581A]/30">
-                    Coming Soon
-                  </span>
-                </div>
-                <p className="text-white/50 text-sm">
+                <p className="text-white font-semibold text-lg mb-1">
+                  People, Power &amp; Policy
+                </p>
+                <p className="text-white/60 text-sm mb-2">
+                  By The Black Policy Institute · {peoplePowerPolicyEpisodes.length} episodes
+                </p>
+                <p className="text-white/40 text-xs mb-4 max-w-md">
                   Our flagship podcast — conversations on race, equity and policy with leading voices across politics, academia and civil society.
                 </p>
+                <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+                  <a
+                    href="https://media.rss.com/people-power-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#E8581A] text-white text-sm rounded-full font-medium hover:bg-[#C44A13] transition-colors"
+                  >
+                    <Play className="h-4 w-4" />
+                    Listen Now
+                  </a>
+                </div>
               </div>
             </div>
           </FadeUp>
+
+          {/* Episode list */}
+          <EpisodeList episodes={peoplePowerPolicyEpisodes} />
         </div>
       </section>
 
