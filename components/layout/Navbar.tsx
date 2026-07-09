@@ -33,6 +33,9 @@ export function Navbar() {
 
   const isHome = pathname === "/";
 
+  // The staff dashboard supplies its own chrome — hide the public nav there.
+  if (pathname?.startsWith("/staff") || pathname === "/login") return null;
+
   return (
     <header
       className={cn(

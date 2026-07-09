@@ -39,6 +39,9 @@ export function Footer() {
   const pathname = usePathname();
   const showNewsletterBanner = pathname !== "/";
 
+  // Hide the public footer inside the staff dashboard and on login.
+  if (pathname?.startsWith("/staff") || pathname === "/login") return null;
+
   return (
     <footer className="bg-[#0A0A0A] text-white border-t border-white/10">
       {/* Newsletter Banner */}

@@ -24,7 +24,9 @@ const nextConfig: NextConfig = {
 
       // Organisation / about
       { source: "/who-we-are", destination: "/about", permanent: true },
-      { source: "/staff", destination: "/about#team", permanent: true },
+      // NOTE: the old Squarespace /staff (team directory) redirect was removed —
+      // /staff is now the gated staff dashboard (see app/(staff)). The team
+      // section is still reachable via /directory below.
       { source: "/governance", destination: "/about#governance", permanent: true },
       { source: "/directory", destination: "/about#team", permanent: true },
 
