@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search, ArrowRight, Pin } from "lucide-react";
 import { SpotlightCard } from "@/components/staff/ui/spotlight-card";
@@ -17,6 +18,13 @@ import {
 } from "@/components/staff/firestore-hooks";
 import { OPEN_COMMAND_EVENT } from "@/components/staff/command-palette";
 import { InboxCard } from "@/components/staff/email/inbox-card";
+import { SecurityCard } from "@/components/staff/security/security-card";
+import { Atmosphere } from "@/components/staff/home/atmosphere";
+import { CursorGlow } from "@/components/staff/home/cursor-glow";
+import { Constellation } from "@/components/staff/home/constellation";
+import { PulseSummary } from "@/components/staff/home/pulse-summary";
+import { DeploysTicker } from "@/components/staff/home/deploys-ticker";
+import { ActivityFeed } from "@/components/staff/home/activity-feed";
 import { cn } from "@/lib/utils";
 import type { Session } from "@/lib/firebase/types";
 
@@ -232,35 +240,60 @@ export function OverviewClient({ session }: { session: Session }) {
   const briefing = session.role === "admin" ? "ADMIN BRIEFING" : "STAFF BRIEFING";
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+    <div className="relative">
+      <Atmosphere />
+      <CursorGlow />
+
+      {/* Living hero band */}
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="mb-5 grid items-center gap-6 rounded-[24px] ops-glass p-6 shadow-card lg:grid-cols-[1.2fr_1fr] lg:p-8"
+      >
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
             {dateLine} · {briefing}
           </p>
-          <h1 className="mt-1 text-3xl font-normal text-foreground sm:text-4xl" style={{ fontFamily: "var(--font-dm-serif)" }}>
+          <h1 className="mt-1 text-4xl font-normal leading-tight text-foreground sm:text-5xl" style={{ fontFamily: "var(--font-dm-serif)" }}>
             {greeting()}, {firstName(session.email)}.
           </h1>
+          <div className="mt-4">
+            <PulseSummary role={session.role} />
+          </div>
+          <button
+            onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_EVENT))}
+            className="group mt-5 inline-flex items-center gap-2 rounded-full border border-line2 bg-background/50 px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Search className="size-4" />
+            <span>Search operations…</span>
+            <kbd className="ml-2 rounded bg-chip/70 px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+          </button>
         </div>
-        <button
-          onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_EVENT))}
-          className="ops-glass group inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-muted-foreground shadow-card transition-colors hover:text-foreground"
-        >
-          <Search className="size-4" />
-          <span className="hidden sm:inline">Search operations…</span>
-          <kbd className="ml-2 hidden rounded bg-chip/70 px-1.5 py-0.5 text-[10px] font-medium sm:inline">⌘K</kbd>
-        </button>
-      </div>
+        <div className="hidden lg:block">
+          <Constellation />
+        </div>
+      </motion.section>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="mb-5"
+      >
+        <DeploysTicker />
+      </motion.div>
 
       {/* Bento */}
       <div className="grid gap-4 lg:grid-cols-[1.35fr_1fr]">
         <Stagger className="space-y-4">
           <Reveal>{session.role === "admin" ? <InboxCard /> : <AnnouncementsCard />}</Reveal>
           <Reveal><TodayTimeline /></Reveal>
+          <Reveal><ActivityFeed /></Reveal>
         </Stagger>
         <Stagger className="space-y-4">
           <Reveal><WebsiteCard /></Reveal>
+          <Reveal><SecurityCard /></Reveal>
           <Reveal><TasksCard /></Reveal>
           <Reveal><SystemsCard /></Reveal>
         </Stagger>
