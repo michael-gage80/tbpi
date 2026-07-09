@@ -16,17 +16,17 @@ import { RadialGauge, RankList } from "@/components/staff/analytics/viz";
 const deployTone = (s: string): "green" | "red" | "amber" =>
   s === "ready" ? "green" : s === "error" ? "red" : "amber";
 
-export function WebsiteDetail() {
+export function WebsiteDetail({ projectId }: { projectId?: string }) {
   const { data, loading, error } = useAsync(async () => {
     const sys = await fetchSystemStatus();
-    const project = sys.vercel?.[0];
+    const project = projectId ? sys.vercel?.find((v) => v.id === projectId) ?? null : sys.vercel?.[0] ?? null;
     if (!project) return { sys, project: null, analytics: null, deploys: null };
     const [analytics, deploys] = await Promise.all([
       fetchWebsiteAnalytics(project.id, 30).catch(() => null),
       fetchDeployHistory(project.id).catch(() => null),
     ]);
     return { sys, project, analytics, deploys };
-  });
+  }, [projectId]);
 
   const p = data?.project;
   const a = data?.analytics;
@@ -38,7 +38,7 @@ export function WebsiteDetail() {
   return (
     <DetailShell
       eyebrow="Vercel"
-      title="Website"
+      title={p?.name ?? "Website"}
       right={
         p && (
           <span className="flex items-center gap-1.5 text-sm font-semibold capitalize" style={{ color: p.state === "ready" ? "#1F9D55" : "#B26B00" }}>
