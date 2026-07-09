@@ -9,6 +9,7 @@ import { auth } from "@/lib/firebase/client";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/staff/theme-toggle";
+import { BrandLogo } from "@/components/staff/brand-logo";
 import { ChangePasswordDialog } from "@/components/staff/change-password-dialog";
 import { visibleNav } from "@/components/staff/nav";
 import { logout } from "@/components/staff/api";
@@ -44,10 +45,8 @@ function SidebarBody({ session, onNavigate }: { session: Session; onNavigate?: (
     <div className="flex h-full flex-col gap-6 p-4">
       {/* Brand */}
       <div className="px-2 pt-2">
-        <p className="text-lg font-normal" style={{ fontFamily: "var(--font-dm-serif)" }}>
-          TBPI
-        </p>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
+        <BrandLogo className="h-8" />
+        <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
           Operations
         </p>
       </div>
@@ -134,9 +133,10 @@ export function DashboardShell({ session, children }: { session: Session; childr
               <SidebarBody session={session} onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
-          <p className="text-base font-normal" style={{ fontFamily: "var(--font-dm-serif)" }}>
-            TBPI <span className="text-primary">Operations</span>
-          </p>
+          <BrandLogo className="h-6" />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
+            Operations
+          </span>
         </header>
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">

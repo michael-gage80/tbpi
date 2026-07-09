@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/staff/theme-toggle";
+import { BrandLogo } from "@/components/staff/brand-logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -53,11 +54,12 @@ export default function LoginPage() {
         <ThemeToggle />
       </div>
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <p className="text-3xl font-normal" style={{ fontFamily: "var(--font-dm-serif)" }}>
-            TBPI <span className="text-primary">Operations</span>
+        <div className="mb-8 flex flex-col items-center text-center">
+          <BrandLogo className="h-11" />
+          <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
+            Operations
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">Staff sign-in</p>
+          <p className="mt-1 text-sm text-muted-foreground">Staff sign-in</p>
         </div>
 
         <form
