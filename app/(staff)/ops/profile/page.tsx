@@ -19,6 +19,9 @@ export default async function ProfilePage() {
     <div className="max-w-2xl">
       <PageHeading title="Profile" subtitle="Your account details." />
       <div className="space-y-4 rounded-[20px] bg-card p-6 shadow-card">
+        <h2 className="text-xl font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+          Account
+        </h2>
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Name</p>
           <p className="text-foreground">{displayName(session.email)}</p>

@@ -82,7 +82,9 @@ export function Panel({
     <div className={cn("rounded-[20px] bg-card p-5 shadow-card", className)}>
       {title && (
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+          <h2 className="text-lg font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+            {title}
+          </h2>
           {action}
         </div>
       )}

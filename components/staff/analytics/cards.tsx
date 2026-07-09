@@ -36,7 +36,9 @@ function Shell({
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon className="size-4 text-primary" />
-            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+            <h3 className="text-xl font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+              {title}
+            </h3>
           </div>
           <div className="flex items-center gap-2">
             {right}
