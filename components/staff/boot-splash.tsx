@@ -34,6 +34,13 @@ export function BootSplash() {
     if (hidden || !ready || !user) return;
     let cancelled = false;
 
+    // Failsafe: never let a slow/hanging callable trap the user on the splash.
+    const failsafe = setTimeout(() => {
+      if (cancelled) return;
+      sessionStorage.setItem(BOOT_KEY, "1");
+      setHidden(true);
+    }, 9000);
+
     const steps: { label: string; run: () => Promise<unknown> }[] = [
       { label: "Checking systems…", run: () => fetchSystemStatus().catch(() => null) },
       {
@@ -69,6 +76,7 @@ export function BootSplash() {
 
     return () => {
       cancelled = true;
+      clearTimeout(failsafe);
     };
   }, [hidden, ready, user]);
 
