@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { ThemeToggle } from "@/components/staff/theme-toggle";
 import { BrandLogo } from "@/components/staff/brand-logo";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +33,10 @@ export default function LoginPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Sign-in failed.");
       }
-      router.replace("/ops");
+      // Hard navigation (not router.replace) so the server re-evaluates the
+      // gated /ops route with the freshly-set __session cookie — a client-side
+      // nav can use a stale prefetched RSC payload and bounce back to /login.
+      window.location.assign("/ops");
     } catch (err) {
       const message =
         err instanceof Error && /auth\/(invalid|wrong|user-not)/.test(err.message)
