@@ -331,6 +331,62 @@ export interface SearchQueryResult {
   rows: SearchRow[];
 }
 
+/* ---------- Mail (admin) ---------- */
+export type Triage = "needsReply" | "fyi" | "waitingOn";
+
+export interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  avatarAsset?: string | null;
+  role?: string | null;
+}
+export interface Attachment {
+  id: string;
+  filename: string;
+  mimeType: string;
+  sizeBytes: number;
+  remoteRef?: string | null;
+}
+export interface MessageRef {
+  id: string;
+  folderId: string;
+}
+export interface EmailMessage {
+  id: string;
+  folderId: string;
+  from: Contact;
+  to: Contact[];
+  cc: Contact[];
+  date: string;
+  bodyHtml: string;
+  quotedHtml: string;
+  preview: string;
+  isOutgoing: boolean;
+  attachments: Attachment[];
+}
+export interface EmailThread {
+  id: string;
+  subject: string;
+  sender: Contact;
+  preview: string;
+  date: string;
+  unread: boolean;
+  triage: Triage;
+  folderId: string;
+  messageCount: number;
+  messageRefs: MessageRef[];
+  messages: EmailMessage[];
+}
+export interface MailFolder {
+  id: string;
+  name: string;
+  systemKind?: "inbox" | "sent" | "drafts" | "archive" | "trash" | null;
+  path: string;
+  unreadCount: number;
+  parentId: string | null;
+}
+
 /* ---------- Session ---------- */
 export type Role = "admin" | "staff";
 export interface Session {

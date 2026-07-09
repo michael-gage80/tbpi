@@ -16,6 +16,7 @@ import {
   useSharedAnnouncements,
 } from "@/components/staff/firestore-hooks";
 import { OPEN_COMMAND_EVENT } from "@/components/staff/command-palette";
+import { InboxCard } from "@/components/staff/email/inbox-card";
 import { cn } from "@/lib/utils";
 import type { Session } from "@/lib/firebase/types";
 
@@ -255,7 +256,7 @@ export function OverviewClient({ session }: { session: Session }) {
       {/* Bento */}
       <div className="grid gap-4 lg:grid-cols-[1.35fr_1fr]">
         <Stagger className="space-y-4">
-          <Reveal><AnnouncementsCard /></Reveal>
+          <Reveal>{session.role === "admin" ? <InboxCard /> : <AnnouncementsCard />}</Reveal>
           <Reveal><TodayTimeline /></Reveal>
         </Stagger>
         <Stagger className="space-y-4">

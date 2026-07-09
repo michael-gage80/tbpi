@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, KeyRound } from "lucide-react";
@@ -21,6 +21,7 @@ import { MobileTabBar } from "@/components/staff/mobile-tabbar";
 import { CommandPalette } from "@/components/staff/command-palette";
 import { visibleNav, isNavActive } from "@/components/staff/nav";
 import { logout } from "@/components/staff/api";
+import { mail } from "@/components/staff/email/mail-api";
 import { cn } from "@/lib/utils";
 import type { Session } from "@/lib/firebase/types";
 
@@ -47,10 +48,23 @@ function useLogout() {
   };
 }
 
+function useUnreadInbox(role: string): number {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (role !== "admin") return;
+    mail
+      .folders()
+      .then((fs) => setCount(fs.find((f) => f.systemKind === "inbox" || f.id === "inbox")?.unreadCount ?? 0))
+      .catch(() => {});
+  }, [role]);
+  return count;
+}
+
 function DesktopSidebar({ session }: { session: Session }) {
   const pathname = usePathname();
   const handleLogout = useLogout();
   const items = visibleNav(session.role);
+  const unread = useUnreadInbox(session.role);
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[264px] shrink-0 flex-col gap-6 border-r border-sidebar-border bg-sidebar p-4 lg:flex">
@@ -82,7 +96,12 @@ function DesktopSidebar({ session }: { session: Session }) {
                   active && "text-sidebar-accent-foreground"
                 )}
               />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.href === "/ops/email" && unread > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">
+                  {unread}
+                </span>
+              )}
             </Link>
           );
         })}
