@@ -44,6 +44,12 @@
   --color-brand-black: var(--brand-black);
   --color-brand-surface: var(--brand-surface);
   --color-brand-white: var(--brand-white);
+
+  /* Ops dashboard extra tokens (from TBPI design.md) */
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line2: var(--line2);
+  --color-chip: var(--chip);
 }
 
 :root {
@@ -83,6 +89,52 @@
   --sidebar-accent-foreground: #0A0A0A;
   --sidebar-border: #E5E2DF;
   --sidebar-ring: #E8581A;
+
+  /* Ops extra-token defaults (overridden inside .ops-surface / .dark) */
+  --faint: #9A9A9A;
+  --line: #F0EDE9;
+  --line2: #E7E3DE;
+  --chip: #EEEBE7;
+  --glass: rgba(247, 245, 242, 0.72);
+  --glassline: rgba(0, 0, 0, 0.06);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 12px 32px -18px rgba(0, 0, 0, 0.20);
+}
+
+/* Warm-cream LIGHT theme scoped to the ops dashboard shell (public site keeps
+   its white :root tokens). The shell wrapper always carries `.ops-surface`,
+   and adds `.dark` when the charcoal theme is active. */
+.ops-surface {
+  --background: #F7F5F2;
+  --foreground: #0A0A0A;
+  --card: #FFFFFF;
+  --card-foreground: #0A0A0A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0A0A0A;
+  --primary: #E8581A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EEEBE7;
+  --secondary-foreground: #0A0A0A;
+  --muted: #EEEBE7;
+  --muted-foreground: #6B6B6B;
+  --accent: #EEEBE7;
+  --accent-foreground: #0A0A0A;
+  --border: #E7E3DE;
+  --input: #E7E3DE;
+  --ring: #E8581A;
+  --sidebar: #F7F5F2;
+  --sidebar-foreground: #0A0A0A;
+  --sidebar-primary: #E8581A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(232, 88, 26, 0.10);
+  --sidebar-accent-foreground: #E8581A;
+  --sidebar-border: #E7E3DE;
+  --faint: #9A9A9A;
+  --line: #F0EDE9;
+  --line2: #E7E3DE;
+  --chip: #EEEBE7;
+  --glass: rgba(247, 245, 242, 0.72);
+  --glassline: rgba(0, 0, 0, 0.06);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 12px 32px -18px rgba(0, 0, 0, 0.20);
 }
 
 /* Warm-charcoal dark theme — scoped to the staff dashboard (a `.dark` ancestor
@@ -115,6 +167,18 @@
   --sidebar-accent-foreground: #F26B33;
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #F26B33;
+  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary-foreground: #F4F1ED;
+  --muted: rgba(255, 255, 255, 0.06);
+  --accent: rgba(255, 255, 255, 0.08);
+  --accent-foreground: #F4F1ED;
+  --faint: #6E675F;
+  --line: rgba(255, 255, 255, 0.06);
+  --line2: rgba(255, 255, 255, 0.10);
+  --chip: rgba(255, 255, 255, 0.08);
+  --glass: rgba(24, 20, 18, 0.72);
+  --glassline: rgba(255, 255, 255, 0.08);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 16px 44px -18px rgba(0, 0, 0, 0.7);
 }
 
 @layer base {
@@ -151,10 +215,40 @@
   background-color: var(--brand-surface);
 }
 
+/* Ops dashboard: soft warm card shadow (borderless cards) */
+.shadow-card {
+  box-shadow: var(--shadow);
+}
+
+/* Liquid glass surface (toggle, tiles, floating tab bar) */
+.ops-glass {
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glassline);
+}
+
 /* Staff dashboard: status LED pulse */
 @keyframes tbpiLed {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
+}
+
+@keyframes tbpiSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes tbpiFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Respect reduced-motion: kill decorative CSS animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  [style*="tbpiLed"],
+  .ops-anim { animation: none !important; }
+  html { scroll-behavior: auto; }
 }
 
 /* Marquee animation */

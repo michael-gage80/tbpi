@@ -1,9 +1,12 @@
 "use client";
 
-import { Globe, Search, Github, Linkedin } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { Globe, Search, Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import { SpotlightCard } from "@/components/staff/ui/spotlight-card";
+import { Sparkline } from "@/components/staff/ui/sparkline";
+import { AnimatedNumber } from "@/components/staff/ui/motion";
+import { Led, Delta } from "@/components/staff/ui/primitives";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Sparkline, Delta, Led } from "@/components/staff/ui/primitives";
 import { useAsync } from "@/components/staff/use-async";
 import {
   fetchSystemStatus,
@@ -11,32 +14,38 @@ import {
   fetchGithubInsights,
   fetchLinkedInSnapshot,
 } from "@/lib/org/callables";
-import type { GitHubInsights } from "@/lib/firebase/types";
 
-function fmt(n: number | null | undefined): string {
-  if (n == null || Number.isNaN(n)) return "—";
-  return n.toLocaleString();
-}
+const fmt = (n?: number | null) => (n == null || Number.isNaN(n) ? "—" : n.toLocaleString());
 
-function CardShell({
+function Shell({
+  href,
   icon: Icon,
   title,
+  right,
   children,
 }: {
+  href: string;
   icon: React.ComponentType<{ className?: string }>;
   title: string;
+  right?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
-    <Card className="border-border">
-      <CardContent className="p-5">
-        <div className="mb-4 flex items-center gap-2">
-          <Icon className="size-4 text-primary" />
-          <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+    <Link href={href} className="block">
+      <SpotlightCard className="h-full p-5" onClick={() => {}}>
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Icon className="size-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+          </div>
+          <div className="flex items-center gap-2">
+            {right}
+            <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </div>
         </div>
         {children}
-      </CardContent>
-    </Card>
+      </SpotlightCard>
+    </Link>
   );
 }
 
@@ -52,178 +61,112 @@ function Metric({ label, value, sub }: { label: string; value: React.ReactNode; 
   );
 }
 
-function LoadingRows() {
-  return (
-    <div className="space-y-2">
-      <Skeleton className="h-8 w-24" />
-      <Skeleton className="h-4 w-32" />
-    </div>
-  );
-}
-
-function ErrorNote({ error }: { error: string }) {
-  return <p className="text-xs text-muted-foreground">Unavailable — {error}</p>;
-}
+const Loading = () => <Skeleton className="h-20 w-full" />;
 
 export function WebsiteCard() {
   const { data, loading, error } = useAsync(fetchSystemStatus);
-  const project = data?.vercel?.[0];
+  const p = data?.vercel?.[0];
   return (
-    <CardShell icon={Globe} title="Website">
-      {loading ? (
-        <LoadingRows />
-      ) : error ? (
-        <ErrorNote error={error} />
-      ) : !project ? (
-        <p className="text-xs text-muted-foreground">No project data.</p>
-      ) : (
+    <Shell
+      href="/ops/analytics/website"
+      icon={Globe}
+      title="Website"
+      right={p && <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: p.state === "ready" ? "#1F9D55" : "#B26B00" }}><Led tone={p.state === "ready" ? "green" : "amber"} />{p.state}</span>}
+    >
+      {loading ? <Loading /> : error || !p ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
         <div className="space-y-4">
           <div className="flex items-end justify-between">
-            <Metric
-              label="Visitors 7d"
-              value={fmt(project.visitors7d)}
-              sub={<Delta value={project.visitorsDeltaPct} />}
-            />
-            {project.sparkline?.length > 1 && <Sparkline data={project.sparkline} />}
+            <Metric label="Visitors 7d" value={<AnimatedNumber value={p.visitors7d} />} sub={<Delta value={p.visitorsDeltaPct} />} />
+            {p.sparkline?.length > 1 && <div className="h-12 w-28"><Sparkline data={p.sparkline} /></div>}
           </div>
           <div className="grid grid-cols-3 gap-3 text-sm">
-            <div>
-              <p className="text-[11px] uppercase text-muted-foreground">Perf</p>
-              <p className="font-semibold">{project.performanceScore || "—"}</p>
-            </div>
-            <div>
-              <p className="text-[11px] uppercase text-muted-foreground">LCP</p>
-              <p className="font-semibold">{project.lcpSeconds ? `${project.lcpSeconds}s` : "—"}</p>
-            </div>
-            <div>
-              <p className="text-[11px] uppercase text-muted-foreground">Deploy</p>
-              <p className="flex items-center gap-1.5 font-semibold capitalize">
-                <Led tone={project.state === "ready" ? "green" : project.state === "error" ? "red" : "amber"} />
-                {project.state}
-              </p>
-            </div>
+            <div><p className="text-[11px] uppercase text-muted-foreground">Perf</p><p className="font-semibold">{p.performanceScore || "—"}</p></div>
+            <div><p className="text-[11px] uppercase text-muted-foreground">LCP</p><p className="font-semibold">{p.lcpSeconds ? `${p.lcpSeconds}s` : "—"}</p></div>
+            <div><p className="text-[11px] uppercase text-muted-foreground">Top</p><p className="truncate font-semibold">{p.topPage || "—"}</p></div>
           </div>
         </div>
       )}
-    </CardShell>
+    </Shell>
   );
 }
 
 export function SearchCard() {
   const { data, loading, error } = useAsync(fetchSearchConsoleSnapshot);
   return (
-    <CardShell icon={Search} title="Search (Google)">
-      {loading ? (
-        <LoadingRows />
-      ) : error ? (
-        <ErrorNote error={error} />
-      ) : (
+    <Shell href="/ops/analytics/search" icon={Search} title="Search (Google)">
+      {loading ? <Loading /> : error ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
         <div className="space-y-4">
           <div className="flex items-end justify-between">
             <Metric label="Clicks 7d" value={fmt(data?.clicks)} sub={<Delta value={data?.clicksDeltaPct} />} />
             <Metric label="Impressions" value={fmt(data?.impressions)} />
           </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <div>
-              <p className="text-[11px] uppercase text-muted-foreground">Avg CTR</p>
-              <p className="font-semibold">{data?.avgCtr != null ? `${(data.avgCtr * 100).toFixed(1)}%` : "—"}</p>
-            </div>
-            <div>
-              <p className="text-[11px] uppercase text-muted-foreground">Avg position</p>
-              <p className="font-semibold">{data?.avgPosition != null ? data.avgPosition.toFixed(1) : "—"}</p>
-            </div>
+            <div><p className="text-[11px] uppercase text-muted-foreground">Avg CTR</p><p className="font-semibold">{data?.avgCtr != null ? `${(data.avgCtr * 100).toFixed(1)}%` : "—"}</p></div>
+            <div><p className="text-[11px] uppercase text-muted-foreground">Avg position</p><p className="font-semibold">{data?.avgPosition != null ? data.avgPosition.toFixed(1) : "—"}</p></div>
           </div>
-          {!!data?.topQueries?.length && (
-            <div>
-              <p className="mb-1.5 text-[11px] uppercase text-muted-foreground">Top queries</p>
-              <ul className="space-y-1">
-                {data.topQueries.slice(0, 3).map((q) => (
-                  <li key={q.label} className="flex justify-between gap-2 text-xs">
-                    <span className="truncate text-foreground">{q.label}</span>
-                    <span className="shrink-0 text-muted-foreground">{q.clicks}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       )}
-    </CardShell>
-  );
-}
-
-function aggregateGithub(data: GitHubInsights | null) {
-  const repos = data?.repos ?? [];
-  return repos.reduce(
-    (acc, r) => {
-      acc.awaiting += r.awaitingReviewCount ?? 0;
-      acc.stuck += r.stuckPRs?.length ?? 0;
-      acc.critical += r.dependabot?.critical ?? 0;
-      acc.high += r.dependabot?.high ?? 0;
-      if (r.ciSuccessRatePct != null) {
-        acc.ciSum += r.ciSuccessRatePct;
-        acc.ciCount += 1;
-      }
-      return acc;
-    },
-    { awaiting: 0, stuck: 0, critical: 0, high: 0, ciSum: 0, ciCount: 0 }
+    </Shell>
   );
 }
 
 export function GithubCard() {
   const { data, loading, error } = useAsync(fetchGithubInsights);
-  const g = aggregateGithub(data);
-  const ci = g.ciCount ? Math.round(g.ciSum / g.ciCount) : null;
+  const repos = data?.repos ?? [];
+  const awaiting = repos.reduce((a, r) => a + (r.awaitingReviewCount ?? 0), 0);
+  const crit = repos.reduce((a, r) => a + (r.dependabot?.critical ?? 0) + (r.dependabot?.high ?? 0), 0);
+  const firstRepo = repos[0]?.fullName?.split("/").pop() ?? "tbpi";
   return (
-    <CardShell icon={Github} title="GitHub">
-      {loading ? (
-        <LoadingRows />
-      ) : error ? (
-        <ErrorNote error={error} />
-      ) : (
+    <Shell href={`/ops/analytics/github/${encodeURIComponent(firstRepo)}`} icon={Github} title="GitHub">
+      {loading ? <Loading /> : error ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
         <div className="grid grid-cols-2 gap-4">
-          <Metric label="Awaiting review" value={fmt(g.awaiting)} />
-          <Metric label="Stuck PRs" value={fmt(g.stuck)} />
-          <Metric
-            label="Vulns (crit/high)"
-            value={
-              <span style={{ color: g.critical + g.high > 0 ? "#D8392B" : undefined }}>
-                {g.critical}/{g.high}
-              </span>
-            }
-          />
-          <Metric label="CI success" value={ci != null ? `${ci}%` : "—"} />
+          <Metric label="Repos" value={repos.length} />
+          <Metric label="Awaiting review" value={awaiting} />
+          <Metric label="Vulns (crit/high)" value={<span style={{ color: crit ? "#D8392B" : undefined }}>{crit}</span>} />
+          <Metric label="Open issues" value={repos.reduce((a, r) => a + (r.issuesOpen ?? 0), 0)} />
         </div>
       )}
-    </CardShell>
+    </Shell>
   );
 }
 
 export function LinkedInCard() {
   const { data, loading, error } = useAsync(fetchLinkedInSnapshot);
   const a = data?.analytics;
-  const noData = data && data.source === "none";
+  const none = data && data.source === "none";
   return (
-    <CardShell icon={Linkedin} title="LinkedIn">
-      {loading ? (
-        <LoadingRows />
-      ) : error ? (
-        <ErrorNote error={error} />
-      ) : noData || !a ? (
-        <p className="text-xs text-muted-foreground">
-          Analytics not connected yet (Community Management API pending).
-        </p>
+    <Shell href="/ops/analytics/linkedin" icon={Linkedin} title="LinkedIn">
+      {loading ? <Loading /> : error ? <p className="text-xs text-muted-foreground">Unavailable.</p> : none || !a ? (
+        <p className="text-xs text-muted-foreground">Not connected yet.</p>
       ) : (
         <div className="grid grid-cols-2 gap-4">
-          <Metric label="Followers" value={fmt(a.followers)} sub={<Delta value={a.followerGain30d ? (a.followerGain30d / (a.followers || 1)) * 100 : null} />} />
+          <Metric label="Followers" value={fmt(a.followers)} />
           <Metric label="Impressions 30d" value={fmt(a.impressions30d)} />
-          <Metric
-            label="Engagement"
-            value={a.engagementRate != null ? `${(a.engagementRate * 100).toFixed(1)}%` : "—"}
-          />
-          <Metric label="Page views 30d" value={fmt(a.pageViews30d)} />
+          <Metric label="Engagement" value={a.engagementRate != null ? `${(a.engagementRate * 100).toFixed(1)}%` : "—"} />
+          <Metric label="Views 30d" value={fmt(a.pageViews30d)} />
         </div>
       )}
-    </CardShell>
+    </Shell>
+  );
+}
+
+export function ZohoCard() {
+  const { data, loading, error } = useAsync(fetchSystemStatus);
+  const z = data?.zoho;
+  return (
+    <Shell
+      href="/ops/analytics/zoho"
+      icon={Mail}
+      title="Zoho Mail"
+      right={z && <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: z.operational ? "#1F9D55" : "#D8392B" }}><Led tone={z.operational ? "green" : "red"} />{z.operational ? "Operational" : "Down"}</span>}
+    >
+      {loading ? <Loading /> : error || !z ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
+        <div className="grid grid-cols-3 gap-4">
+          <Metric label="Mailboxes" value={z.mailboxes} />
+          <Metric label="Uptime" value={`${z.uptimePct}%`} />
+          <Metric label="Incidents" value={z.incidents} />
+        </div>
+      )}
+    </Shell>
   );
 }

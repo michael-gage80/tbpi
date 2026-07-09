@@ -217,6 +217,120 @@ export interface SharedAnnouncement {
   createdAt: number | null;
 }
 
+/* ---------- Drill-down: websiteAnalytics ---------- */
+export interface AnalyticsPoint {
+  date: string;
+  visitors: number;
+  pageviews: number;
+}
+export interface AnalyticsRow {
+  label: string;
+  value: number;
+  href: string | null;
+}
+export interface WebsiteAnalytics {
+  days: number;
+  visitors: number;
+  visitorsDeltaPct: number;
+  pageviews: number;
+  pageviewsDeltaPct: number;
+  series: AnalyticsPoint[];
+  topPages: AnalyticsRow[];
+  referrers: AnalyticsRow[];
+  countries: AnalyticsRow[];
+  devices: AnalyticsRow[];
+  browsers: AnalyticsRow[];
+}
+
+/* ---------- Drill-down: deployHistory ---------- */
+export interface DeployRecord {
+  id: string;
+  projectName: string;
+  state: DeployState;
+  target: string;
+  createdAt: string;
+  buildSeconds: number;
+  creator: string;
+  url: string;
+  errorMessage: string | null;
+}
+export interface DeployHistory {
+  projectId: string;
+  deployments: DeployRecord[];
+}
+
+/* ---------- Drill-down: codebaseAnalytics ---------- */
+export interface CodebaseLanguage {
+  name: string;
+  bytes: number;
+}
+export interface CodebaseWeek {
+  weekStart: string;
+  commits: number;
+}
+export interface CodebaseContributor {
+  login: string;
+  avatarUrl: string;
+  commits: number;
+}
+export interface CodebaseCommit {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
+}
+export interface CIRun {
+  name: string;
+  status: string;
+  conclusion: string | null;
+  date: string;
+  url: string;
+}
+export interface CodebaseAnalytics {
+  fullName: string;
+  description: string;
+  defaultBranch: string;
+  stars: number;
+  forks: number;
+  watchers: number;
+  openIssues: number;
+  openPRs: number;
+  closedPRs: number;
+  sizeKB: number;
+  pushedAt: string | null;
+  checksPass: boolean;
+  languages: CodebaseLanguage[];
+  weeklyCommits: CodebaseWeek[];
+  contributors: CodebaseContributor[];
+  recentCommits: CodebaseCommit[];
+  ciRuns: CIRun[];
+}
+
+/* ---------- Drill-down: dependabotAlerts ---------- */
+export interface DependabotAlertDetail {
+  id: number;
+  severity: string;
+  packageName: string;
+  ecosystem: string;
+  summary: string;
+  fixedVersion: string | null;
+  vulnerableRange: string;
+  cve: string | null;
+  ghsa: string | null;
+  manifestPath: string;
+  createdAt: string;
+  url: string;
+}
+export interface DependabotAlertList {
+  fullName: string;
+  alerts: DependabotAlertDetail[];
+}
+
+/* ---------- Drill-down: searchConsoleQuery ---------- */
+export interface SearchQueryResult {
+  rows: SearchRow[];
+}
+
 /* ---------- Session ---------- */
 export type Role = "admin" | "staff";
 export interface Session {

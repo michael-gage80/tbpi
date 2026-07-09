@@ -114,7 +114,7 @@ export function TasksClient() {
       ) : error ? (
         <p className="text-sm text-muted-foreground">Couldn’t load tasks — {error}</p>
       ) : data.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-[20px] border border-dashed border-line2 p-8 text-center text-sm text-muted-foreground">
           No tasks yet. Add the first one.
         </p>
       ) : (
@@ -123,7 +123,7 @@ export function TasksClient() {
             <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
               Open · {open.length}
             </p>
-            <div className="rounded-xl border border-border bg-card px-4">
+            <div className="rounded-[20px] bg-card shadow-card px-4">
               {open.length ? (
                 open.map((t) => <TaskRow key={t.id} task={t} />)
               ) : (
@@ -137,7 +137,7 @@ export function TasksClient() {
               <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                 Completed · {done.length}
               </p>
-              <div className="rounded-xl border border-border bg-card px-4">
+              <div className="rounded-[20px] bg-card shadow-card px-4">
                 {done.map((t) => (
                   <TaskRow key={t.id} task={t} />
                 ))}

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /* Pulsing status LED (green = operational, amber = degraded, red = down). */
@@ -10,53 +11,47 @@ export function Led({
   tone?: "green" | "amber" | "red";
   className?: string;
 }) {
-  const color =
-    tone === "green" ? "#22C55E" : tone === "amber" ? "#E8951A" : "#D8392B";
+  const color = tone === "green" ? "#22C55E" : tone === "amber" ? "#E8951A" : "#D8392B";
   return (
     <span
-      className={cn("inline-block size-2 rounded-full", className)}
-      style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}`, animation: "tbpiLed 2s ease-in-out infinite" }}
+      className={cn("inline-block size-2 shrink-0 rounded-full ops-anim", className)}
+      style={{
+        backgroundColor: color,
+        boxShadow: `0 0 8px ${color}`,
+        animation: "tbpiLed 2s ease-in-out infinite",
+      }}
     />
   );
 }
 
-/* Inline orange sparkline from a series of numbers. */
-export function Sparkline({
-  data,
-  width = 96,
-  height = 28,
+/* Green/amber status pill with LED, e.g. "All systems operational". */
+export function StatusPill({
+  tone = "green",
+  children,
   className,
 }: {
-  data: number[];
-  width?: number;
-  height?: number;
+  tone?: "green" | "amber" | "red";
+  children: ReactNode;
   className?: string;
 }) {
-  if (!data || data.length < 2) return null;
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const span = max - min || 1;
-  const step = width / (data.length - 1);
-  const points = data
-    .map((v, i) => `${(i * step).toFixed(1)},${(height - ((v - min) / span) * height).toFixed(1)}`)
-    .join(" ");
+  const text = tone === "green" ? "#1F9D55" : tone === "amber" ? "#B26B00" : "#D8392B";
+  const bg =
+    tone === "green"
+      ? "rgba(34,197,94,.14)"
+      : tone === "amber"
+        ? "rgba(232,149,26,.14)"
+        : "rgba(216,57,43,.14)";
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      fill="none"
-      className={className}
-      aria-hidden
+    <span
+      className={cn(
+        "inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold",
+        className
+      )}
+      style={{ color: text, backgroundColor: bg }}
     >
-      <polyline
-        points={points}
-        stroke="var(--primary)"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      <Led tone={tone} />
+      {children}
+    </span>
   );
 }
 
@@ -74,16 +69,54 @@ export function Delta({ value, className }: { value?: number | null; className?:
   );
 }
 
+/* Small stat tile: big serif number over a muted caption. */
+export function StatTile({
+  value,
+  label,
+  className,
+  accent = false,
+}: {
+  value: ReactNode;
+  label: string;
+  className?: string;
+  accent?: boolean;
+}) {
+  return (
+    <div className={cn("rounded-2xl bg-chip/60 p-3", className)}>
+      <p
+        className={cn("text-2xl font-normal leading-none", accent && "text-primary")}
+        style={{ fontFamily: "var(--font-dm-serif)" }}
+      >
+        {value}
+      </p>
+      <p className="mt-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
+    </div>
+  );
+}
+
 const CATEGORY_STYLES: Record<string, { color: string; bg: string; label: string }> = {
   event: { color: "#E8581A", bg: "rgba(232,88,26,.14)", label: "Event" },
-  meeting: { color: "var(--foreground)", bg: "var(--muted)", label: "Meeting" },
+  meeting: { color: "var(--foreground)", bg: "var(--chip)", label: "Meeting" },
   deadline: { color: "#D8392B", bg: "rgba(216,57,43,.14)", label: "Deadline" },
   high: { color: "#D8392B", bg: "rgba(216,57,43,.14)", label: "High" },
   medium: { color: "#E8581A", bg: "rgba(232,88,26,.14)", label: "Medium" },
   low: { color: "#8E8E93", bg: "rgba(142,142,147,.16)", label: "Low" },
+  needsReply: { color: "#E8581A", bg: "rgba(232,88,26,.14)", label: "Needs reply" },
+  fyi: { color: "#8E8E93", bg: "rgba(142,142,147,.16)", label: "FYI" },
+  waiting: { color: "#3B82F6", bg: "rgba(59,130,246,.16)", label: "Waiting" },
 };
 
-export function Chip({ kind, className }: { kind: string; className?: string }) {
+export function Chip({
+  kind,
+  label,
+  className,
+}: {
+  kind: string;
+  label?: string;
+  className?: string;
+}) {
   const s = CATEGORY_STYLES[kind];
   if (!s) return null;
   return (
@@ -94,7 +127,7 @@ export function Chip({ kind, className }: { kind: string; className?: string }) 
       )}
       style={{ color: s.color, backgroundColor: s.bg }}
     >
-      {s.label}
+      {label ?? s.label}
     </span>
   );
 }

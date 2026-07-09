@@ -96,7 +96,7 @@ function AnnouncementCard({ a, isAdmin }: { a: SharedAnnouncement; isAdmin: bool
     }
   }
   return (
-    <article className="rounded-xl border border-border bg-card p-5">
+    <article className="rounded-[20px] bg-card shadow-card p-5">
       <div className="mb-1 flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
           {a.pinned && <Pin className="size-3.5 text-primary" />}
@@ -138,7 +138,7 @@ export function AnnouncementsClient({ role }: { role: Role }) {
       ) : error ? (
         <p className="text-sm text-muted-foreground">Couldn’t load announcements — {error}</p>
       ) : sorted.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-[20px] border border-dashed border-line2 p-8 text-center text-sm text-muted-foreground">
           No announcements yet.
         </p>
       ) : (

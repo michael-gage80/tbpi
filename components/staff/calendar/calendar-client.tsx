@@ -16,34 +16,32 @@ import {
 import { Plus, ChevronLeft, ChevronRight, MapPin, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { PageHeading } from "@/components/staff/ui/page-heading";
+import { SpotlightCard } from "@/components/staff/ui/spotlight-card";
+import { Stagger, Reveal } from "@/components/staff/ui/motion";
 import { Chip } from "@/components/staff/ui/primitives";
 import { EventDialog } from "@/components/staff/calendar/event-dialog";
 import { useSharedEvents } from "@/components/staff/firestore-hooks";
 import { eventsApi } from "@/components/staff/api";
 import { cn } from "@/lib/utils";
 
-const CATEGORY_BORDER: Record<string, string> = {
+const CATEGORY_COLOR: Record<string, string> = {
   event: "#E8581A",
-  meeting: "var(--muted-foreground)",
+  meeting: "var(--foreground)",
   deadline: "#D8392B",
 };
 
 export function CalendarClient() {
   const { data, loading, error } = useSharedEvents();
-  const [cursor, setCursor] = useState(new Date());
+  const [cursor, setCursor] = useState(() => new Date());
+  const [selected, setSelected] = useState(() => new Date());
 
-  const monthStart = startOfMonth(cursor);
-  const gridStart = startOfWeek(monthStart, { weekStartsOn: 1 });
+  const gridStart = startOfWeek(startOfMonth(cursor), { weekStartsOn: 1 });
   const gridEnd = endOfWeek(endOfMonth(cursor), { weekStartsOn: 1 });
   const days = eachDayOfInterval({ start: gridStart, end: gridEnd });
 
-  const eventsOn = (day: Date) => data.filter((e) => isSameDay(new Date(e.start), day));
-  // Captured once per mount; "upcoming" only needs coarse freshness.
-  // eslint-disable-next-line react-hooks/purity
-  const cutoff = Date.now() - 60 * 60 * 1000;
-  const upcoming = data.filter((e) => e.end >= cutoff).slice(0, 8);
+  const eventsOn = (day: Date) =>
+    data.filter((e) => isSameDay(new Date(e.start), day)).sort((a, b) => a.start - b.start);
+  const dayEvents = eventsOn(selected);
 
   async function remove(id: string) {
     try {
@@ -56,135 +54,110 @@ export function CalendarClient() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <PageHeading title="Calendar" subtitle="Shared team events." />
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-normal text-foreground sm:text-4xl" style={{ fontFamily: "var(--font-dm-serif)" }}>
+            {format(cursor, "MMMM yyyy")}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">{format(selected, "EEEE, d MMMM")}</p>
+        </div>
         <EventDialog
-          defaultDate={cursor}
-          trigger={
-            <Button size="sm">
-              <Plus className="size-4" /> Add event
-            </Button>
-          }
+          defaultDate={selected}
+          trigger={<Button size="sm"><Plus className="size-4" /> Add event</Button>}
         />
       </div>
 
       {loading ? (
-        <Skeleton className="h-80 w-full" />
+        <div className="h-96 animate-pulse rounded-[20px] bg-card" />
       ) : error ? (
         <p className="text-sm text-muted-foreground">Couldn’t load calendar — {error}</p>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
           {/* Month grid */}
-          <div className="rounded-xl border border-border bg-card p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-normal" style={{ fontFamily: "var(--font-dm-serif)" }}>
-                {format(cursor, "MMMM yyyy")}
-              </h2>
-              <div className="flex gap-1">
-                <button onClick={() => setCursor(subMonths(cursor, 1))} aria-label="Previous month" className="rounded-md p-1.5 hover:bg-accent/60">
-                  <ChevronLeft className="size-4" />
-                </button>
-                <button onClick={() => setCursor(new Date())} className="rounded-md px-2 py-1 text-xs font-medium hover:bg-accent/60">
-                  Today
-                </button>
-                <button onClick={() => setCursor(addMonths(cursor, 1))} aria-label="Next month" className="rounded-md p-1.5 hover:bg-accent/60">
-                  <ChevronRight className="size-4" />
-                </button>
+          <Reveal standalone>
+            <SpotlightCard className="p-5" spotlight={false} tilt={false}>
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex gap-1">
+                  <button onClick={() => setCursor(subMonths(cursor, 1))} aria-label="Previous month" className="rounded-lg p-1.5 hover:bg-accent"><ChevronLeft className="size-4" /></button>
+                  <button onClick={() => { setCursor(new Date()); setSelected(new Date()); }} className="rounded-lg px-2.5 py-1 text-xs font-medium hover:bg-accent">Today</button>
+                  <button onClick={() => setCursor(addMonths(cursor, 1))} aria-label="Next month" className="rounded-lg p-1.5 hover:bg-accent"><ChevronRight className="size-4" /></button>
+                </div>
+                <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                  <span className="flex items-center gap-1"><span className="size-2 rounded-full" style={{ background: "#E8581A" }} /> Event</span>
+                  <span className="flex items-center gap-1"><span className="size-2 rounded-full bg-foreground" /> Meeting</span>
+                  <span className="flex items-center gap-1"><span className="size-2 rounded-full" style={{ background: "#D8392B" }} /> Deadline</span>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold uppercase text-muted-foreground">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-                <div key={d} className="py-1">{d}</div>
-              ))}
-            </div>
-            <div className="grid grid-cols-7 gap-1">
-              {days.map((day) => {
-                const dayEvents = eventsOn(day);
-                const today = isSameDay(day, new Date());
-                return (
-                  <EventDialog
-                    key={day.toISOString()}
-                    defaultDate={day}
-                    trigger={
-                      <button
-                        className={cn(
-                          "flex min-h-16 flex-col rounded-lg border border-transparent p-1 text-left transition-colors hover:border-border",
-                          !isSameMonth(day, cursor) && "opacity-40"
-                        )}
-                      >
-                        <span
-                          className={cn(
-                            "mb-0.5 inline-flex size-6 items-center justify-center rounded-full text-xs",
-                            today && "bg-primary font-semibold text-primary-foreground"
-                          )}
-                        >
-                          {format(day, "d")}
-                        </span>
-                        <span className="flex flex-col gap-0.5">
-                          {dayEvents.slice(0, 2).map((e) => (
-                            <span
-                              key={e.id}
-                              className="truncate rounded px-1 text-[10px] text-foreground"
-                              style={{ borderLeft: `2px solid ${CATEGORY_BORDER[e.category ?? "event"]}` }}
-                            >
-                              {e.title}
-                            </span>
-                          ))}
-                          {dayEvents.length > 2 && (
-                            <span className="text-[10px] text-muted-foreground">+{dayEvents.length - 2}</span>
-                          )}
-                        </span>
-                      </button>
-                    }
-                  />
-                );
-              })}
-            </div>
-          </div>
+              <div className="grid grid-cols-7 text-center text-[11px] font-semibold uppercase text-muted-foreground">
+                {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <div key={i} className="py-1.5">{d}</div>)}
+              </div>
+              <div className="grid grid-cols-7 gap-1">
+                {days.map((day) => {
+                  const evs = eventsOn(day);
+                  const today = isSameDay(day, new Date());
+                  const isSelected = isSameDay(day, selected);
+                  return (
+                    <button
+                      key={day.toISOString()}
+                      onClick={() => setSelected(day)}
+                      className={cn(
+                        "flex aspect-square flex-col items-center justify-center rounded-xl text-sm transition-colors",
+                        !isSameMonth(day, cursor) && "opacity-35",
+                        isSelected && !today && "bg-accent",
+                        !today && !isSelected && "hover:bg-accent/60"
+                      )}
+                    >
+                      <span className={cn("flex size-7 items-center justify-center rounded-full", today && "bg-primary font-semibold text-primary-foreground")}>
+                        {format(day, "d")}
+                      </span>
+                      <span className="mt-0.5 flex h-1.5 items-center gap-0.5">
+                        {evs.slice(0, 3).map((e) => (
+                          <span key={e.id} className="size-1.5 rounded-full" style={{ backgroundColor: CATEGORY_COLOR[e.category ?? "event"] }} />
+                        ))}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </SpotlightCard>
+          </Reveal>
 
-          {/* Upcoming list */}
-          <div>
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">Upcoming</p>
-            {upcoming.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                Nothing scheduled.
-              </p>
-            ) : (
-              <ul className="space-y-2">
-                {upcoming.map((e) => (
-                  <li
-                    key={e.id}
-                    className="group rounded-xl border border-border bg-card p-3"
-                    style={{ borderLeft: `4px solid ${CATEGORY_BORDER[e.category ?? "event"]}` }}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-foreground">{e.title}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {format(new Date(e.start), e.allDay ? "EEE d MMM" : "EEE d MMM, HH:mm")}
-                        </p>
-                        {e.location && (
-                          <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-                            <MapPin className="size-3" /> {e.location}
-                          </p>
-                        )}
+          {/* Day schedule */}
+          <Reveal standalone>
+            <div>
+              <h2 className="mb-3 text-xl font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+                {format(selected, "EEEE")}&apos;s schedule
+              </h2>
+              {dayEvents.length === 0 ? (
+                <div className="rounded-[20px] border border-dashed border-line2 p-10 text-center text-sm text-muted-foreground">
+                  Nothing scheduled.
+                </div>
+              ) : (
+                <Stagger className="space-y-3">
+                  {dayEvents.map((e) => (
+                    <Reveal key={e.id}>
+                      <div
+                        className="group flex items-start gap-3 rounded-[18px] bg-card p-4 shadow-card"
+                        style={{ borderLeft: `4px solid ${CATEGORY_COLOR[e.category ?? "event"]}` }}
+                      >
+                        <span className="w-12 shrink-0 pt-0.5 text-xs font-semibold text-muted-foreground">
+                          {e.allDay ? "All day" : format(new Date(e.start), "HH:mm")}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-semibold text-foreground">{e.title}</p>
+                          {e.location && <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="size-3" /> {e.location}</p>}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {e.category && <Chip kind={e.category} />}
+                          <button onClick={() => remove(e.id)} aria-label="Delete event" className="rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"><Trash2 className="size-3.5" /></button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        {e.category && <Chip kind={e.category} />}
-                        <button
-                          onClick={() => remove(e.id)}
-                          aria-label="Delete event"
-                          className="rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+                    </Reveal>
+                  ))}
+                </Stagger>
+              )}
+            </div>
+          </Reveal>
         </div>
       )}
     </div>
