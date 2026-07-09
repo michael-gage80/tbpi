@@ -55,7 +55,7 @@ function SidebarBody({ session, onNavigate }: { session: Session; onNavigate?: (
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1">
         {items.map((item) => {
-          const active = item.href === "/staff" ? pathname === "/staff" : pathname.startsWith(item.href);
+          const active = item.href === "/ops" ? pathname === "/ops" : pathname.startsWith(item.href);
           const Icon = item.icon;
           return (
             <Link

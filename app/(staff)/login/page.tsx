@@ -34,7 +34,7 @@ export default function LoginPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Sign-in failed.");
       }
-      router.replace("/staff");
+      router.replace("/ops");
     } catch (err) {
       const message =
         err instanceof Error && /auth\/(invalid|wrong|user-not)/.test(err.message)

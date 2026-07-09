@@ -24,7 +24,7 @@ export function CookieBanner() {
     setVisible(false);
   }
 
-  if (pathname?.startsWith("/staff") || pathname === "/login") return null;
+  if (pathname?.startsWith("/ops") || pathname === "/login") return null;
   if (!visible) return null;
 
   return (

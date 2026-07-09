@@ -17,12 +17,12 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/staff", label: "Overview", icon: LayoutDashboard },
-  { href: "/staff/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/staff/tasks", label: "Tasks", icon: ListChecks },
-  { href: "/staff/calendar", label: "Calendar", icon: Calendar },
-  { href: "/staff/announcements", label: "Announcements", icon: Megaphone },
-  { href: "/staff/admin", label: "Admin", icon: Shield, adminOnly: true },
+  { href: "/ops", label: "Overview", icon: LayoutDashboard },
+  { href: "/ops/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/ops/tasks", label: "Tasks", icon: ListChecks },
+  { href: "/ops/calendar", label: "Calendar", icon: Calendar },
+  { href: "/ops/announcements", label: "Announcements", icon: Megaphone },
+  { href: "/ops/admin", label: "Admin", icon: Shield, adminOnly: true },
 ];
 
 export function visibleNav(role: Role): NavItem[] {

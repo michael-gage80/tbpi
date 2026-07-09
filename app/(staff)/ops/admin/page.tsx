@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role !== "admin") redirect("/staff");
+  if (session.role !== "admin") redirect("/ops");
 
   return (
     <div className="space-y-2">
