@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
+import { PageHeading } from "@/components/staff/ui/page-heading";
+import { UsersClient } from "@/components/staff/admin/users-client";
 import { AnnouncementsClient } from "@/components/staff/announcements/announcements-client";
 
 export const runtime = "nodejs";
@@ -11,8 +13,9 @@ export default async function AdminPage() {
   if (session.role !== "admin") redirect("/ops");
 
   return (
-    <div className="space-y-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">Admin</p>
+    <div className="space-y-8">
+      <PageHeading title="Admin" subtitle="Manage your team and announcements." />
+      <UsersClient selfUid={session.uid} />
       <AnnouncementsClient role={session.role} />
     </div>
   );

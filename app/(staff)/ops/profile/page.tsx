@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { PageHeading } from "@/components/staff/ui/page-heading";
 import { ChangePasswordDialog } from "@/components/staff/change-password-dialog";
+import { CalmToggle } from "@/components/staff/calm-toggle";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,6 +34,9 @@ export default async function ProfilePage() {
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Role</p>
           <p className="capitalize text-foreground">{session.role}</p>
+        </div>
+        <div className="border-t border-line pt-4">
+          <CalmToggle />
         </div>
         <div className="pt-2">
           <ChangePasswordDialog />

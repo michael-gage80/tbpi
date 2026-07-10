@@ -19,9 +19,10 @@ import { BrandLogo } from "@/components/staff/brand-logo";
 import { BootSplash } from "@/components/staff/boot-splash";
 import { MobileTabBar } from "@/components/staff/mobile-tabbar";
 import { CommandPalette } from "@/components/staff/command-palette";
-import { visibleNav, isNavActive } from "@/components/staff/nav";
+import { mainNav, bottomNav, isNavActive, type NavItem } from "@/components/staff/nav";
 import { logout } from "@/components/staff/api";
 import { mail } from "@/components/staff/email/mail-api";
+import { useSecurity } from "@/components/staff/security";
 import { cn } from "@/lib/utils";
 import type { Session } from "@/lib/firebase/types";
 
@@ -63,11 +64,52 @@ function useUnreadInbox(role: string): number {
 function DesktopSidebar({ session }: { session: Session }) {
   const pathname = usePathname();
   const handleLogout = useLogout();
-  const items = visibleNav(session.role);
+  const main = mainNav(session.role);
+  const bottom = bottomNav(session.role);
   const unread = useUnreadInbox(session.role);
+  const { summary: security } = useSecurity();
+
+  const renderRow = (item: NavItem) => {
+    const active = isNavActive(pathname, item.href);
+    const Icon = item.icon;
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        className={cn(
+          "group flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-sm transition-all duration-200",
+          active
+            ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
+            : "font-medium text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+        )}
+      >
+        <Icon
+          className={cn(
+            "size-[18px] shrink-0 transition-transform group-hover:scale-110",
+            active && "text-sidebar-accent-foreground"
+          )}
+        />
+        <span className="flex-1">{item.label}</span>
+        {item.href === "/ops/email" && unread > 0 && (
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">
+            {unread}
+          </span>
+        )}
+        {item.href === "/ops/analytics" && security.critical > 0 && (
+          <span
+            className="flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-semibold text-white ops-anim"
+            style={{ backgroundColor: "#D8392B", animation: "tbpiLed 1.6s ease-in-out infinite" }}
+            title={`${security.critical} critical vulnerabilities`}
+          >
+            {security.critical}
+          </span>
+        )}
+      </Link>
+    );
+  };
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[264px] shrink-0 flex-col gap-6 border-r border-sidebar-border bg-sidebar p-4 lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-[264px] shrink-0 flex-col gap-4 border-r border-sidebar-border bg-sidebar p-4 lg:flex">
       <div className="px-2 pt-2">
         <BrandLogo className="h-8" />
         <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
@@ -75,36 +117,11 @@ function DesktopSidebar({ session }: { session: Session }) {
         </p>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1">
-        {items.map((item) => {
-          const active = isNavActive(pathname, item.href);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "group flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-sm transition-all duration-200",
-                active
-                  ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
-                  : "font-medium text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              )}
-            >
-              <Icon
-                className={cn(
-                  "size-[18px] shrink-0 transition-transform group-hover:scale-110",
-                  active && "text-sidebar-accent-foreground"
-                )}
-              />
-              <span className="flex-1">{item.label}</span>
-              {item.href === "/ops/email" && unread > 0 && (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">
-                  {unread}
-                </span>
-              )}
-            </Link>
-          );
-        })}
+      <nav className="flex flex-1 flex-col gap-1">{main.map(renderRow)}</nav>
+
+      {/* Pinned bottom nav (Admin, Profile) */}
+      <nav className="flex flex-col gap-1 border-t border-sidebar-border pt-3">
+        {bottom.map(renderRow)}
       </nav>
 
       {/* Profile card */}
@@ -186,13 +203,13 @@ function MobileTopBar({ session }: { session: Session }) {
 
 export function DashboardShell({ session, children }: { session: Session; children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full overflow-x-clip">
       <BootSplash />
       <CommandPalette role={session.role} />
       <DesktopSidebar session={session} />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col overflow-x-clip">
         <MobileTopBar session={session} />
-        <main className="mx-auto w-full max-w-[1180px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
+        <main className="mx-auto w-full min-w-0 max-w-[1180px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-12 lg:pt-10">
           {children}
         </main>
       </div>

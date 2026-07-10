@@ -21,6 +21,7 @@ export function SpotlightCard({
   tilt = true,
   spotlight = true,
   onClick,
+  style,
 }: {
   children: ReactNode;
   className?: string;
@@ -28,6 +29,7 @@ export function SpotlightCard({
   tilt?: boolean;
   spotlight?: boolean;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -68,7 +70,7 @@ export function SpotlightCard({
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       onClick={onClick}
-      style={reduce ? undefined : { rotateX: rx, rotateY: ry, transformPerspective: 1000 }}
+      style={reduce ? style : { rotateX: rx, rotateY: ry, transformPerspective: 1000, ...style }}
       className={cn(
         "group relative overflow-hidden rounded-[20px] text-card-foreground transition-shadow duration-300",
         glass ? "ops-glass" : "bg-card shadow-card",

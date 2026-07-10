@@ -7,12 +7,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAsync } from "@/components/staff/use-async";
 import { fetchSystemStatus } from "@/lib/org/callables";
 import {
-  WebsiteCard,
+  WebsiteCards,
   SearchCard,
-  GithubCard,
+  GithubCards,
   LinkedInCard,
   ZohoCard,
 } from "@/components/staff/analytics/cards";
+import { SecurityCard } from "@/components/staff/security/security-card";
 
 function HealthPill() {
   const { data, loading, error } = useAsync(fetchSystemStatus);
@@ -51,18 +52,23 @@ export function StatusClient() {
 
       <Stagger className="space-y-8">
         <Reveal>
-          <Group label="Web & Search">
-            <WebsiteCard />
+          <Group label="Websites">
+            <WebsiteCards />
+          </Group>
+        </Reveal>
+        <Reveal>
+          <Group label="Search">
             <SearchCard />
           </Group>
         </Reveal>
         <Reveal>
-          <Group label="Code">
-            <GithubCard />
+          <Group label="Code &amp; Security">
+            <GithubCards />
+            <SecurityCard />
           </Group>
         </Reveal>
         <Reveal>
-          <Group label="Social & Mail">
+          <Group label="Social &amp; Mail">
             <LinkedInCard />
             <ZohoCard />
           </Group>

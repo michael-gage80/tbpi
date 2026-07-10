@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Globe, Search, Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+import { Globe, Search, Github, Linkedin, Mail, ArrowUpRight, ShieldAlert } from "lucide-react";
 import { SpotlightCard } from "@/components/staff/ui/spotlight-card";
 import { Sparkline } from "@/components/staff/ui/sparkline";
 import { AnimatedNumber } from "@/components/staff/ui/motion";
@@ -14,8 +14,10 @@ import {
   fetchGithubInsights,
   fetchLinkedInSnapshot,
 } from "@/lib/org/callables";
+import type { VercelProjectStatus, RepoInsights } from "@/lib/firebase/types";
 
 const fmt = (n?: number | null) => (n == null || Number.isNaN(n) ? "—" : n.toLocaleString());
+const shortRepo = (full: string) => full.split("/").pop() ?? full;
 
 function Shell({
   href,
@@ -31,7 +33,7 @@ function Shell({
   children: React.ReactNode;
 }) {
   return (
-    <Link href={href} className="block">
+    <Link href={href} className="block h-full">
       <SpotlightCard className="h-full p-5" onClick={() => {}}>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -65,37 +67,82 @@ function Metric({ label, value, sub }: { label: string; value: React.ReactNode; 
 
 const Loading = () => <Skeleton className="h-20 w-full" />;
 
-export function WebsiteCard() {
-  const { data, loading, error } = useAsync(fetchSystemStatus);
-  const p = data?.vercel?.[0];
+/* ---- Website / Vercel (one card per project) ---- */
+function WebsiteCard({ project }: { project: VercelProjectStatus }) {
   return (
     <Shell
-      href="/ops/analytics/website"
+      href={`/ops/analytics/website/${encodeURIComponent(project.id)}`}
       icon={Globe}
-      title="Website"
-      right={p && <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: p.state === "ready" ? "#1F9D55" : "#B26B00" }}><Led tone={p.state === "ready" ? "green" : "amber"} />{p.state}</span>}
+      title={project.name}
+      right={
+        <span className="flex items-center gap-1.5 text-xs font-semibold capitalize" style={{ color: project.state === "ready" ? "#1F9D55" : project.state === "error" ? "#D8392B" : "#B26B00" }}>
+          <Led tone={project.state === "ready" ? "green" : project.state === "error" ? "red" : "amber"} />{project.state}
+        </span>
+      }
     >
-      {loading ? <Loading /> : error || !p ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
-        <div className="space-y-4">
-          <div className="flex items-end justify-between">
-            <Metric label="Visitors 7d" value={<AnimatedNumber value={p.visitors7d} />} sub={<Delta value={p.visitorsDeltaPct} />} />
-            {p.sparkline?.length > 1 && <div className="h-12 w-28"><Sparkline data={p.sparkline} /></div>}
-          </div>
-          <div className="grid grid-cols-3 gap-3 text-sm">
-            <div><p className="text-[11px] uppercase text-muted-foreground">Perf</p><p className="font-semibold">{p.performanceScore || "—"}</p></div>
-            <div><p className="text-[11px] uppercase text-muted-foreground">LCP</p><p className="font-semibold">{p.lcpSeconds ? `${p.lcpSeconds}s` : "—"}</p></div>
-            <div><p className="text-[11px] uppercase text-muted-foreground">Top</p><p className="truncate font-semibold">{p.topPage || "—"}</p></div>
-          </div>
+      <div className="space-y-4">
+        <div className="flex items-end justify-between">
+          <Metric label="Visitors 7d" value={<AnimatedNumber value={project.visitors7d} />} sub={<Delta value={project.visitorsDeltaPct} />} />
+          {project.sparkline?.length > 1 && <div className="h-12 w-28"><Sparkline data={project.sparkline} /></div>}
         </div>
-      )}
+        <div className="grid grid-cols-3 gap-3 text-sm">
+          <div><p className="text-[11px] uppercase text-muted-foreground">Perf</p><p className="font-semibold">{project.performanceScore || "—"}</p></div>
+          <div><p className="text-[11px] uppercase text-muted-foreground">LCP</p><p className="font-semibold">{project.lcpSeconds ? `${project.lcpSeconds}s` : "—"}</p></div>
+          <div><p className="text-[11px] uppercase text-muted-foreground">Top</p><p className="truncate font-semibold">{project.topPage || "—"}</p></div>
+        </div>
+      </div>
     </Shell>
   );
+}
+
+export function WebsiteCards() {
+  const { data, loading, error } = useAsync(fetchSystemStatus);
+  if (loading) return <><Loading /><Loading /></>;
+  if (error || !data?.vercel?.length)
+    return <Shell href="/ops/analytics/website" icon={Globe} title="Website"><p className="text-xs text-muted-foreground">Unavailable.</p></Shell>;
+  return <>{data.vercel.map((p) => <WebsiteCard key={p.id} project={p} />)}</>;
+}
+
+/* ---- GitHub (one card per repo, red shield on critical) ---- */
+function GithubRepoCard({ repo }: { repo: RepoInsights }) {
+  const crit = repo.dependabot?.critical ?? 0;
+  const high = repo.dependabot?.high ?? 0;
+  const ciOk = repo.ciSuccessRatePct != null && repo.ciSuccessRatePct >= 80;
+  return (
+    <Shell
+      href={`/ops/analytics/github/${encodeURIComponent(shortRepo(repo.fullName))}`}
+      icon={Github}
+      title={shortRepo(repo.fullName)}
+      right={
+        crit > 0 ? (
+          <span className="flex items-center gap-1 text-xs font-bold text-[#D8392B]"><ShieldAlert className="size-4 ops-anim" style={{ animation: "tbpiLed 1.6s ease-in-out infinite" }} />{crit}</span>
+        ) : (
+          <span className="flex items-center gap-1.5 text-xs font-semibold" style={{ color: ciOk ? "#1F9D55" : "#B26B00" }}><Led tone={ciOk ? "green" : "amber"} />CI</span>
+        )
+      }
+    >
+      <div className="grid grid-cols-2 gap-4">
+        <Metric label="Awaiting review" value={repo.awaitingReviewCount ?? 0} />
+        <Metric label="Open issues" value={repo.issuesOpen ?? 0} />
+        <Metric label="Vulns (crit/high)" value={<span style={{ color: crit ? "#D8392B" : undefined }}>{crit}/{high}</span>} />
+        <Metric label="CI success" value={repo.ciSuccessRatePct != null ? `${repo.ciSuccessRatePct}%` : "—"} />
+      </div>
+    </Shell>
+  );
+}
+
+export function GithubCards() {
+  const { data, loading, error } = useAsync(fetchGithubInsights);
+  if (loading) return <><Loading /><Loading /></>;
+  if (error || !data?.repos?.length)
+    return <Shell href="/ops/analytics/github/tbpi" icon={Github} title="GitHub"><p className="text-xs text-muted-foreground">Unavailable.</p></Shell>;
+  return <>{data.repos.map((r) => <GithubRepoCard key={r.fullName} repo={r} />)}</>;
 }
 
 export function SearchCard() {
   const { data, loading, error } = useAsync(fetchSearchConsoleSnapshot);
   return (
-    <Shell href="/ops/analytics/search" icon={Search} title="Search (Google)">
+    <Shell href="/ops/analytics/search" icon={Search} title="Search">
       {loading ? <Loading /> : error ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
         <div className="space-y-4">
           <div className="flex items-end justify-between">
@@ -106,26 +153,6 @@ export function SearchCard() {
             <div><p className="text-[11px] uppercase text-muted-foreground">Avg CTR</p><p className="font-semibold">{data?.avgCtr != null ? `${(data.avgCtr * 100).toFixed(1)}%` : "—"}</p></div>
             <div><p className="text-[11px] uppercase text-muted-foreground">Avg position</p><p className="font-semibold">{data?.avgPosition != null ? data.avgPosition.toFixed(1) : "—"}</p></div>
           </div>
-        </div>
-      )}
-    </Shell>
-  );
-}
-
-export function GithubCard() {
-  const { data, loading, error } = useAsync(fetchGithubInsights);
-  const repos = data?.repos ?? [];
-  const awaiting = repos.reduce((a, r) => a + (r.awaitingReviewCount ?? 0), 0);
-  const crit = repos.reduce((a, r) => a + (r.dependabot?.critical ?? 0) + (r.dependabot?.high ?? 0), 0);
-  const firstRepo = repos[0]?.fullName?.split("/").pop() ?? "tbpi";
-  return (
-    <Shell href={`/ops/analytics/github/${encodeURIComponent(firstRepo)}`} icon={Github} title="GitHub">
-      {loading ? <Loading /> : error ? <p className="text-xs text-muted-foreground">Unavailable.</p> : (
-        <div className="grid grid-cols-2 gap-4">
-          <Metric label="Repos" value={repos.length} />
-          <Metric label="Awaiting review" value={awaiting} />
-          <Metric label="Vulns (crit/high)" value={<span style={{ color: crit ? "#D8392B" : undefined }}>{crit}</span>} />
-          <Metric label="Open issues" value={repos.reduce((a, r) => a + (r.issuesOpen ?? 0), 0)} />
         </div>
       )}
     </Shell>
