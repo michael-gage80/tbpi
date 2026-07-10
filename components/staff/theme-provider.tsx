@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type Theme = "light" | "dark";
 const STORAGE_KEY = "tbpi_theme";
@@ -39,7 +40,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggle, setTheme }}>
-      <div className={theme === "dark" ? "dark" : undefined}>{children}</div>
+      <div className={cn("ops-surface min-h-screen bg-background text-foreground", theme === "dark" && "dark")}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }
