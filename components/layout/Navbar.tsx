@@ -18,6 +18,7 @@ const navLinks = [
   { href: "/media", label: "Media" },
   { href: "/work-with-us", label: "Work With Us" },
   { href: "/contact", label: "Contact" },
+  { href: "/staff", label: "Staff" },
 ];
 
 export function Navbar() {
@@ -32,6 +33,9 @@ export function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
+
+  // The ops dashboard supplies its own chrome — hide the public nav there.
+  if (pathname?.startsWith("/ops") || pathname === "/login") return null;
 
   return (
     <header

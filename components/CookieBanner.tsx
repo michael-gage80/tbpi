@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const STORAGE_KEY = "tbpi_cookie_consent";
 
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -22,6 +24,7 @@ export function CookieBanner() {
     setVisible(false);
   }
 
+  if (pathname?.startsWith("/ops") || pathname === "/login") return null;
   if (!visible) return null;
 
   return (

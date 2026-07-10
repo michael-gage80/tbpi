@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // firebase-admin is a heavy Node-only package with native/CJS deps; let Node
+  // load it from node_modules at runtime instead of bundling it into the server
+  // chunks (avoids ESM/CJS interop failures on the serverless runtime).
+  serverExternalPackages: ["firebase-admin"],
   images: {
     formats: ["image/webp", "image/avif"],
     remotePatterns: [
@@ -24,7 +28,9 @@ const nextConfig: NextConfig = {
 
       // Organisation / about
       { source: "/who-we-are", destination: "/about", permanent: true },
-      { source: "/staff", destination: "/about#team", permanent: true },
+      // NOTE: the old Squarespace /staff (team directory) redirect was removed —
+      // /staff is now the gated staff dashboard (see app/(staff)). The team
+      // section is still reachable via /directory below.
       { source: "/governance", destination: "/about#governance", permanent: true },
       { source: "/directory", destination: "/about#team", permanent: true },
 
