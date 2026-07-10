@@ -40,6 +40,9 @@ export function Constellation() {
   const { summary: security } = useSecurity();
   const containerRef = useRef<HTMLDivElement>(null);
   const [ripple, setRipple] = useState<{ x: number; y: number; key: number } | null>(null);
+  // Single hovered node — state-driven so exactly one title can show (CSS
+  // :hover leaves multiple nodes "stuck" as they orbit under a parked cursor).
+  const [hovered, setHovered] = useState<string | null>(null);
 
   // Cursor parallax
   const mx = useMotionValue(0);
@@ -72,6 +75,7 @@ export function Constellation() {
   function onLeave() {
     mx.set(0);
     my.set(0);
+    setHovered(null);
   }
 
   function go(node: Node, e: React.MouseEvent) {
@@ -89,17 +93,6 @@ export function Constellation() {
 
   return (
     <div ref={containerRef} onPointerMove={onPointerMove} onPointerLeave={onLeave} className="relative aspect-[16/11] w-full">
-      {/* Radar sweep */}
-      {!reduce && (
-        <motion.div
-          aria-hidden
-          className="absolute inset-0 rounded-full"
-          style={{ background: "conic-gradient(from 0deg, transparent 0deg, color-mix(in srgb, var(--primary) 14%, transparent) 24deg, transparent 44deg)", maskImage: "radial-gradient(circle, black 62%, transparent 66%)" }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
-      )}
-
       <motion.div className="absolute inset-0" style={reduce ? undefined : { x: px, y: py }}>
         <motion.div className="absolute inset-0" {...rot}>
           {/* Connections */}
@@ -119,18 +112,6 @@ export function Constellation() {
                 transition={{ pathLength: { duration: 1, delay: 0.2 }, opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
               />
             ))}
-            {/* Traveling pulses */}
-            {!reduce &&
-              nodes.map((n, i) => (
-                <motion.circle
-                  key={`p-${n.id}`}
-                  r={0.9}
-                  fill={TONE[n.tone]}
-                  initial={{ cx: 50, cy: 50, opacity: 0 }}
-                  animate={{ cx: [50, n.x], cy: [50, n.y], opacity: [0, 1, 0] }}
-                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-                />
-              ))}
           </svg>
 
           {/* Nodes */}
@@ -138,7 +119,12 @@ export function Constellation() {
             const Icon = n.icon;
             return (
               <div key={n.id} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${n.x}%`, top: `${n.y}%` }}>
-                <motion.div {...counter} className="group relative">
+                <motion.div
+                  {...counter}
+                  className="relative"
+                  onPointerEnter={() => setHovered(n.id)}
+                  onPointerLeave={() => setHovered((h) => (h === n.id ? null : h))}
+                >
                   <motion.button
                     onClick={(e) => go(n, e)}
                     className="relative block"
@@ -160,9 +146,13 @@ export function Constellation() {
                       <Icon className="size-3.5" />
                     </span>
                   </motion.button>
-                  {/* Hover mini-stat */}
-                  <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1 text-[11px] font-medium text-background opacity-0 shadow-card transition-opacity group-hover:opacity-100">
-                    {n.stat}
+                  {/* Title — only for the single hovered node */}
+                  <span
+                    className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1 text-[11px] font-medium text-background shadow-card transition-opacity ${
+                      hovered === n.id ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    {n.label}
                   </span>
                 </motion.div>
               </div>
