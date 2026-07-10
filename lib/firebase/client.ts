@@ -23,3 +23,4 @@ export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
 export const functions: Functions = getFunctions(app, FUNCTIONS_REGION);
 export { app };
+
