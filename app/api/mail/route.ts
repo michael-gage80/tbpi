@@ -49,6 +49,10 @@ const OPS: Record<string, (uid: string, d: Body) => Promise<unknown>> = {
   markRead: (uid, d) => callAsUser(uid, "mailMarkRead", { messageIds: d.messageIds, read: d.read }),
   done: (uid, d) => callAsUser(uid, "mailDone", { messageIds: d.messageIds }),
   delete: (uid, d) => callAsUser(uid, "mailDelete", { messageIds: d.messageIds }),
+  // Per-user Zoho OAuth: connect / status / disconnect.
+  connectionStatus: (uid) => callAsUser(uid, "zohoConnectionStatus"),
+  authStart: (uid) => callAsUser(uid, "zohoAuthStart", { client: "web" }),
+  disconnect: (uid) => callAsUser(uid, "zohoDisconnect"),
 };
 
 export async function POST(req: NextRequest) {

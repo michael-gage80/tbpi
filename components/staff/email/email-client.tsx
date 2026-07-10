@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -28,8 +27,9 @@ import {
 } from "@/components/ui/select";
 import { PageHeading } from "@/components/staff/ui/page-heading";
 import { Chip } from "@/components/staff/ui/primitives";
+import Link from "next/link";
 import { ComposeDialog, type ComposeInit } from "@/components/staff/email/compose-dialog";
-import { mail } from "@/components/staff/email/mail-api";
+import { mail, ZOHO_NOT_CONNECTED } from "@/components/staff/email/mail-api";
 import { cn } from "@/lib/utils";
 import type { MailFolder, EmailThread, EmailMessage } from "@/lib/firebase/types";
 
@@ -54,6 +54,7 @@ export function EmailClient() {
   const [active, setActive] = useState<EmailThread | null>(null);
   const [messages, setMessages] = useState<EmailMessage[]>([]);
   const [loadingThread, setLoadingThread] = useState(false);
+  const [notConnected, setNotConnected] = useState(false);
 
   const currentFolder = folders.find((f) => f.id === folderId);
   const trashFolder = folders.find((f) => f.systemKind === "trash");
@@ -62,8 +63,13 @@ export function EmailClient() {
     setLoadingList(true);
     try {
       setThreads(await mail.list(fid, q));
+      setNotConnected(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Couldn’t load mail.");
+      if (err instanceof Error && err.message === ZOHO_NOT_CONNECTED) {
+        setNotConnected(true);
+      } else {
+        toast.error(err instanceof Error ? err.message : "Couldn’t load mail.");
+      }
     } finally {
       setLoadingList(false);
     }
@@ -116,6 +122,30 @@ export function EmailClient() {
     subject: `${forward ? "Fwd: " : "Re: "}${active?.subject ?? ""}`,
     bodyHtml: `<br/><br/><blockquote style="border-left:2px solid #ccc;padding-left:12px;color:#666">${msg.bodyHtml}${msg.quotedHtml}</blockquote>`,
   });
+
+  if (notConnected) {
+    return (
+      <div>
+        <PageHeading title="Email" subtitle="Your TBPI inbox." />
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-[20px] bg-card px-6 py-16 text-center shadow-card">
+          <span className="flex size-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <MailOpen className="size-6" />
+          </span>
+          <div className="space-y-1">
+            <h2 className="text-xl font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+              Connect your Zoho mailbox
+            </h2>
+            <p className="max-w-sm text-sm text-muted-foreground">
+              Link your own Zoho account to read and send mail from here. Your inbox stays private to you.
+            </p>
+          </div>
+          <Button asChild>
+            <Link href="/ops/profile">Connect in Profile</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

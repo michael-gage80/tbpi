@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import { PageHeading } from "@/components/staff/ui/page-heading";
 import { ChangePasswordDialog } from "@/components/staff/change-password-dialog";
 import { CalmToggle } from "@/components/staff/calm-toggle";
 import { AvatarCropDialog } from "@/components/staff/profile/avatar-crop-dialog";
+import { ZohoMailbox } from "@/components/staff/profile/zoho-mailbox";
 import { useMyProfile, refreshRoster } from "@/components/staff/profile/use-profiles";
 import type { Session } from "@/lib/firebase/types";
 
@@ -150,6 +151,14 @@ export function ProfileClient({ session }: { session: Session }) {
           <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Role</dt><dd className="capitalize text-foreground">{session.role}</dd></div>
         </dl>
       </Section>
+
+      {session.role === "admin" && (
+        <Section title="Zoho mailbox">
+          <Suspense fallback={<Skeleton className="h-16 w-full rounded-xl" />}>
+            <ZohoMailbox />
+          </Suspense>
+        </Section>
+      )}
 
       <Section title="Preferences">
         <CalmToggle />
