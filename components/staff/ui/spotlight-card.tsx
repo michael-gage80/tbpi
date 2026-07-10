@@ -20,6 +20,7 @@ export function SpotlightCard({
   glass = false,
   tilt = true,
   spotlight = true,
+  maxTilt = 6,
   onClick,
   style,
 }: {
@@ -28,6 +29,7 @@ export function SpotlightCard({
   glass?: boolean;
   tilt?: boolean;
   spotlight?: boolean;
+  maxTilt?: number;
   onClick?: () => void;
   style?: React.CSSProperties;
 }) {
@@ -54,8 +56,8 @@ export function SpotlightCard({
     mx.set(px * 100);
     my.set(py * 100);
     if (tilt && !reduce) {
-      ry.set((px - 0.5) * 6);
-      rx.set(-(py - 0.5) * 6);
+      ry.set((px - 0.5) * maxTilt);
+      rx.set(-(py - 0.5) * maxTilt);
     }
   }
 

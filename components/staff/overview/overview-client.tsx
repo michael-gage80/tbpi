@@ -19,6 +19,7 @@ import {
 import { OPEN_COMMAND_EVENT } from "@/components/staff/command-palette";
 import { InboxCard } from "@/components/staff/email/inbox-card";
 import { SecurityCard } from "@/components/staff/security/security-card";
+import { useSecurity } from "@/components/staff/security";
 import { Atmosphere } from "@/components/staff/home/atmosphere";
 import { CursorGlow } from "@/components/staff/home/cursor-glow";
 import { Constellation } from "@/components/staff/home/constellation";
@@ -239,41 +240,62 @@ export function OverviewClient({ session }: { session: Session }) {
   const dateLine = format(now, "EEEE, d MMMM").toUpperCase();
   const briefing = session.role === "admin" ? "ADMIN BRIEFING" : "STAFF BRIEFING";
 
+  const { data: sys } = useAsync(fetchSystemStatus);
+  const { summary: sec } = useSecurity();
+  const healthy =
+    !!sys &&
+    (sys.zoho?.operational ?? true) &&
+    (sys.repos ?? []).every((r) => r.checksPass) &&
+    (sys.vercel ?? []).every((v) => v.state === "ready");
+  const heroTone = sec.critical > 0 ? "red" : !sys || !healthy ? "amber" : "green";
+  const aura =
+    heroTone === "red" ? "rgba(216,57,43,0.22)" : heroTone === "amber" ? "rgba(232,149,26,0.20)" : "rgba(34,197,94,0.18)";
+
   return (
     <div className="relative">
       <Atmosphere />
       <CursorGlow />
 
       {/* Living hero band */}
-      <motion.section
+      <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-5 grid items-center gap-6 rounded-[24px] ops-glass p-6 shadow-card lg:grid-cols-[1.2fr_1fr] lg:p-8"
+        className="mb-5"
       >
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-            {dateLine} · {briefing}
-          </p>
-          <h1 className="mt-1 text-4xl font-normal leading-tight text-foreground sm:text-5xl" style={{ fontFamily: "var(--font-dm-serif)" }}>
-            {greeting()}, {firstName(session.email)}.
-          </h1>
-          <div className="mt-4">
-            <PulseSummary role={session.role} />
+        <SpotlightCard glass maxTilt={3} className="relative overflow-hidden rounded-[24px] p-6 lg:p-8">
+          {/* Health-tinted ambient aura */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-16 -top-24 size-80 rounded-full blur-3xl transition-colors duration-1000"
+            style={{ background: `radial-gradient(circle, ${aura}, transparent 65%)` }}
+          />
+          <div className="relative grid items-center gap-6 lg:grid-cols-[1.2fr_1fr]">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
+                {dateLine} · {briefing}
+              </p>
+              <h1 className="mt-1 text-4xl font-normal leading-tight text-foreground sm:text-5xl" style={{ fontFamily: "var(--font-dm-serif)" }}>
+                {greeting()}, {firstName(session.email)}.
+              </h1>
+              <div className="mt-4">
+                <PulseSummary role={session.role} />
+              </div>
+              <button
+                onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_EVENT))}
+                className="group mt-5 inline-flex items-center gap-2 rounded-full border border-line2 bg-background/50 px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Search className="size-4" />
+                <span>Search operations…</span>
+                <kbd className="ml-2 rounded bg-chip/70 px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
+              </button>
+            </div>
+            <div className="hidden lg:block">
+              <Constellation />
+            </div>
           </div>
-          <button
-            onClick={() => window.dispatchEvent(new Event(OPEN_COMMAND_EVENT))}
-            className="group mt-5 inline-flex items-center gap-2 rounded-full border border-line2 bg-background/50 px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Search className="size-4" />
-            <span>Search operations…</span>
-            <kbd className="ml-2 rounded bg-chip/70 px-1.5 py-0.5 text-[10px] font-medium">⌘K</kbd>
-          </button>
-        </div>
-        <div className="hidden lg:block">
-          <Constellation />
-        </div>
-      </motion.section>
+        </SpotlightCard>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 12 }}
