@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { tasksApi } from "@/components/staff/api";
+import { useProfiles } from "@/components/staff/profile/use-profiles";
 import type { SharedTask } from "@/lib/firebase/types";
 
 function toDateInput(millis?: number | null): string {
@@ -38,6 +39,7 @@ export function TaskDialog({ trigger, task }: { trigger: ReactNode; task?: Share
   const [assigneeName, setAssigneeName] = useState("");
   const [assigneeEmail, setAssigneeEmail] = useState("");
   const [priority, setPriority] = useState<string>("none");
+  const roster = useProfiles();
   const [due, setDue] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -106,15 +108,38 @@ export function TaskDialog({ trigger, task }: { trigger: ReactNode; task?: Share
             <Label htmlFor="t-notes">Notes</Label>
             <Textarea id="t-notes" value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="t-assignee">Assignee name</Label>
-              <Input id="t-assignee" value={assigneeName} onChange={(e) => setAssigneeName(e.target.value)} />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="t-email">Assignee email</Label>
-              <Input id="t-email" type="email" value={assigneeEmail} onChange={(e) => setAssigneeEmail(e.target.value)} />
-            </div>
+          <div className="space-y-1.5">
+            <Label>Assignee</Label>
+            <Select
+              value={assigneeEmail || "none"}
+              onValueChange={(v) => {
+                if (v === "none") {
+                  setAssigneeEmail("");
+                  setAssigneeName("");
+                } else {
+                  const p = roster.find((r) => r.email === v);
+                  setAssigneeEmail(v);
+                  setAssigneeName(p?.displayName ?? "");
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Unassigned" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">Unassigned</SelectItem>
+                {roster.map((r) => (
+                  <SelectItem key={r.uid} value={r.email}>
+                    {r.displayName || r.email}
+                    {r.title ? ` · ${r.title}` : ""}
+                  </SelectItem>
+                ))}
+                {/* Preserve an existing assignee not in the roster */}
+                {assigneeEmail && !roster.some((r) => r.email === assigneeEmail) && (
+                  <SelectItem value={assigneeEmail}>{assigneeName || assigneeEmail}</SelectItem>
+                )}
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">

@@ -9,6 +9,8 @@ import {
 } from "firebase-admin/app";
 import { getAuth, type Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
+import type { Bucket } from "@google-cloud/storage";
 
 // Lazy singletons — initialised on first use, never at module load, so a
 // missing/placeholder FIREBASE_SERVICE_ACCOUNT can't crash `next build`.
@@ -48,4 +50,9 @@ export function getAdminAuth(): Auth {
 
 export function getAdminDb(): Firestore {
   return (dbInstance ??= getFirestore(getAdminApp()));
+}
+
+export function getAdminBucket(): Bucket {
+  const name = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  return getStorage(getAdminApp()).bucket(name);
 }

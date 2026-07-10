@@ -387,6 +387,17 @@ export interface MailFolder {
   parentId: string | null;
 }
 
+/* ---------- Staff profile (shared org-wide) ---------- */
+export interface StaffProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  title: string;
+  bio: string;
+  photoURL: string | null;
+  updatedAt?: number | null;
+}
+
 /* ---------- Session ---------- */
 export type Role = "admin" | "staff";
 export interface Session {

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LogOut, KeyRound } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +23,7 @@ import { mainNav, bottomNav, isNavActive, type NavItem } from "@/components/staf
 import { logout } from "@/components/staff/api";
 import { mail } from "@/components/staff/email/mail-api";
 import { useSecurity } from "@/components/staff/security";
+import { useMyProfile } from "@/components/staff/profile/use-profiles";
 import { cn } from "@/lib/utils";
 import type { Session } from "@/lib/firebase/types";
 
@@ -68,6 +69,7 @@ function DesktopSidebar({ session }: { session: Session }) {
   const bottom = bottomNav(session.role);
   const unread = useUnreadInbox(session.role);
   const { summary: security } = useSecurity();
+  const { profile } = useMyProfile();
 
   const renderRow = (item: NavItem) => {
     const active = isNavActive(pathname, item.href);
@@ -129,15 +131,16 @@ function DesktopSidebar({ session }: { session: Session }) {
         <div className="flex items-center gap-3">
           <Link href="/ops/profile" className="flex min-w-0 flex-1 items-center gap-3">
             <Avatar className="size-10">
+              {profile?.photoURL && <AvatarImage src={profile.photoURL} alt="" />}
               <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
                 {initials(session.email)}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-foreground">
-                {displayName(session.email)}
+                {profile?.displayName || displayName(session.email)}
               </p>
-              <p className="text-xs capitalize text-muted-foreground">{session.role}</p>
+              <p className="truncate text-xs text-muted-foreground">{profile?.title || session.role}</p>
             </div>
           </Link>
           <ThemeToggle />
