@@ -2,6 +2,9 @@
 
 import type { MailFolder, EmailThread, EmailMessage } from "@/lib/firebase/types";
 
+/** Error message thrown by mail ops when the admin hasn't connected Zoho yet. */
+export const ZOHO_NOT_CONNECTED = "zoho-not-connected";
+
 async function op<T>(op: string, args: Record<string, unknown> = {}): Promise<T> {
   const res = await fetch("/api/mail", {
     method: "POST",
@@ -11,6 +14,12 @@ async function op<T>(op: string, args: Record<string, unknown> = {}): Promise<T>
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || "Mail request failed.");
   return data.result as T;
+}
+
+export interface ZohoConnection {
+  connected: boolean;
+  email?: string | null;
+  connectedAt?: string | null;
 }
 
 export interface SendPayload {
@@ -33,4 +42,8 @@ export const mail = {
   remove: (messageIds: string[]) => op("delete", { messageIds }),
   uploadAttachment: (fileName: string, contentBase64: string, contentType: string) =>
     op<unknown>("uploadAttachment", { fileName, contentBase64, contentType }),
+  // Per-user Zoho OAuth.
+  connectionStatus: () => op<ZohoConnection>("connectionStatus"),
+  connectStart: () => op<{ url: string }>("authStart"),
+  disconnect: () => op<{ ok: boolean }>("disconnect"),
 };

@@ -8,7 +8,7 @@ import { SpotlightCard } from "@/components/staff/ui/spotlight-card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Chip } from "@/components/staff/ui/primitives";
-import { mail } from "@/components/staff/email/mail-api";
+import { mail, ZOHO_NOT_CONNECTED } from "@/components/staff/email/mail-api";
 import type { EmailThread } from "@/lib/firebase/types";
 
 const triageKind: Record<string, string> = { needsReply: "needsReply", fyi: "fyi", waitingOn: "waiting" };
@@ -20,12 +20,16 @@ const initials = (n: string) => {
 export function InboxCard() {
   const [threads, setThreads] = useState<EmailThread[] | null>(null);
   const [error, setError] = useState(false);
+  const [notConnected, setNotConnected] = useState(false);
 
   useEffect(() => {
     mail
       .list("inbox")
       .then((t) => setThreads(t.slice(0, 4)))
-      .catch(() => setError(true));
+      .catch((err) => {
+        if (err instanceof Error && err.message === ZOHO_NOT_CONNECTED) setNotConnected(true);
+        else setError(true);
+      });
   }, []);
 
   return (
@@ -38,7 +42,14 @@ export function InboxCard() {
           Open inbox <ArrowRight className="size-3.5" />
         </Link>
       </div>
-      {error ? (
+      {notConnected ? (
+        <div className="py-6 text-center">
+          <p className="text-sm text-muted-foreground">Your Zoho mailbox isn’t connected.</p>
+          <Link href="/ops/profile" className="mt-1 inline-block text-xs font-semibold text-primary hover:underline">
+            Connect in Profile
+          </Link>
+        </div>
+      ) : error ? (
         <p className="py-6 text-center text-sm text-muted-foreground">Couldn’t load mail.</p>
       ) : threads === null ? (
         <div className="space-y-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-12 w-full" />)}</div>
