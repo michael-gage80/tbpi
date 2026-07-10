@@ -12,6 +12,7 @@ import {
 } from "@/lib/org/callables";
 import { DetailShell, Panel, HeroNumber, AreaTrend } from "@/components/staff/analytics/detail-shell";
 import { RadialGauge, RankList } from "@/components/staff/analytics/viz";
+import { GlobePanel } from "@/components/staff/analytics/globe/globe-panel";
 
 const deployTone = (s: string): "green" | "red" | "amber" =>
   s === "ready" ? "green" : s === "error" ? "red" : "amber";
@@ -81,13 +82,19 @@ export function WebsiteDetail({ projectId }: { projectId?: string }) {
             </Panel>
           </Reveal>
 
+          {/* Visitors by region — interactive globe */}
+          {a && (
+            <Reveal>
+              <GlobePanel countries={a.countries} />
+            </Reveal>
+          )}
+
           {/* Breakdowns */}
           <div className="grid gap-4 lg:grid-cols-2">
             {a && (
               <>
                 <Reveal><Panel title="Top pages"><RankList rows={a.topPages.slice(0, 8)} /></Panel></Reveal>
                 <Reveal><Panel title="Referrers"><RankList rows={a.referrers.slice(0, 8)} /></Panel></Reveal>
-                <Reveal><Panel title="Countries"><RankList rows={a.countries.slice(0, 8)} /></Panel></Reveal>
                 <Reveal><Panel title="Devices & browsers"><RankList rows={[...a.devices, ...a.browsers].slice(0, 8)} /></Panel></Reveal>
               </>
             )}
