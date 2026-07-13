@@ -76,7 +76,9 @@ const FadeUp = ({
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [inquiryType, setInquiryType] = useState("");
+  // Value is captured for the select but not yet read (the form has no payload
+  // wiring yet); keep only the setter to avoid an unused binding.
+  const [, setInquiryType] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +108,7 @@ export default function ContactPage() {
             </h1>
             <p className="text-lg text-white/60 max-w-2xl">
               Whether you want to commission research, partner with us, enquire
-              about a programme or just say hello — we'd love to hear from you.
+              about a programme or just say hello — we&apos;d love to hear from you.
             </p>
           </motion.div>
         </div>
@@ -130,7 +132,7 @@ export default function ContactPage() {
                         Message sent!
                       </h3>
                       <p className="text-[#6B6B6B] max-w-sm">
-                        Thank you for getting in touch. We'll respond within 2
+                        Thank you for getting in touch. We&apos;ll respond within 2
                         working days.
                       </p>
                       <button

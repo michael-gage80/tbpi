@@ -39,6 +39,9 @@ export function Constellation() {
   const { data } = useAsync(fetchSystemStatus);
   const { summary: security } = useSecurity();
   const containerRef = useRef<HTMLDivElement>(null);
+  // Monotonic key to retrigger the ripple animation on each click (a pure
+  // counter, rather than Date.now(), keeps render/handler purity intact).
+  const rippleSeq = useRef(0);
   const [ripple, setRipple] = useState<{ x: number; y: number; key: number } | null>(null);
   // Single hovered node — state-driven so exactly one title can show (CSS
   // :hover leaves multiple nodes "stuck" as they orbit under a parked cursor).
@@ -81,7 +84,7 @@ export function Constellation() {
   function go(node: Node, e: React.MouseEvent) {
     const r = containerRef.current?.getBoundingClientRect();
     if (r && !reduce) {
-      setRipple({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, key: Date.now() });
+      setRipple({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, key: ++rippleSeq.current });
       setTimeout(() => router.push(node.href), 260);
     } else {
       router.push(node.href);

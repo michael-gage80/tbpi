@@ -37,7 +37,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stored === "dark" || stored === "light") setThemeState(stored);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (window.localStorage.getItem(CALM_KEY) === "1") setCalmState(true);
   }, []);
 

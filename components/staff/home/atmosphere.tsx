@@ -22,6 +22,9 @@ export function Atmosphere() {
   const [hour, setHour] = useState(12);
 
   useEffect(() => {
+    // The local hour is client-only; reading it during render would mismatch
+    // the server-rendered HTML. This decorative backdrop reads it once on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHour(new Date().getHours());
   }, []);
 

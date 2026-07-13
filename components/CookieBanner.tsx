@@ -10,7 +10,11 @@ export function CookieBanner() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // localStorage is browser-only, so consent can't be read during render
+    // without a hydration mismatch — this one-time mount read is the intended
+    // use of an effect to sync with an external (browser) system.
     const stored = localStorage.getItem(STORAGE_KEY);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!stored) setVisible(true);
   }, []);
 
