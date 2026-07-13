@@ -5,12 +5,14 @@ const SESSION_COOKIE = "__session";
 // Cheap edge-level gate only — the authoritative verification (Admin SDK
 // verifySessionCookie) happens in getSession() on the Node runtime. This just
 // bounces obviously-unauthenticated traffic before it hits a server component.
-// Gates the /ops dashboard; /staff (the public chooser) is intentionally open.
+// Gates the /ops dashboard and /room staff area; /staff (the public chooser)
+// is intentionally open.
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hasSession = req.cookies.has(SESSION_COOKIE);
 
-  if (pathname.startsWith("/ops") && !hasSession) {
+  const gated = pathname.startsWith("/ops") || pathname.startsWith("/room");
+  if (gated && !hasSession) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.search = "";
@@ -27,5 +29,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/ops", "/ops/:path*", "/login"],
+  matcher: ["/ops", "/ops/:path*", "/room", "/room/:path*", "/login"],
 };

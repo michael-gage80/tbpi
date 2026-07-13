@@ -36,6 +36,12 @@ export function ProfileClient({ session }: { session: Session }) {
   const [displayName, setDisplayName] = useState("");
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
+  const [pronouns, setPronouns] = useState("");
+  const [location, setLocation] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [askMeAbout, setAskMeAbout] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
+  const [website, setWebsite] = useState("");
   const [saving, setSaving] = useState(false);
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
@@ -47,16 +53,39 @@ export function ProfileClient({ session }: { session: Session }) {
       setDisplayName(profile.displayName);
       setTitle(profile.title);
       setBio(profile.bio);
+      setPronouns(profile.pronouns ?? "");
+      setLocation(profile.location ?? "");
+      setStartDate(profile.startDate ?? "");
+      setAskMeAbout((profile.askMeAbout ?? []).join(", "));
+      const links = profile.links ?? [];
+      setLinkedIn(links.find((l) => /linkedin/i.test(l.label))?.url ?? "");
+      setWebsite(links.find((l) => /website|site|web/i.test(l.label))?.url ?? "");
     }
   }, [profile]);
 
   async function saveFields() {
     setSaving(true);
     try {
+      const links = [
+        { label: "LinkedIn", url: linkedIn.trim() },
+        { label: "Website", url: website.trim() },
+      ].filter((l) => l.url);
       const res = await fetch("/api/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName, title, bio }),
+        body: JSON.stringify({
+          displayName,
+          title,
+          bio,
+          pronouns,
+          location,
+          startDate,
+          askMeAbout: askMeAbout
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
+          links,
+        }),
       });
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Save failed.");
       await refresh();
@@ -139,6 +168,39 @@ export function ProfileClient({ session }: { session: Session }) {
             <Label htmlFor="p-bio">Bio</Label>
             <Textarea id="p-bio" value={bio} onChange={(e) => setBio(e.target.value)} rows={3} placeholder="A short bio…" />
           </div>
+
+          <div className="mt-6 border-t border-line pt-5">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+              For the team directory
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label htmlFor="p-pronouns">Pronouns</Label>
+                <Input id="p-pronouns" value={pronouns} onChange={(e) => setPronouns(e.target.value)} placeholder="e.g. she/her" />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="p-location">Location</Label>
+                <Input id="p-location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. London" />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="p-start">Start date</Label>
+                <Input id="p-start" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="p-ask">Ask me about</Label>
+                <Input id="p-ask" value={askMeAbout} onChange={(e) => setAskMeAbout(e.target.value)} placeholder="Comma-separated, e.g. policy, data, events" />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="p-linkedin">LinkedIn</Label>
+                <Input id="p-linkedin" type="url" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} placeholder="https://linkedin.com/in/…" />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="p-website">Website</Label>
+                <Input id="p-website" type="url" value={website} onChange={(e) => setWebsite(e.target.value)} placeholder="https://…" />
+              </div>
+            </div>
+          </div>
+
           <div className="mt-4 flex justify-end">
             <Button onClick={saveFields} disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button>
           </div>
