@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { UserPlus, ShieldOff, Copy, Check } from "lucide-react";
+import { UserPlus, ShieldOff, Copy, Check, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,15 +28,25 @@ import {
 interface UserRow {
   uid: string;
   email: string;
+  name: string | null;
   role: string | null;
   lastSignIn: string | null;
   disabled: boolean;
 }
 
-const initials = (email: string) => {
-  const l = email.split("@")[0].replace(/[._-]+/g, " ").trim().split(" ");
+const initials = (name: string, email: string) => {
+  const src = name?.trim() || email.split("@")[0].replace(/[._-]+/g, " ").trim();
+  const l = src.split(/\s+/);
   return ((l[0]?.[0] ?? "") + (l[1]?.[0] ?? "")).toUpperCase() || "?";
 };
+
+/** A strong, human-typeable password for the admin to hand over. */
+function generatePassword(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
+  const bytes = new Uint32Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+}
 
 async function api(method: string, body?: unknown) {
   const res = await fetch("/api/admin/users", {
@@ -49,47 +59,66 @@ async function api(method: string, body?: unknown) {
   return data;
 }
 
-function InviteDialog({ onDone }: { onDone: () => void }) {
+const ORG_DOMAIN = "@theblackpolicyinstitute.org";
+
+function AddMemberDialog({ onDone }: { onDone: () => void }) {
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [role, setRole] = useState("staff");
   const [busy, setBusy] = useState(false);
   const [temp, setTemp] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  function reset() {
+    setName(""); setEmail(""); setPassword(""); setShowPw(false);
+    setRole("staff"); setTemp(null); setCopied(false);
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (password && password.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
     setBusy(true);
     try {
-      const res = await api("POST", { email: email.trim(), role });
+      const res = await api("POST", {
+        displayName: name.trim(),
+        email: email.trim(),
+        password: password || undefined,
+        role,
+      });
       onDone();
       if (res.tempPassword) {
+        // Admin left the password blank → surface the generated one to share.
         setTemp(res.tempPassword);
-        toast.success("User provisioned.");
       } else {
-        toast.success("Role assigned to existing user.");
+        toast.success(res.created ? "Account created." : "User updated.");
         setOpen(false);
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Invite failed.");
+      toast.error(err instanceof Error ? err.message : "Provisioning failed.");
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) { setTemp(null); setEmail(""); setRole("staff"); } }}>
+    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
       <DialogTrigger asChild>
-        <Button size="sm"><UserPlus className="size-4" /> Invite</Button>
+        <Button size="sm"><UserPlus className="size-4" /> Add member</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader><DialogTitle>Invite staff member</DialogTitle></DialogHeader>
+        <DialogHeader><DialogTitle>Add team member</DialogTitle></DialogHeader>
         {temp ? (
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">Share this temporary password securely. They should change it after first sign-in.</p>
+            <p className="text-sm text-muted-foreground">Account created. Share this password securely — they can change it after first sign-in.</p>
             <div className="flex items-center justify-between gap-2 rounded-lg bg-chip p-3 font-mono text-sm">
               <span className="truncate">{temp}</span>
-              <button onClick={() => { navigator.clipboard.writeText(temp); setCopied(true); }} aria-label="Copy">
+              <button type="button" onClick={() => { navigator.clipboard.writeText(temp); setCopied(true); }} aria-label="Copy password">
                 {copied ? <Check className="size-4 text-[#1F9D55]" /> : <Copy className="size-4" />}
               </button>
             </div>
@@ -98,8 +127,47 @@ function InviteDialog({ onDone }: { onDone: () => void }) {
         ) : (
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="inv-email">Email</Label>
-              <Input id="inv-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@theblackpolicyinstitute.org" required />
+              <Label htmlFor="add-name">Name</Label>
+              <Input id="add-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="add-email">Email</Label>
+              <Input id="add-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={`name${ORG_DOMAIN}`} required />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="add-pw">Password</Label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    id="add-pw"
+                    type={showPw ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Leave blank to auto-generate"
+                    autoComplete="new-password"
+                    className="pr-9 font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw((s) => !s)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={showPw ? "Hide password" : "Show password"}
+                  >
+                    {showPw ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => { setPassword(generatePassword()); setShowPw(true); }}
+                  aria-label="Generate password"
+                  title="Generate a strong password"
+                >
+                  <RefreshCw className="size-4" />
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">At least 8 characters, or leave blank for a generated one.</p>
             </div>
             <div className="space-y-1.5">
               <Label>Role</Label>
@@ -111,7 +179,7 @@ function InviteDialog({ onDone }: { onDone: () => void }) {
                 </SelectContent>
               </Select>
             </div>
-            <DialogFooter><Button type="submit" disabled={busy}>{busy ? "Provisioning…" : "Provision"}</Button></DialogFooter>
+            <DialogFooter><Button type="submit" disabled={busy}>{busy ? "Creating…" : "Create account"}</Button></DialogFooter>
           </form>
         )}
       </DialogContent>
@@ -132,6 +200,7 @@ export function UsersClient({ selfUid }: { selfUid: string }) {
     }
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { load(); }, [load]);
 
   async function changeRole(uid: string, role: string) {
@@ -159,7 +228,7 @@ export function UsersClient({ selfUid }: { selfUid: string }) {
     <div className="rounded-[20px] bg-card p-5 shadow-card">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-normal text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>Team</h2>
-        <InviteDialog onDone={load} />
+        <AddMemberDialog onDone={load} />
       </div>
       {users === null ? (
         <div className="space-y-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-12 w-full" />)}</div>
@@ -169,10 +238,11 @@ export function UsersClient({ selfUid }: { selfUid: string }) {
         <ul className="divide-y divide-line">
           {users.map((u) => (
             <li key={u.uid} className="flex flex-wrap items-center gap-3 py-3">
-              <Avatar className="size-9"><AvatarFallback className="bg-chip text-xs font-semibold">{initials(u.email)}</AvatarFallback></Avatar>
+              <Avatar className="size-9"><AvatarFallback className="bg-chip text-xs font-semibold">{initials(u.name ?? "", u.email)}</AvatarFallback></Avatar>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-foreground">{u.email}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="truncate text-sm font-medium text-foreground">{u.name || u.email}</p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {u.name ? `${u.email} · ` : ""}
                   {u.role ? `${u.role}` : "no access"}
                   {u.lastSignIn ? ` · seen ${formatDistanceToNow(new Date(u.lastSignIn), { addSuffix: true })}` : " · never signed in"}
                 </p>
