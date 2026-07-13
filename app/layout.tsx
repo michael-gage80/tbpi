@@ -22,6 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.theblackpolicyinstitute.org"),
   title: {
     template: "The Black Policy Institute | %s",
     default: "The Black Policy Institute — Evidence-Based Policy, Community-Powered Change",

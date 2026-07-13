@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { Play, ExternalLink, Mail, Mic, Newspaper, Video, BookOpen, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
 
 type Episode = {

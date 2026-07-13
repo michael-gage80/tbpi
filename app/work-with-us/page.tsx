@@ -374,7 +374,7 @@ export default function WorkWithUsPage() {
               Ready to work together?
             </h2>
             <p className="text-white/80 mt-2">
-              Tell us about your challenge. We'll be in touch within 2 working days.
+              Tell us about your challenge. We&apos;ll be in touch within 2 working days.
             </p>
           </FadeUp>
           <FadeUp delay={0.2}>

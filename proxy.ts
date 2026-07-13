@@ -6,7 +6,7 @@ const SESSION_COOKIE = "__session";
 // verifySessionCookie) happens in getSession() on the Node runtime. This just
 // bounces obviously-unauthenticated traffic before it hits a server component.
 // Gates the /ops dashboard; /staff (the public chooser) is intentionally open.
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hasSession = req.cookies.has(SESSION_COOKIE);
 

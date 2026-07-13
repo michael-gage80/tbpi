@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock, ExternalLink, Users } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import type { Metadata } from "next";
 
 const upcomingEvents: Array<{
   id: number;
