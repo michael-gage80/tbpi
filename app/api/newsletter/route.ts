@@ -3,7 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  // Linear, non-backtracking email check. The domain segments exclude "." so
+  // the literal dots are unambiguous (avoids the polynomial ReDoS that a
+  // `[^\s@]+\.[^\s@]+` pattern allows), and the length cap (RFC 5321 max) bounds
+  // the input regardless.
+  const emailValid =
+    typeof email === "string" &&
+    email.length <= 254 &&
+    /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(email);
+  if (!emailValid) {
     return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
   }
 
