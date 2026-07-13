@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 type Episode = {
   ep: string;
@@ -237,8 +238,14 @@ export default function MediaPage() {
           {/* Embedded player placeholder */}
           <FadeUp delay={0.1}>
             <div className="bg-[#0A0A0A] rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-xl bg-[#E8581A] flex items-center justify-center shrink-0">
-                <Mic className="h-8 w-8 text-white" />
+              <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#E8581A] shrink-0">
+                <Image
+                  src="/images/podcasts/trailblazing-leaders.png"
+                  alt="Trailblazing Leaders Of Tomorrow"
+                  width={80}
+                  height={80}
+                  className="size-full object-cover"
+                />
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <p className="text-white font-semibold text-lg mb-1">
@@ -288,8 +295,14 @@ export default function MediaPage() {
           {/* Embedded player placeholder */}
           <FadeUp delay={0.1}>
             <div className="bg-[#0A0A0A] rounded-xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-xl bg-[#E8581A] flex items-center justify-center shrink-0">
-                <Mic className="h-8 w-8 text-white" />
+              <div className="w-20 h-20 rounded-xl overflow-hidden bg-white shrink-0">
+                <Image
+                  src="/images/podcasts/people-power-policy.jpeg"
+                  alt="People, Power &amp; Policy"
+                  width={80}
+                  height={80}
+                  className="size-full object-cover"
+                />
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <p className="text-white font-semibold text-lg mb-1">
