@@ -19,6 +19,13 @@ export async function GET() {
         displayName: d.displayName ?? "",
         title: d.title ?? "",
         photoURL: d.photoURL ?? null,
+        // Directory fields (optional; consumers that only need the roster ignore these).
+        bio: d.bio ?? "",
+        pronouns: d.pronouns ?? "",
+        location: d.location ?? "",
+        startDate: d.startDate ?? "",
+        askMeAbout: Array.isArray(d.askMeAbout) ? d.askMeAbout : [],
+        links: Array.isArray(d.links) ? d.links : [],
       };
     });
     return NextResponse.json({ profiles });

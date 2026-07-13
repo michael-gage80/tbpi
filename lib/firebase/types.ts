@@ -388,6 +388,11 @@ export interface MailFolder {
 }
 
 /* ---------- Staff profile (shared org-wide) ---------- */
+export interface ProfileLink {
+  label: string;
+  url: string;
+}
+
 export interface StaffProfile {
   uid: string;
   email: string;
@@ -395,7 +400,59 @@ export interface StaffProfile {
   title: string;
   bio: string;
   photoURL: string | null;
+  /** Staff Room directory fields (all optional). */
+  pronouns?: string;
+  location?: string;
+  /** ISO date (YYYY-MM-DD) the person joined — powers the tenure badge. */
+  startDate?: string;
+  askMeAbout?: string[];
+  links?: ProfileLink[];
   updatedAt?: number | null;
+}
+
+/* ---------- Staff Room: resources & submissions ---------- */
+export type ResourceCategory = "brand" | "templates" | "policies" | "tools" | "links";
+export type ResourceKind = "file" | "link";
+
+export interface RoomResource {
+  id: string;
+  title: string;
+  description?: string;
+  category: ResourceCategory;
+  kind: ResourceKind;
+  /** Download URL for a file, or the external link. */
+  url: string;
+  fileName?: string | null;
+  fileSize?: number | null;
+  mimeType?: string | null;
+  /** Storage object path (files only) — kept so the object can be deleted. */
+  storagePath?: string | null;
+  createdBy: string;
+  createdByEmail: string;
+  createdAt: number | null;
+}
+
+export type SubmissionStatus = "pending" | "approved" | "rejected";
+
+/** A document/link any staff member proposes for the curated hub. */
+export interface RoomSubmission {
+  id: string;
+  title: string;
+  description?: string;
+  suggestedCategory?: ResourceCategory;
+  kind: ResourceKind;
+  url: string;
+  fileName?: string | null;
+  fileSize?: number | null;
+  mimeType?: string | null;
+  storagePath?: string | null;
+  status: SubmissionStatus;
+  submittedBy: string;
+  submittedByEmail: string;
+  submittedByName?: string;
+  createdAt: number | null;
+  reviewedBy?: string | null;
+  reviewedAt?: number | null;
 }
 
 /* ---------- Session ---------- */
