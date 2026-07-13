@@ -41,6 +41,7 @@ export async function GET() {
       .map((u) => ({
         uid: u.uid,
         email: u.email ?? "",
+        name: u.displayName ?? null,
         role: (u.customClaims?.role as string | undefined) ?? null,
         lastSignIn: u.metadata.lastSignInTime ?? null,
         created: u.metadata.creationTime ?? null,
@@ -53,29 +54,55 @@ export async function GET() {
   }
 }
 
-/** Invite/provision a new user. */
+/**
+ * Provision a user: name, email, role, and an admin-set password (or a
+ * generated temp password when left blank). Creating a new account also seeds
+ * the shared staffProfiles doc so the name shows across the app. If the email
+ * already exists, updates their name/password (when given) and assigns the role.
+ */
 export async function POST(req: NextRequest) {
   try {
     await requireAdmin();
     const body = await req.json();
     const email = requireString(body.email, "email").toLowerCase();
     const role = body.role === "admin" ? "admin" : "staff";
+    const displayName = typeof body.displayName === "string" ? body.displayName.trim() : "";
+    const rawPassword = typeof body.password === "string" ? body.password : "";
     if (!email.endsWith(ORG_DOMAIN)) throw new Error(`Email must end with ${ORG_DOMAIN}.`);
+    if (rawPassword && rawPassword.length < 8) throw new Error("Password must be at least 8 characters.");
 
     const auth = getAdminAuth();
     let uid: string;
     let tempPassword: string | null = null;
+    let created = false;
     try {
       const existing = await auth.getUserByEmail(email);
       uid = existing.uid;
+      const update: { password?: string; displayName?: string } = {};
+      if (rawPassword) update.password = rawPassword;
+      if (displayName) update.displayName = displayName;
+      if (Object.keys(update).length) await auth.updateUser(uid, update);
     } catch {
-      tempPassword = randomPassword();
-      const created = await auth.createUser({ email, password: tempPassword, emailVerified: false });
-      uid = created.uid;
+      const password = rawPassword || randomPassword();
+      tempPassword = rawPassword ? null : password; // only surface a password we generated
+      const newUser = await auth.createUser({
+        email,
+        password,
+        emailVerified: false,
+        displayName: displayName || undefined,
+      });
+      uid = newUser.uid;
+      created = true;
     }
     await auth.setCustomUserClaims(uid, { role });
     await syncAllowlist(email, role);
-    return NextResponse.json({ uid, role, tempPassword });
+    if (displayName) {
+      await getAdminDb().doc(`staffProfiles/${uid}`).set(
+        { uid, email, displayName, updatedAt: FieldValue.serverTimestamp() },
+        { merge: true }
+      );
+    }
+    return NextResponse.json({ uid, role, tempPassword, created });
   } catch (err) {
     return errorResponse(err);
   }
