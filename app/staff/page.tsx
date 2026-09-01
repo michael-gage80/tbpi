@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { LayoutDashboard, Coffee, ArrowRight } from "lucide-react";
+import { Coffee } from "lucide-react";
 
 const FadeUp = ({
   children,
@@ -46,7 +45,7 @@ export default function StaffLandingPage() {
               Staff <span className="text-[#E8581A]">area</span>
             </h1>
             <p className="text-lg text-white/60 max-w-2xl">
-              Tools and spaces for the TBPI team. Choose where you&apos;re headed.
+              Tools and spaces for the TBPI team.
             </p>
           </motion.div>
         </div>
@@ -54,7 +53,7 @@ export default function StaffLandingPage() {
 
       {/* Options */}
       <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto grid gap-6 sm:grid-cols-2">
+        <div className="max-w-xl mx-auto">
           {/* Staff Room — coming soon */}
           <FadeUp>
             <div className="h-full rounded-2xl border border-[#E5E2DF] bg-white/60 p-8 opacity-70">
@@ -80,35 +79,6 @@ export default function StaffLandingPage() {
                 Not available yet
               </span>
             </div>
-          </FadeUp>
-
-          {/* Operations Dashboard */}
-          <FadeUp delay={0.08}>
-            <Link
-              href="/ops"
-              className="group block h-full rounded-2xl border border-[#E5E2DF] bg-white p-8 transition-all hover:border-[#E8581A]/40 hover:shadow-md"
-            >
-              <div className="mb-5 flex items-center justify-between">
-                <div className="flex size-12 items-center justify-center rounded-xl bg-[#E8581A]/10">
-                  <LayoutDashboard className="size-6 text-[#E8581A]" />
-                </div>
-                <ArrowRight className="size-5 text-[#E8581A] transition-transform group-hover:translate-x-1" />
-              </div>
-              <h2
-                className="text-2xl font-normal text-[#0A0A0A]"
-                style={{ fontFamily: "var(--font-dm-serif)" }}
-              >
-                Operations Dashboard
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#6B6B6B]">
-                Shared tasks, calendar and announcements, plus live org analytics. Staff sign-in
-                required.
-              </p>
-              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#E8581A]">
-                Open dashboard
-                <ArrowRight className="size-4" />
-              </span>
-            </Link>
           </FadeUp>
         </div>
       </section>
