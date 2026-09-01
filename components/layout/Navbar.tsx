@@ -34,9 +34,6 @@ export function Navbar() {
 
   const isHome = pathname === "/";
 
-  // The ops dashboard supplies its own chrome — hide the public nav there.
-  if (pathname?.startsWith("/ops") || pathname === "/login") return null;
-
   return (
     <header
       className={cn(
