@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Quote } from "lucide-react";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const stats = [
   { value: "36", label: "Fellows" },
@@ -58,46 +60,20 @@ export default function FGLPPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-20 pb-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-3xl"
-          >
-            <h1
-              className="text-4xl sm:text-5xl lg:text-6xl text-white leading-tight"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Future Global
-              <br />
-              Leadership Programme
-              <span className="block mt-2 h-1 w-24 bg-[#E8581A] rounded-full" />
-            </h1>
-            <p
-              className="mt-8 text-xl text-zinc-400 leading-relaxed max-w-2xl"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              A transformative 3-day immersive seminar for the next generation of
-              Black global policy leaders.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="FGLP" heading={"Future Global\nLeadership Programme"} accent="Leadership Programme" subheading="A transformative 3-day immersive seminar for the next generation of Black global policy leaders." />
 
       {/* Overview */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ ease: EASE, duration: 0.9 }}
             className="max-w-3xl mb-16"
           >
             <h2
-              className="text-3xl md:text-4xl text-[#0A0A0A] mb-6"
+              className="text-h2 text-[#0A0A0A] mb-6"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Programme Overview
@@ -121,7 +97,7 @@ export default function FGLPPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
                 className="text-center"
               >
                 <div
@@ -143,14 +119,14 @@ export default function FGLPPage() {
       </section>
 
       {/* Cohort Experience */}
-      <section className="bg-[#F7F5F2] py-24">
+      <section className="bg-[#F7F5F2] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl text-[#0A0A0A] mb-12"
+            transition={{ ease: EASE, duration: 0.9 }}
+            className="text-h2 text-[#0A0A0A] mb-12"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             The Cohort Experience
@@ -162,7 +138,7 @@ export default function FGLPPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.15 }}
                 className="bg-white rounded-xl p-8 shadow-sm"
               >
                 <span className="inline-block px-3 py-1 text-xs font-medium bg-[#E8581A] text-white rounded-full mb-4">
@@ -187,14 +163,14 @@ export default function FGLPPage() {
       </section>
 
       {/* Alumni Spotlight */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl text-[#0A0A0A] mb-12"
+            transition={{ ease: EASE, duration: 0.9 }}
+            className="text-h2 text-[#0A0A0A] mb-12"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             Alumni Spotlight
@@ -206,7 +182,7 @@ export default function FGLPPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.15 }}
                 className="bg-[#F7F5F2] rounded-xl p-8"
               >
                 <Quote className="w-8 h-8 text-[#E8581A] mb-4" />
@@ -237,16 +213,16 @@ export default function FGLPPage() {
       </section>
 
       {/* Apply CTA */}
-      <section className="bg-[#0A0A0A] py-24">
+      <section className="bg-[#0A0A0A] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ ease: EASE, duration: 0.9 }}
           >
             <h2
-              className="text-3xl md:text-4xl text-white mb-6"
+              className="text-h2 text-white mb-6"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Ready to Lead on the Global Stage?

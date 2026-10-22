@@ -1,83 +1,62 @@
 "use client";
 
-import { motion, animate } from "framer-motion";
+import { animate, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { EASE } from "@/lib/motion";
 
 const stats = [
-  { value: 2500, suffix: "+", label: "People Reached" },
-  { value: 36, suffix: "", label: "FGLP Fellows" },
-  { value: 10, suffix: "+", label: "Institutional Partners" },
+  { value: 2500, suffix: "+", label: "People reached" },
+  { value: 36, suffix: "", label: "FGLP fellows" },
+  { value: 10, suffix: "+", label: "Institutional partners" },
   { value: 8, suffix: "+", label: "Publications" },
 ];
 
-function AnimatedNumber({
-  value,
-  suffix,
-}: {
-  value: number;
-  suffix: string;
-}) {
-  const [display, setDisplay] = useState(0);
+function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const hasAnimated = useRef(false);
+  const inView = useInView(ref, { once: true });
+  const reduce = useReducedMotion();
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
-          hasAnimated.current = true;
-          const controls = animate(0, value, {
-            duration: 2,
-            ease: "easeOut",
-            onUpdate: (v) => setDisplay(Math.round(v)),
-          });
-          return () => controls.stop();
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [value]);
+    if (!inView || reduce) return;
+    const controls = animate(0, value, {
+      duration: 2.2,
+      ease: EASE,
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, reduce, value]);
 
   return (
-    <span ref={ref}>
-      {display.toLocaleString()}
-      {suffix}
+    <span ref={ref} className="tabular-nums">
+      {display.toLocaleString("en-GB")}
+      <span className="text-[#E8581A]">{suffix}</span>
     </span>
   );
 }
 
 export function ImpactNumbers() {
   return (
-    <section className="bg-[#0A0A0A] py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+    <section className="grain bg-[#0A0A0A] py-section text-white">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+        <p className="eyebrow mb-12 text-white/50" data-reveal="up">
+          In numbers
+        </p>
+        <dl className="grid grid-cols-2 gap-y-12 lg:grid-cols-4">
           {stats.map((stat, i) => (
-            <motion.div
+            <div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="text-center"
+              data-reveal="up"
+              style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}
+              className="flex flex-col border-l border-white/15 pl-6 lg:pl-8"
             >
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#E8581A] mb-2">
+              <dt className="order-2 mt-3 text-sm text-white/55">{stat.label}</dt>
+              <dd className="font-heading text-numeral">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
-              </div>
-              <p
-                className="text-zinc-400 text-sm sm:text-base"
-                style={{ fontFamily: "var(--font-inter)" }}
-              >
-                {stat.label}
-              </p>
-            </motion.div>
+              </dd>
+            </div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   );

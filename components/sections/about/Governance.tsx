@@ -3,19 +3,20 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { FileDown } from "lucide-react";
+import { EASE } from "@/lib/motion";
 
 export function Governance() {
   return (
-    <section id="governance" className="bg-white py-24">
+    <section id="governance" className="bg-white py-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ ease: EASE, duration: 0.9 }}
           className="max-w-3xl"
         >
-          <h2 className="text-3xl sm:text-4xl text-[#0A0A0A] mb-8">
+          <h2 className="text-h2 text-[#0A0A0A] mb-8">
             Governance
           </h2>
 

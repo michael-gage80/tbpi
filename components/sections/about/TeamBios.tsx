@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Linkedin } from "lucide-react";
 import Image from "next/image";
+import { EASE } from "@/lib/motion";
 
 const team = [
   {
@@ -33,16 +34,16 @@ const team = [
 
 export function TeamBios() {
   return (
-    <section id="team" className="bg-[#F7F5F2] py-24">
+    <section id="team" className="bg-[#F7F5F2] py-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ ease: EASE, duration: 0.9 }}
           className="mb-14"
         >
-          <h2 className="text-3xl sm:text-4xl text-[#0A0A0A]">
+          <h2 className="text-h2 text-[#0A0A0A]">
             Meet the Team
           </h2>
         </motion.div>
@@ -54,7 +55,7 @@ export function TeamBios() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
               className="bg-white rounded-xl p-8 flex gap-6"
             >
               {/* Avatar */}

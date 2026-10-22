@@ -5,6 +5,8 @@ import { Play, ExternalLink, Mail, Mic, Newspaper, Video, BookOpen, ChevronDown 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 type Episode = {
   ep: string;
@@ -127,7 +129,7 @@ const FadeUp = ({
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.6, delay }}
+    transition={{ ease: EASE, duration: 0.9, delay }}
     className={className}
   >
     {children}
@@ -192,40 +194,16 @@ export default function MediaPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-              Media
-            </span>
-            <h1
-              className="text-5xl sm:text-6xl font-normal text-white leading-tight mb-4"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              People, Power &{" "}
-              <span className="text-[#E8581A]">Policy</span>
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl">
-              Conversations, analysis and thought leadership on race, equity and
-              policy — across podcast, press and screen.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Media" heading="People, Power & Policy" accent="Policy" subheading="Conversations, analysis and thought leadership on race, equity and policy — across podcast, press and screen." />
 
       {/* Podcast */}
-      <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-8">
               <Mic className="h-6 w-6 text-[#E8581A]" />
               <h2
-                className="text-3xl font-normal text-[#0A0A0A]"
+                className="text-h2 font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Trailblazing Leaders Of Tomorrow
@@ -276,13 +254,13 @@ export default function MediaPage() {
       </section>
 
       {/* People, Power & Policy */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-8">
               <Mic className="h-6 w-6 text-[#E8581A]" />
               <h2
-                className="text-3xl font-normal text-[#0A0A0A]"
+                className="text-h2 font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 People, Power &amp; Policy
@@ -333,13 +311,13 @@ export default function MediaPage() {
       </section>
 
       {/* Press */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-8">
               <Newspaper className="h-6 w-6 text-[#E8581A]" />
               <h2
-                className="text-3xl font-normal text-[#0A0A0A]"
+                className="text-h2 font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Press Coverage
@@ -374,13 +352,13 @@ export default function MediaPage() {
       </section>
 
       {/* Videos */}
-      <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-8">
               <Video className="h-6 w-6 text-[#E8581A]" />
               <h2
-                className="text-3xl font-normal text-[#0A0A0A]"
+                className="text-h2 font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Videos
@@ -402,13 +380,13 @@ export default function MediaPage() {
       </section>
 
       {/* Newsletter Archive */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="flex items-center gap-3 mb-8">
               <BookOpen className="h-6 w-6 text-[#E8581A]" />
               <h2
-                className="text-3xl font-normal text-[#0A0A0A]"
+                className="text-h2 font-normal text-[#0A0A0A]"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Newsletter Archive
@@ -440,12 +418,12 @@ export default function MediaPage() {
       </section>
 
       {/* Press Enquiries */}
-      <section className="bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#0A0A0A] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="max-w-xl">
               <h2
-                className="text-3xl font-normal text-white mb-4"
+                className="text-h2 font-normal text-white mb-4"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Press Enquiries

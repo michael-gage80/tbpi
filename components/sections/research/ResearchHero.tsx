@@ -8,6 +8,7 @@ export function ResearchHero() {
     <PageHero
       tag={`${publications.length} Publication${publications.length !== 1 ? "s" : ""}`}
       heading="Research & Publications"
+      accent="Publications"
       subheading="Evidence-based analysis driving systemic change. Our research centres Black lived experience alongside rigorous data."
     />
   );

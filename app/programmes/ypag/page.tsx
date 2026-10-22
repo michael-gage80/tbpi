@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Quote } from "lucide-react";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const gains = [
   "Develop practical policy analysis and advocacy skills through hands-on workshops and real briefs",
@@ -23,48 +25,20 @@ export default function YPAGPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-20 pb-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-3xl"
-          >
-            <span className="inline-block px-3 py-1 text-xs font-medium bg-[#E8581A] text-white rounded-full mb-6">
-              YPAG
-            </span>
-            <h1
-              className="text-4xl sm:text-5xl lg:text-6xl text-white leading-tight"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Young People&apos;s
-              <br />
-              Advisory Group
-              <span className="block mt-2 h-1 w-24 bg-[#E8581A] rounded-full" />
-            </h1>
-            <p
-              className="mt-8 text-xl text-zinc-400 leading-relaxed max-w-2xl"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              Engaging challenges to inspire the next generation.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="YPAG" heading={"Young People's\nAdvisory Group"} accent="Advisory Group" subheading="Engaging challenges to inspire the next generation." />
 
       {/* About */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ ease: EASE, duration: 0.9 }}
             className="max-w-3xl"
           >
             <h2
-              className="text-3xl md:text-4xl text-[#0A0A0A] mb-6"
+              className="text-h2 text-[#0A0A0A] mb-6"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               About the Programme
@@ -83,14 +57,14 @@ export default function YPAGPage() {
       </section>
 
       {/* What You'll Gain */}
-      <section className="bg-[#F7F5F2] py-24">
+      <section className="bg-[#F7F5F2] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl text-[#0A0A0A] mb-12"
+            transition={{ ease: EASE, duration: 0.9 }}
+            className="text-h2 text-[#0A0A0A] mb-12"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             What You&apos;ll Gain
@@ -102,7 +76,7 @@ export default function YPAGPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
                 className="flex gap-4 bg-white rounded-xl p-6 shadow-sm"
               >
                 <CheckCircle className="w-6 h-6 text-[#E8581A] flex-shrink-0 mt-0.5" />
@@ -119,17 +93,17 @@ export default function YPAGPage() {
       </section>
 
       {/* How to Apply */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ ease: EASE, duration: 0.9 }}
             >
               <h2
-                className="text-3xl md:text-4xl text-[#0A0A0A] mb-6"
+                className="text-h2 text-[#0A0A0A] mb-6"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 How to Apply
@@ -152,7 +126,7 @@ export default function YPAGPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ ease: EASE, duration: 0.9, delay: 0.15 }}
             >
               <h3
                 className="text-xl text-[#0A0A0A] mb-6 font-semibold"
@@ -179,13 +153,13 @@ export default function YPAGPage() {
       </section>
 
       {/* Testimonial */}
-      <section className="bg-[#0A0A0A] py-24">
+      <section className="bg-[#0A0A0A] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ ease: EASE, duration: 0.9 }}
             className="max-w-3xl mx-auto text-center"
           >
             <Quote className="w-10 h-10 text-[#E8581A] mx-auto mb-8" />
@@ -208,14 +182,14 @@ export default function YPAGPage() {
       </section>
 
       {/* Advisory Contacts */}
-      <section className="bg-[#F7F5F2] py-24">
+      <section className="bg-[#F7F5F2] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl text-[#0A0A0A] mb-12"
+            transition={{ ease: EASE, duration: 0.9 }}
+            className="text-h2 text-[#0A0A0A] mb-12"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             Programme Co-Leads
@@ -230,7 +204,7 @@ export default function YPAGPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
                 className="bg-white rounded-xl p-6 shadow-sm"
               >
                 <div className="w-12 h-12 rounded-full bg-[#E8581A]/10 flex items-center justify-center mb-4">

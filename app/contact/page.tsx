@@ -15,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const teamContacts = [
   {
@@ -67,7 +69,7 @@ const FadeUp = ({
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.6, delay }}
+    transition={{ ease: EASE, duration: 0.9, delay }}
     className={className}
   >
     {children}
@@ -88,34 +90,10 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-              Contact
-            </span>
-            <h1
-              className="text-5xl sm:text-6xl font-normal text-white leading-tight mb-4"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Get in{" "}
-              <span className="text-[#E8581A]">Touch</span>
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl">
-              Whether you want to commission research, partner with us, enquire
-              about a programme or just say hello — we&apos;d love to hear from you.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Contact" heading="Get in Touch" accent="Touch" subheading="Whether you want to commission research, partner with us, enquire about a programme or just say hello — we'd love to hear from you." />
 
       {/* Main content */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-5 gap-12">
             {/* Form */}

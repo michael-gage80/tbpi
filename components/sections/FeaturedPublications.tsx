@@ -1,93 +1,69 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SplitText } from "@/components/motion/SplitText";
 import { publications as allPublications, TOPIC_COLOURS } from "@/components/sections/research/PublicationsGrid";
 
 const publications = allPublications.slice(0, 3);
 
 export function FeaturedPublications() {
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14"
-        >
-          <h2 className="text-3xl sm:text-4xl text-[#0A0A0A]">
-            Latest Research &amp; Publications
-          </h2>
-        </motion.div>
+        <div className="mb-14 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div>
+            <p className="eyebrow mb-6 text-[#6B6B6B]" data-reveal="up">
+              Research
+            </p>
+            <SplitText
+              text="Latest research and publications"
+              accent="research"
+              className="text-h2 font-normal text-[#0A0A0A]"
+            />
+          </div>
+          <Link
+            href="/research"
+            data-reveal="up"
+            className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-[#0A0A0A]"
+          >
+            <span className="link-grow">All publications</span> <ArrowRight className="nudge size-4" />
+          </Link>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {publications.map((pub, i) => (
-            <motion.div
+            <article
               key={pub.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
+              data-reveal="up"
+              style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}
+              className="spot lift group flex flex-col rounded-2xl border border-[#E5E2DF] bg-white p-7 hover:border-[#0A0A0A]/20"
             >
-              <Card className="h-full border-zinc-200 hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    {pub.topics.map((t) => (
-                      <Badge
-                        key={t}
-                        className="text-white"
-                        style={{ backgroundColor: TOPIC_COLOURS[t] || "#E8581A" }}
-                      >
-                        {t}
-                      </Badge>
-                    ))}
-                    <span
-                      className="text-xs text-zinc-500"
-                      style={{ fontFamily: "var(--font-inter)" }}
-                    >
-                      {pub.type}
-                    </span>
-                  </div>
-                  <CardTitle className="text-lg leading-snug">
-                    {pub.title}
-                  </CardTitle>
-                  <CardDescription
-                    style={{ fontFamily: "var(--font-inter)" }}
+              <div className="mb-6 flex flex-wrap items-center gap-2">
+                {pub.topics.map((t) => (
+                  <Badge
+                    key={t}
+                    className="text-white"
+                    style={{ backgroundColor: TOPIC_COLOURS[t] || "#E8581A" }}
                   >
-                    {pub.author} &middot; {pub.date}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p
-                    className="text-sm text-zinc-600 line-clamp-2"
-                    style={{ fontFamily: "var(--font-inter)" }}
-                  >
-                    {pub.abstract}
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Link
-                    href="/research"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-[#E8581A] hover:text-[#C44A13] transition-colors"
-                    style={{ fontFamily: "var(--font-inter)" }}
-                  >
-                    Read More <ArrowRight className="size-4" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            </motion.div>
+                    {t}
+                  </Badge>
+                ))}
+                <span className="text-xs text-zinc-500">{pub.type}</span>
+              </div>
+              <h3 className="font-heading text-[1.4rem] leading-snug text-[#0A0A0A]">{pub.title}</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                {pub.author} &middot; {pub.date}
+              </p>
+              <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-zinc-600">{pub.abstract}</p>
+              <Link
+                href="/research"
+                className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-[#C44A13]"
+              >
+                Read more <ArrowRight className="nudge size-4" />
+              </Link>
+            </article>
           ))}
         </div>
       </div>

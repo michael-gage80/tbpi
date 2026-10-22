@@ -1,82 +1,132 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { HeroCanvas } from "@/components/sections/HeroCanvas";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { SplitText } from "@/components/motion/SplitText";
+import { ScrollFade } from "@/components/motion/ScrollFade";
+import { publications } from "@/components/sections/research/PublicationsGrid";
+
+const policyAreas = [
+  "Education",
+  "Employment & economic equity",
+  "Health & wellbeing",
+  "Media representation",
+  "AI & technology",
+  "Criminal justice & policing",
+];
+
+const latest = publications[0];
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center bg-[#0A0A0A] pt-20 overflow-hidden">
-      <HeroCanvas />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-4xl"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal leading-[1.05] tracking-tight text-white"
-          >
-            Evidence-based policy.
-            <br />
-            Community-powered
-            <br />
-            <span className="text-[#E8581A]">change.</span>
-          </motion.h1>
+    <section className="grain relative flex min-h-[100svh] flex-col overflow-hidden bg-[#0A0A0A] text-white">
+      {/* Warm glow, drifting very slowly */}
+      <div
+        aria-hidden
+        className="hero-glow pointer-events-none absolute -right-[20vw] top-[10vh] size-[70vw] max-w-[1100px] max-h-[1100px] rounded-full opacity-60"
+        style={{ background: "radial-gradient(closest-side, rgba(232,88,26,0.28), rgba(232,88,26,0.06) 55%, transparent)" }}
+      />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="mt-8 max-w-2xl text-lg sm:text-xl text-zinc-400 leading-relaxed"
-            style={{ fontFamily: "var(--font-inter)" }}
-          >
-            We drive racial equity through rigorous research, community
-            empowerment and transformative policy development across the UK.
-          </motion.p>
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 pt-24 sm:pt-28 lg:px-8">
+        {/* Masthead */}
+        <div className="rise flex items-center justify-between gap-6 text-[11px] uppercase tracking-[0.18em] text-white/50">
+          <span>Est. 2020 · TBPI CIC</span>
+          <span className="hidden font-heading text-base normal-case italic tracking-normal text-white/70 md:inline">
+            Racial equity, evidenced.
+          </span>
+          <span className="hidden sm:inline"><Today /></span>
+        </div>
+        <div className="mt-4 space-y-[3px]" aria-hidden>
+          <div className="rule-draw h-px bg-white/25" style={{ "--d": "0.1s" } as React.CSSProperties} />
+          <div className="rule-draw h-px bg-white/25" style={{ "--d": "0.2s" } as React.CSSProperties} />
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="mt-10 flex flex-col sm:flex-row gap-4"
-          >
-            <Button
-              asChild
-              className="h-12 px-8 rounded-md bg-[#E8581A] text-white text-base font-medium hover:bg-[#C44A13]"
-            >
-              <Link href="/work-with-us">Commission Us</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="h-12 px-8 rounded-md border-white text-white text-base font-medium bg-transparent hover:bg-white/10 hover:text-white"
-            >
-              <Link href="/research">Explore Research</Link>
-            </Button>
-          </motion.div>
-        </motion.div>
+        <ScrollFade className="flex flex-1 flex-col justify-center py-12 lg:py-14">
+          <p className="eyebrow rise text-white/60" style={{ "--d": "0.3s" } as React.CSSProperties}>
+            Non-partisan racial equity think tank · United Kingdom
+          </p>
+          <SplitText
+            as="h1"
+            trigger="load"
+            delay={0.35}
+            text={"Evidence-based policy.\nCommunity-powered change."}
+            accent="change."
+            className="mt-8 text-display font-normal"
+          />
+
+          <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <p className="rise max-w-2xl text-lede text-white/65" style={{ "--d": "0.9s" } as React.CSSProperties}>
+                We drive racial equity through rigorous research, community
+                empowerment and transformative policy development across the UK.
+              </p>
+              <div className="rise mt-8 flex flex-col gap-3 sm:flex-row" style={{ "--d": "1.05s" } as React.CSSProperties}>
+                <Link
+                  href="/work-with-us"
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E8581A] px-7 font-medium text-white transition-colors hover:bg-[#C44A13]"
+                >
+                  Commission us <ArrowRight className="nudge size-4" />
+                </Link>
+                <Link
+                  href="/research"
+                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/25 px-7 font-medium text-white transition-colors hover:border-white hover:bg-white/5"
+                >
+                  Explore research <ArrowRight className="nudge size-4" />
+                </Link>
+              </div>
+            </div>
+
+            {latest && (
+              <div className="hero-card lg:col-span-5">
+                <a
+                  href={latest.file ?? "/research"}
+                  className="spot group block rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition-colors hover:border-white/25"
+                >
+                  <p className="eyebrow text-[#E8581A]">Latest {latest.type.toLowerCase()}</p>
+                  <h2 className="mt-4 font-heading text-[clamp(1.25rem,1.6vw,1.5rem)] leading-snug">
+                    {latest.title}
+                  </h2>
+                  <p className="mt-2 text-sm text-white/50">
+                    {latest.author} · {latest.date}
+                  </p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-white">
+                    Read the paper <ArrowUpRight className="nudge size-4" />
+                  </span>
+                </a>
+              </div>
+            )}
+          </div>
+        </ScrollFade>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="size-6 text-zinc-500" />
-        </motion.div>
-      </motion.div>
+      {/* Policy areas ticker */}
+      <div className="rise relative z-20 border-t border-white/10 bg-[#0A0A0A] py-5" style={{ "--d": "1.4s" } as React.CSSProperties}>
+        <div className="marquee-mask overflow-hidden">
+          <div className="animate-marquee flex w-max" style={{ animationDuration: "60s" }}>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
+                {policyAreas.map((area) => (
+                  <li key={area} className="flex items-center whitespace-nowrap font-heading text-xl italic text-white/70">
+                    <span className="px-8">{area}</span>
+                    <span className="size-1.5 rounded-full bg-[#E8581A]" />
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
+}
+
+// Read on the client only: the page is static, so a server-rendered date would go stale.
+const noSubscribe = () => () => {};
+const todayLabel = () =>
+  new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+
+function Today() {
+  const label = useSyncExternalStore(noSubscribe, todayLabel, () => "");
+  return <span className="min-w-[1px] text-right">{label}</span>;
 }

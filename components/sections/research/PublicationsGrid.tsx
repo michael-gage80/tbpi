@@ -12,6 +12,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { EASE } from "@/lib/motion";
 
 export const TOPIC_COLOURS: Record<string, string> = {
   "AI & Tech": "#0891B2",
@@ -101,7 +102,7 @@ export function PublicationsGrid() {
   }, [activeTopic, activeType]);
 
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Filter Row */}
         <div className="mb-12 space-y-4">
@@ -181,7 +182,7 @@ export function PublicationsGrid() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ ease: EASE, duration: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {filtered.map((pub, i) => (
@@ -189,7 +190,7 @@ export function PublicationsGrid() {
                 key={pub.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.08 }}
               >
                 <Card className="h-full border-zinc-200 hover:shadow-md transition-shadow">
                   <CardHeader>

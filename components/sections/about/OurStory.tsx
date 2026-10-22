@@ -1,19 +1,26 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE } from "@/lib/motion";
+
+const milestones = [
+  { year: "2020", label: "Founded" },
+  { year: "2025", label: "CIC registered" },
+  { year: "2026", label: "Growing impact" },
+];
 
 export function OurStory() {
   return (
-    <section className="bg-[#F7F5F2] py-24">
+    <section className="bg-[#F7F5F2] py-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ ease: EASE, duration: 0.9 }}
           className="max-w-3xl"
         >
-          <h2 className="text-3xl sm:text-4xl text-[#0A0A0A] mb-8">
+          <h2 className="text-h2 text-[#0A0A0A] mb-8">
             Our Story
           </h2>
 
@@ -53,44 +60,31 @@ export function OurStory() {
           </div>
         </motion.div>
 
-        {/* Timeline accent */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-16 flex items-center gap-8"
-        >
-          <div className="flex items-center gap-3">
-            <div className="size-3 rounded-full bg-[#E8581A]" />
-            <span
-              className="text-sm font-medium text-[#0A0A0A]"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              2020 — Founded
-            </span>
-          </div>
-          <div className="h-px flex-1 bg-zinc-300" />
-          <div className="flex items-center gap-3">
-            <div className="size-3 rounded-full bg-[#E8581A]" />
-            <span
-              className="text-sm font-medium text-[#0A0A0A]"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              2025 — CIC Registered
-            </span>
-          </div>
-          <div className="h-px flex-1 bg-zinc-300" />
-          <div className="flex items-center gap-3">
-            <div className="size-3 rounded-full bg-[#E8581A]" />
-            <span
-              className="text-sm font-medium text-[#0A0A0A]"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              2026 — Growing Impact
-            </span>
-          </div>
-        </motion.div>
+        {/* Timeline: stacks on phones, runs across with drawing rules on wider screens */}
+        <ol className="mt-16 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
+          {milestones.map((m, i) => (
+            <li key={m.year} className="flex items-center gap-6 sm:flex-1 sm:last:flex-none">
+              <div
+                data-reveal="up"
+                style={{ "--d": `${i * 0.25}s` } as React.CSSProperties}
+                className="flex shrink-0 items-center gap-3"
+              >
+                <span className="size-3 rounded-full bg-[#E8581A]" />
+                <span className="text-sm font-medium text-[#0A0A0A]">
+                  <span className="font-heading text-lg italic">{m.year}</span> · {m.label}
+                </span>
+              </div>
+              {i < milestones.length - 1 && (
+                <div
+                  aria-hidden
+                  data-reveal="rule"
+                  style={{ "--d": `${0.15 + i * 0.25}s` } as React.CSSProperties}
+                  className="hidden h-px flex-1 bg-zinc-300 sm:block"
+                />
+              )}
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

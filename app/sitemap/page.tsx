@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ChevronRight, Building2, Briefcase, MessageCircle, Scale, Home } from "lucide-react";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 type SiteLink = { href: string; label: string; desc?: string };
 type SiteGroup = {
@@ -72,7 +74,7 @@ const FadeUp = ({
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.6, delay }}
+    transition={{ ease: EASE, duration: 0.9, delay }}
     className={className}
   >
     {children}
@@ -83,33 +85,10 @@ export default function SitemapPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-              Sitemap
-            </span>
-            <h1
-              className="text-5xl sm:text-6xl font-normal text-white leading-tight mb-4"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Site<span className="text-[#E8581A]">map</span>
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl">
-              Every page on The Black Policy Institute site, gathered in one place
-              for quick navigation.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Sitemap" heading="Sitemap" subheading="Every page on The Black Policy Institute site, gathered in one place for quick navigation." />
 
       {/* Groups */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {siteMap.map((group, i) => (
             <FadeUp key={group.label} delay={i * 0.08}>

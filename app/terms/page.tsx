@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHero } from "@/components/sections/PageHero";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -41,27 +42,10 @@ export default function TermsOfServicePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div className="max-w-7xl mx-auto">
-          <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-            Legal
-          </span>
-          <h1
-            className="text-5xl sm:text-6xl font-normal text-white leading-tight mb-4"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
-          >
-            Terms of <span className="text-[#E8581A]">Service</span>
-          </h1>
-          <p className="text-lg text-white/60 max-w-2xl">
-            The terms and conditions governing your use of our website and
-            services.
-          </p>
-        </div>
-      </section>
+      <PageHero tag="Legal" heading="Terms of Service" accent="Service" subheading="The terms and conditions governing your use of our website and services." />
 
       {/* Body */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl p-8 sm:p-10 border border-[#E5E2DF] shadow-sm space-y-10">
             {/* Effective date */}

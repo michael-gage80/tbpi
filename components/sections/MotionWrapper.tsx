@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { DURATION, EASE } from "@/lib/motion";
 
 interface FadeUpProps {
   children: React.ReactNode;
@@ -16,9 +17,9 @@ export function FadeUp({ children, delay = 0, className }: FadeUpProps) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      transition={{ duration: DURATION.base, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -60,8 +61,8 @@ export function StaggerItem({ children, className }: { children: React.ReactNode
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
+        hidden: { opacity: 0, y: 28 },
+        visible: { opacity: 1, y: 0, transition: { duration: DURATION.base, ease: EASE } },
       }}
       className={className}
     >
@@ -79,7 +80,7 @@ export function FadeIn({ children, delay = 0, className }: FadeUpProps) {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.7, delay }}
+      transition={{ duration: DURATION.base, delay, ease: EASE }}
       className={className}
     >
       {children}
