@@ -73,15 +73,6 @@ export const publications: Publication[] = [
     file: "/publications/TBPI%20CoCo%20Collective%20Kitemark%20Research%20Report%202024%20(1).pdf",
   },
   {
-    title: "The Hidden Million",
-    topics: ["Policy"],
-    type: "Policy Brief",
-    date: "2024",
-    author: "Mike Gage",
-    abstract:
-      "A policy brief surfacing the one million Black British citizens whose experiences and needs remain systematically absent from national policy frameworks, with recommendations to close the gap.",
-  },
-  {
     title: "Shaping Equitable and Just Policies",
     topics: ["Media", "Policy"],
     type: "Report",
@@ -95,7 +86,7 @@ export const publications: Publication[] = [
 
 const TOPICS = ["All", "AI & Tech", "Education", "Equity & Economics", "Media", "Policy"];
 
-const TYPES = ["All", "White Paper", "Presentation", "Report", "Policy Brief"];
+const TYPES = ["All", "White Paper", "Presentation", "Report"];
 
 export function PublicationsGrid() {
   const [activeTopic, setActiveTopic] = useState("All");
