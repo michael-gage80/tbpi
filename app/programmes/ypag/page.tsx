@@ -206,55 +206,6 @@ export default function YPAGPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Advisory Contacts */}
-      <section className="bg-[#F7F5F2] py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl text-[#0A0A0A] mb-12"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
-          >
-            Programme Co-Leads
-          </motion.h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl">
-            {[
-              { name: "Diontre Davis", role: "YPAG Co-Lead" },
-              { name: "Nadjah Osman", role: "YPAG Co-Lead" },
-            ].map((person, i) => (
-              <motion.div
-                key={person.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-white rounded-xl p-6 shadow-sm"
-              >
-                <div className="w-12 h-12 rounded-full bg-[#E8581A]/10 flex items-center justify-center mb-4">
-                  <span className="text-[#E8581A] font-semibold text-lg">
-                    {person.name[0]}
-                  </span>
-                </div>
-                <h3
-                  className="text-lg font-semibold text-[#0A0A0A]"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                >
-                  {person.name}
-                </h3>
-                <p
-                  className="text-zinc-500 text-sm"
-                  style={{ fontFamily: "var(--font-inter)" }}
-                >
-                  {person.role}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }
