@@ -6,7 +6,7 @@ import { FileDown } from "lucide-react";
 
 export function Governance() {
   return (
-    <section id="governance" className="bg-[#F7F5F2] py-24">
+    <section id="governance" className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

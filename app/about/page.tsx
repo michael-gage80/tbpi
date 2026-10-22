@@ -4,7 +4,6 @@ import { MissionVision } from "@/components/sections/about/MissionVision";
 import { OurStory } from "@/components/sections/about/OurStory";
 import { StrategicApproach } from "@/components/sections/about/StrategicApproach";
 import { TeamBios } from "@/components/sections/about/TeamBios";
-import { Advisory } from "@/components/sections/about/Advisory";
 import { Governance } from "@/components/sections/about/Governance";
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default function AboutPage() {
       <OurStory />
       <StrategicApproach />
       <TeamBios />
-      <Advisory />
       <Governance />
     </>
   );
