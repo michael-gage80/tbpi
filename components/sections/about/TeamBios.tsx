@@ -29,14 +29,6 @@ const team = [
     bio: "Valerie brings extensive experience in governance, public leadership and community advocacy, driving TBPI's strategic direction and organisational growth.",
     linkedin: "https://linkedin.com/in/councillor-valerie-owura-ama-wirekvau-bossman-quarshie-66baa560/",
   },
-  {
-    name: "Mashhuda Kazi",
-    initials: "MK",
-    photo: "/images/team/mashhudakazi.jpeg",
-    title: "Director of Strategy & Policy",
-    bio: "Mashhuda leads TBPI's policy research agenda and strategic partnerships, translating evidence into actionable recommendations for institutional and governmental change.",
-    linkedin: "https://linkedin.com/in/mashhuda-k-1226a48b/",
-  },
 ];
 
 export function TeamBios() {
