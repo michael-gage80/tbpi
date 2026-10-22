@@ -4,6 +4,7 @@ import { DM_Serif_Display, Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/CookieBanner";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -12,6 +13,7 @@ const dmSerifDisplay = DM_Serif_Display({
   variable: "--font-dm-serif",
   subsets: ["latin"],
   weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -59,8 +61,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
+    <html
+      lang="en-GB"
+      className={`${dmSerifDisplay.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <head>
+        {/* Mark JS as available before first paint, so scroll reveals can start hidden
+            without flashing; without JS, content simply shows. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
+        <noscript>
+          <style>{`[style*="opacity:0"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-LHXMQ2RF68"
@@ -77,10 +91,12 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="antialiased min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <CookieBanner />
+        <MotionProvider>
+          <Navbar />
+          <main id="main" className="flex-1">{children}</main>
+          <Footer />
+          <CookieBanner />
+        </MotionProvider>
         <Analytics />
         <SpeedInsights />
       </body>

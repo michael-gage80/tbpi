@@ -1,8 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
+
+/* Fluid type scale: every heading size scales continuously with the viewport
+   instead of jumping at breakpoints. Use as text-display, text-h1, text-h2... */
+@theme {
+  --text-display: clamp(2.75rem, 5.9vw, 6.5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(2.75rem, 6.2vw, 5.75rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(2.125rem, 4.2vw, 3.5rem);
+  --text-h2--line-height: 1.06;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(1.375rem, 1.9vw, 1.75rem);
+  --text-h3--line-height: 1.2;
+  --text-statement: clamp(1.875rem, 4vw, 3.5rem);
+  --text-statement--line-height: 1.14;
+  --text-statement--letter-spacing: -0.015em;
+  --text-lede: clamp(1.125rem, 1.4vw, 1.375rem);
+  --text-lede--line-height: 1.6;
+  --text-numeral: clamp(3rem, 6vw, 5.5rem);
+  --text-numeral--line-height: 1;
+  --text-numeral--letter-spacing: -0.02em;
+}
+
+@utility py-section {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -61,6 +90,13 @@
   --brand-black: #0A0A0A;
   --brand-surface: #F7F5F2;
   --brand-white: #FFFFFF;
+
+  /* Motion tokens (mirrored in lib/motion.ts) */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-fast: 0.5s;
+  --dur-base: 0.9s;
+  --dur-slow: 1.25s;
 
   /* Light mode - content sections */
   --background: #FFFFFF;
@@ -191,7 +227,201 @@
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-dm-serif), serif;
+    text-wrap: balance;
   }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ---------- Editorial details ---------- */
+
+/* Small uppercase label with an orange dot, used above headings */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--brand-orange);
+  flex-shrink: 0;
+}
+
+/* Emphasis word inside a serif heading */
+.accent {
+  font-style: italic;
+  color: var(--brand-orange);
+}
+
+/* Film grain over dark sections, so flat black reads as paper rather than screen */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Split headings ----------
+   Words rise from behind a mask. CSS runs the animation, so it starts at first
+   paint (data-split="load") or when Interactions adds .is-in (data-split="view").
+   View-triggered headings are only hidden once JS has set html.js. */
+.split .sw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* room for descenders and italic overhang inside the mask */
+  padding: 0 0.08em 0.16em;
+  margin: 0 -0.08em -0.16em;
+}
+.split .sw-i {
+  display: inline-block;
+}
+.split[data-split="load"] .sw-i,
+.js .split[data-split="view"].is-in .sw-i {
+  animation: sw-rise var(--dur-slow) var(--ease) both;
+  animation-delay: calc(var(--d, 0s) + var(--i, 0) * 55ms);
+}
+.js .split[data-split="view"]:not(.is-in) .sw-i {
+  transform: translateY(115%) rotate(2deg);
+}
+@keyframes sw-rise {
+  from { transform: translateY(115%) rotate(2deg); }
+  to { transform: none; }
+}
+
+/* ---------- Generic reveals ---------- */
+[data-reveal="up"] {
+  transition:
+    opacity var(--dur-base) var(--ease) var(--d, 0s),
+    transform var(--dur-base) var(--ease) var(--d, 0s);
+}
+.js [data-reveal="up"]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+/* Load-time fade for hero copy that follows a split heading */
+.rise {
+  animation: rise var(--dur-base) var(--ease) both;
+  animation-delay: var(--d, 0s);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Homepage hero: the latest-publication card slides in, the glow drifts */
+.hero-card {
+  animation: hero-card 1.8s var(--ease) 0.45s both;
+}
+@keyframes hero-card {
+  from { opacity: 0; transform: translateX(40%) rotate(6deg); }
+  to { opacity: 1; transform: none; }
+}
+.hero-glow {
+  animation: hero-glow 18s ease-in-out infinite alternate;
+}
+@keyframes hero-glow {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-6vw, 4vh) scale(1.08); }
+}
+
+/* Hairline that draws across from the left */
+.rule-draw {
+  transform-origin: left center;
+  animation: rule-draw 1.6s var(--ease-in-out) both;
+  animation-delay: var(--d, 0s);
+}
+[data-reveal="rule"] {
+  transform-origin: left center;
+  transition: transform 1.6s var(--ease-in-out) var(--d, 0s);
+}
+.js [data-reveal="rule"]:not(.is-in) {
+  transform: scaleX(0);
+}
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ---------- Pointer polish ---------- */
+
+/* Soft orange spotlight that follows the pointer across a card */
+.spot {
+  position: relative;
+  isolation: isolate;
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(232, 88, 26, 0.1),
+    transparent 60%
+  );
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.spot:hover::before {
+  opacity: 1;
+}
+
+/* Lift for cards */
+.lift {
+  transition:
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.04), 0 24px 48px -24px rgba(10, 10, 10, 0.22);
+}
+
+/* Arrow that nudges forward when its group is hovered */
+.nudge {
+  transition: transform var(--dur-fast) var(--ease);
+}
+.group:hover .nudge,
+a:hover > .nudge {
+  transform: translateX(4px);
+}
+
+/* Underline that grows from the left on hover */
+.link-grow {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size var(--dur-fast) var(--ease);
+}
+.link-grow:hover,
+.link-grow[aria-current="page"] {
+  background-size: 100% 1px;
+}
+
+/* Marquee edges fade out; hovering pauses it */
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-mask:hover .animate-marquee {
+  animation-play-state: paused;
 }
 
 /* Utility classes for brand */
@@ -249,12 +479,25 @@
   100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
 }
 
-/* Respect reduced-motion: kill decorative CSS animations */
+/* Respect reduced-motion: kill decorative CSS animations and show everything */
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   [style*="tbpiLed"],
-  .ops-anim { animation: none !important; }
-  html { scroll-behavior: auto; }
+  .ops-anim,
+  .split .sw-i,
+  .rise,
+  .rule-draw,
+  .hero-card,
+  .hero-glow { animation: none !important; }
+  .split .sw-i,
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .lift:hover,
+  .group:hover .nudge,
+  a:hover > .nudge { transform: none; }
 }
 
 /* Marquee animation */
@@ -267,9 +510,11 @@
   animation: marquee 30s linear infinite;
 }
 
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
+/* Smooth anchor jumps where Lenis isn't running (touch); Lenis turns this off itself */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Selection */
