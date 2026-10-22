@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { EASE } from "@/lib/motion";
 
 interface RelatedPublication {
   title: string;
@@ -130,9 +131,9 @@ function PolicyAreaCard({
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
-        duration: 0.6,
+        duration: 0.9,
         delay: index * 0.1,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: EASE,
       }}
       className="group relative bg-white rounded-xl border border-zinc-200 p-8 transition-all hover:shadow-lg"
       style={{
@@ -238,7 +239,7 @@ function PolicyAreaCard({
 
 export function PolicyAreasGrid() {
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {policyAreas.map((area, i) => (

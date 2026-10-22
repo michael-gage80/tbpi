@@ -4,16 +4,17 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { TOPIC_COLOURS } from "@/components/sections/research/PublicationsGrid";
+import { EASE } from "@/lib/motion";
 
 export function FeaturedPublication() {
   return (
-    <section style={{ backgroundColor: "#F7F5F2" }} className="py-20 px-4 sm:px-6 lg:px-8">
+    <section style={{ backgroundColor: "#F7F5F2" }} className="py-section px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ ease: EASE, duration: 0.9 }}
         >
           <p
             className="text-sm font-semibold uppercase tracking-widest mb-8"
@@ -27,7 +28,7 @@ export function FeaturedPublication() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          transition={{ ease: EASE, duration: 0.9, delay: 0.15 }}
           className="rounded-2xl bg-white p-8 sm:p-12 shadow-sm border border-zinc-100"
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
@@ -51,7 +52,7 @@ export function FeaturedPublication() {
               </div>
 
               <h2
-                className="text-2xl sm:text-3xl lg:text-4xl text-[#0A0A0A] mb-4"
+                className="text-h2 text-[#0A0A0A] mb-4"
                 style={{ fontFamily: "var(--font-dm-serif)" }}
               >
                 Countering Misinformation in Africa: Local Approaches to AI-Powered Challenges

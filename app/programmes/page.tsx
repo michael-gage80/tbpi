@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Users, Globe } from "lucide-react";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const programmes = [
   {
@@ -32,33 +34,10 @@ export default function ProgrammesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-20 pb-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-3xl"
-          >
-            <h1
-              className="text-4xl sm:text-5xl lg:text-6xl text-white leading-tight"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Our Programmes
-              <span className="block mt-2 h-1 w-24 bg-[#E8581A] rounded-full" />
-            </h1>
-            <p
-              className="mt-8 text-xl text-zinc-400 leading-relaxed max-w-2xl"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              Building the next generation of policy leaders.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Programmes" heading="Our Programmes" accent="Programmes" subheading="Building the next generation of policy leaders." />
 
       {/* Programme Tiles */}
-      <section className="bg-[#F7F5F2] py-24">
+      <section className="bg-[#F7F5F2] py-section">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-10">
             {programmes.map((prog, i) => (
@@ -67,7 +46,7 @@ export default function ProgrammesPage() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
+                transition={{ ease: EASE, duration: 0.9, delay: i * 0.15 }}
                 className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-zinc-100"
               >
                 <div className="flex flex-col md:flex-row md:items-start gap-8">

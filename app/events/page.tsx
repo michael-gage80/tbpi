@@ -6,6 +6,8 @@ import { Calendar, MapPin, Clock, ExternalLink, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const upcomingEvents: Array<{
   id: number;
@@ -97,41 +99,14 @@ export default function EventsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-              Events
-            </span>
-            <h1
-              className="text-5xl sm:text-6xl font-normal text-white leading-tight mb-4"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Where Policy Meets{" "}
-              <span className="text-[#E8581A]">Community</span>
-            </h1>
-            <p
-              className="text-lg text-white/60 max-w-2xl"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              Forums, summits and workshops bringing together policymakers,
-              practitioners and communities to drive change.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Events" heading="Where Policy Meets Community" accent="Community" subheading="Forums, summits and workshops bringing together policymakers, practitioners and communities to drive change." />
 
       {/* Upcoming Events */}
-      <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
             <h2
-              className="text-3xl font-normal text-[#0A0A0A]"
+              className="text-h2 font-normal text-[#0A0A0A]"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Upcoming Events
@@ -162,7 +137,7 @@ export default function EventsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
                 >
                   <Card className="border border-[#E5E2DF] hover:shadow-md transition-shadow overflow-hidden">
                     <CardContent className="p-0">
@@ -253,10 +228,10 @@ export default function EventsPage() {
       </section>
 
       {/* Past Events */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h2
-            className="text-3xl font-normal text-[#0A0A0A] mb-10"
+            className="text-h2 font-normal text-[#0A0A0A] mb-10"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             Past Events
@@ -268,7 +243,7 @@ export default function EventsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ ease: EASE, duration: 0.8, delay: i * 0.1 }}
               >
                 <Card className="border border-[#E5E2DF] bg-white h-full">
                   <CardContent className="p-6 space-y-3">
@@ -306,10 +281,10 @@ export default function EventsPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#0A0A0A] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h2
-            className="text-3xl sm:text-4xl font-normal text-white mb-4"
+            className="text-h2 font-normal text-white mb-4"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             Want to partner on an event?

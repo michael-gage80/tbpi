@@ -3,22 +3,23 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { EASE } from "@/lib/motion";
 
 export function CommissionCTA() {
   return (
     <section
       style={{ backgroundColor: "#0A0A0A" }}
-      className="py-24 px-4 sm:px-6 lg:px-8"
+      className="py-section px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ ease: EASE, duration: 0.9 }}
         >
           <h2
-            className="text-3xl sm:text-4xl text-white mb-6"
+            className="text-h2 text-white mb-6"
             style={{ fontFamily: "var(--font-dm-serif)" }}
           >
             Commission Research

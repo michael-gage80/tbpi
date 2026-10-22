@@ -17,6 +17,8 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { PageHero } from "@/components/sections/PageHero";
+import { EASE } from "@/lib/motion";
 
 const services = [
   {
@@ -145,7 +147,7 @@ const FadeUp = ({
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.6, delay }}
+    transition={{ ease: EASE, duration: 0.9, delay }}
     className={className}
   >
     {children}
@@ -156,57 +158,14 @@ export default function WorkWithUsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-[#0A0A0A] pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-[#E8581A]" />
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-        <div className="max-w-7xl mx-auto relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full text-[#E8581A] bg-[#E8581A]/10 border border-[#E8581A]/30">
-              Work With Us
-            </span>
-            <h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-normal text-white leading-tight mb-6"
-              style={{ fontFamily: "var(--font-dm-serif)" }}
-            >
-              Commission.
-              <br />
-              Collaborate.
-              <br />
-              <span className="text-[#E8581A]">Change.</span>
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl leading-relaxed">
-              We partner with organisations serious about racial equity — delivering
-              research, training and strategy that creates lasting, measurable change.
-            </p>
-            <div className="flex flex-wrap gap-4 mt-8">
-              <Button
-                asChild
-                className="bg-[#E8581A] hover:bg-[#C44A13] text-white px-8 py-3 h-12"
-              >
-                <Link href="/contact">Commission Us</Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero tag="Work With Us" heading={"Commission.\nCollaborate.\nChange."} accent="Change." subheading="We partner with organisations serious about racial equity — delivering research, training and strategy that creates lasting, measurable change." ctas={[{ label: "Commission Us", href: "/contact" }]} />
 
       {/* Services */}
-      <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <h2
-              className="text-3xl sm:text-4xl font-normal text-[#0A0A0A] mb-3"
+              className="text-h2 font-normal text-[#0A0A0A] mb-3"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Our Services
@@ -245,11 +204,11 @@ export default function WorkWithUsPage() {
       </section>
 
       {/* Who we work with */}
-      <section className="bg-[#F7F5F2] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#F7F5F2] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <h2
-              className="text-3xl sm:text-4xl font-normal text-[#0A0A0A] mb-3"
+              className="text-h2 font-normal text-[#0A0A0A] mb-3"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Who We Work With
@@ -289,11 +248,11 @@ export default function WorkWithUsPage() {
       </section>
 
       {/* Process */}
-      <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <h2
-              className="text-3xl sm:text-4xl font-normal text-[#0A0A0A] mb-10 text-center"
+              className="text-h2 font-normal text-[#0A0A0A] mb-10 text-center"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               How We Work
@@ -332,11 +291,11 @@ export default function WorkWithUsPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-[#0A0A0A] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#0A0A0A] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <h2
-              className="text-3xl sm:text-4xl font-normal text-white mb-10"
+              className="text-h2 font-normal text-white mb-10"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               What Our Partners Say
@@ -364,11 +323,11 @@ export default function WorkWithUsPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#E8581A] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#E8581A] py-section px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <FadeUp>
             <h2
-              className="text-3xl sm:text-4xl font-normal text-white"
+              className="text-h2 font-normal text-white"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               Ready to work together?
