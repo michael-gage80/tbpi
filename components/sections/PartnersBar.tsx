@@ -1,6 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
+import { SplitText } from "@/components/motion/SplitText";
 
 const partners = [
   "USC Annenberg",
@@ -15,30 +13,31 @@ const partners = [
 
 export function PartnersBar() {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl text-[#0A0A0A]">
-            Our Partners &amp; Collaborators
-          </h2>
-        </motion.div>
+        <div className="mb-12 text-center">
+          <p className="eyebrow mb-6 text-[#6B6B6B]" data-reveal="up">
+            Partners
+          </p>
+          <SplitText
+            text="Partners and collaborators"
+            className="text-h2 font-normal text-[#0A0A0A]"
+          />
+        </div>
 
-        <div className="relative overflow-hidden">
-          <div className="flex animate-marquee gap-8">
-            {[...partners, ...partners].map((name, i) => (
-              <div
-                key={`${name}-${i}`}
-                className="flex-shrink-0 px-6 py-3 rounded-full border border-zinc-200 bg-[#F7F5F2] text-sm font-medium text-[#0A0A0A] whitespace-nowrap"
-                style={{ fontFamily: "var(--font-inter)" }}
-              >
-                {name}
-              </div>
+        <div className="marquee-mask overflow-hidden" data-reveal="up">
+          <div className="animate-marquee flex w-max" style={{ animationDuration: "45s" }}>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className="flex shrink-0 gap-4 pr-4" aria-hidden={copy === 1}>
+                {partners.map((name) => (
+                  <li
+                    key={name}
+                    className="whitespace-nowrap rounded-full border border-[#E5E2DF] bg-[#F7F5F2] px-6 py-3 text-sm font-medium text-[#0A0A0A]"
+                  >
+                    {name}
+                  </li>
+                ))}
+              </ul>
             ))}
           </div>
         </div>

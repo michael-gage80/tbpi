@@ -1,23 +1,17 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Lightbulb, BookOpen, Users } from "lucide-react";
+import { SplitText } from "@/components/motion/SplitText";
 
 const pillars = [
   {
-    icon: Lightbulb,
     title: "Inspiration",
     description:
       "Spark evidence-based thinking and intellectual courage across communities and institutions.",
   },
   {
-    icon: BookOpen,
     title: "Education",
     description:
       "Build knowledge, capacity and critical understanding through research and programmes.",
   },
   {
-    icon: Users,
     title: "Empowerment",
     description:
       "Transform communities through policy advocacy and civic leadership development.",
@@ -26,29 +20,48 @@ const pillars = [
 
 export function MissionStrip() {
   return (
-    <section className="bg-[#F7F5F2] py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-          {pillars.map((pillar, i) => (
-            <motion.div
-              key={pillar.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="text-center"
-            >
-              <pillar.icon className="mx-auto size-12 text-[#E8581A] mb-5" strokeWidth={1.5} />
-              <h3 className="text-2xl mb-3 text-[#0A0A0A]">{pillar.title}</h3>
-              <p
-                className="text-zinc-600 leading-relaxed"
-                style={{ fontFamily: "var(--font-inter)" }}
-              >
-                {pillar.description}
-              </p>
-            </motion.div>
-          ))}
+    <section className="bg-white py-section">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-12 lg:px-8">
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-32">
+            <p className="eyebrow mb-6 text-[#6B6B6B]" data-reveal="up">
+              Our pillars
+            </p>
+            <SplitText
+              text="Three commitments behind every piece of work."
+              accent="every"
+              className="text-h2 font-normal text-[#0A0A0A]"
+            />
+          </div>
         </div>
+
+        <ol className="lg:col-span-7">
+          {pillars.map((pillar, i) => (
+            <li key={pillar.title} className="relative py-10">
+              <div
+                aria-hidden
+                data-reveal="rule"
+                className="absolute inset-x-0 top-0 h-px bg-[#0A0A0A]/15"
+                style={{ "--d": `${i * 0.12}s` } as React.CSSProperties}
+              />
+              <div
+                data-reveal="up"
+                className="grid grid-cols-[3.5rem_1fr] gap-x-6 sm:grid-cols-[5rem_1fr]"
+                style={{ "--d": `${0.1 + i * 0.12}s` } as React.CSSProperties}
+              >
+                <span className="font-heading text-2xl italic text-[#E8581A] sm:text-3xl">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-h3 text-[#0A0A0A]">{pillar.title}</h3>
+                  <p className="mt-3 max-w-xl text-lg leading-relaxed text-zinc-600">
+                    {pillar.description}
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/sections/HeroSection";
+import { Philosophy } from "@/components/sections/Philosophy";
 import { MissionStrip } from "@/components/sections/MissionStrip";
 import { ImpactNumbers } from "@/components/sections/ImpactNumbers";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <Philosophy />
       <MissionStrip />
       <ImpactNumbers />
       <FeaturedPublications />

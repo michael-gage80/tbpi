@@ -1,32 +1,25 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import { SplitText } from "@/components/motion/SplitText";
 
 export function NewsletterBanner() {
   return (
-    <section className="bg-[#0A0A0A] py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto text-center"
-        >
-          <h2 className="text-3xl sm:text-4xl text-white mb-4">
-            Stay ahead of the policy curve
-          </h2>
-          <p
-            className="text-zinc-400 mb-10 text-lg"
-            style={{ fontFamily: "var(--font-inter)" }}
-          >
-            Join thousands of practitioners, policymakers and advocates
-            receiving our research updates.
-          </p>
-
+    <section className="grain bg-[#0A0A0A] py-section text-white">
+      <div className="relative z-10 mx-auto max-w-3xl px-6 text-center lg:px-8">
+        <p className="eyebrow mb-6 text-white/50" data-reveal="up">
+          Newsletter
+        </p>
+        <SplitText
+          text="Stay ahead of the policy curve"
+          accent="policy curve"
+          className="text-h2 font-normal"
+        />
+        <p className="mx-auto mb-10 mt-6 max-w-xl text-lede text-white/60" data-reveal="up">
+          Join thousands of practitioners, policymakers and advocates
+          receiving our research updates.
+        </p>
+        <div data-reveal="up" style={{ "--d": "0.1s" } as React.CSSProperties}>
           <NewsletterForm variant="banner" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
